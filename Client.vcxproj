@@ -14,14 +14,19 @@
     <ClCompile Include="src\Client\Application.cpp" />
     <ClCompile Include="src\Client\Drawer.cpp" />
     <ClCompile Include="src\Client\GameStateStack.cpp" />
+    <ClCompile Include="src\Client\GameWorld.cpp" />
     <ClCompile Include="src\Client\LobbyState.cpp" />
     <ClCompile Include="src\Client\Main.cpp" />
     <ClCompile Include="src\Client\AudioPlayer.cpp" />
     <ClCompile Include="src\Client\Player.cpp" />
+    <ClCompile Include="src\Client\PlayingState.cpp" />
     <ClCompile Include="src\Client\SplashState.cpp" />
     <ClCompile Include="src\Shared\DynamicEntity.cpp" />
     <ClCompile Include="src\Shared\Entity.cpp" />
+    <ClCompile Include="src\Shared\Human.cpp" />
+    <ClCompile Include="src\Shared\PowerUp.cpp" />
     <ClCompile Include="src\Shared\StaticEntity.cpp" />
+    <ClCompile Include="src\Shared\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Client\Application.h" />
@@ -29,15 +34,20 @@
     <ClInclude Include="include\Client\GameState.h" />
     <ClInclude Include="include\Client\GameStateStack.h" />
     <ClInclude Include="include\Client\AudioPlayer.h" />
+    <ClInclude Include="include\Client\GameWorld.h" />
     <ClInclude Include="include\Client\LobbyState.h" />
     <ClInclude Include="include\Client\Player.h" />
+    <ClInclude Include="include\Client\PlayingState.h" />
     <ClInclude Include="include\Client\ResourceManager.h" />
     <ClInclude Include="include\Client\SFMLResourceLoader.h" />
     <ClInclude Include="include\Client\SplashState.h" />
     <ClInclude Include="include\Shared\DynamicEntity.h" />
     <ClInclude Include="include\Shared\Entity.h" />
+    <ClInclude Include="include\Shared\Human.h" />
     <ClInclude Include="include\Shared\NetProtocol.h" />
+    <ClInclude Include="include\Shared\PowerUp.h" />
     <ClInclude Include="include\Shared\StaticEntity.h" />
+    <ClInclude Include="include\Shared\Zombie.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FD210CF5-2583-4510-9677-CC59FA749DDC}</ProjectGuid>

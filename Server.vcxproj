@@ -81,20 +81,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Server\GameWorld.cpp" />
     <ClCompile Include="src\Server\Main.cpp" />
     <ClCompile Include="src\Server\Peer.cpp" />
     <ClCompile Include="src\Server\Server.cpp" />
     <ClCompile Include="src\Shared\DynamicEntity.cpp" />
     <ClCompile Include="src\Shared\Entity.cpp" />
+    <ClCompile Include="src\Shared\Human.cpp" />
+    <ClCompile Include="src\Shared\PowerUp.cpp" />
     <ClCompile Include="src\Shared\StaticEntity.cpp" />
+    <ClCompile Include="src\Shared\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Server\GameWorld.h" />
     <ClInclude Include="include\Server\Peer.h" />
     <ClInclude Include="include\Server\Server.h" />
     <ClInclude Include="include\Shared\DynamicEntity.h" />
     <ClInclude Include="include\Shared\Entity.h" />
+    <ClInclude Include="include\Shared\Human.h" />
     <ClInclude Include="include\Shared\NetProtocol.h" />
+    <ClInclude Include="include\Shared\PowerUp.h" />
     <ClInclude Include="include\Shared\StaticEntity.h" />
+    <ClInclude Include="include\Shared\Zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

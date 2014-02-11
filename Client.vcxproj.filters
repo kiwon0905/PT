@@ -32,6 +32,21 @@
     <ClCompile Include="src\Client\LobbyState.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shared\Human.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\PowerUp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Zombie.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\GameWorld.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\PlayingState.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -86,6 +101,21 @@
     </ClInclude>
     <ClInclude Include="include\Shared\NetProtocol.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Human.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\PowerUp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Zombie.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\GameWorld.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\PlayingState.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

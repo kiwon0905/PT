@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\Server\Main.cpp" />
     <ClCompile Include="src\Shared\Entity.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -16,6 +15,19 @@
     </ClCompile>
     <ClCompile Include="src\Server\Server.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Zombie.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\PowerUp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Human.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Server\Main.cpp" />
+    <ClCompile Include="src\Server\GameWorld.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +59,18 @@
     </ClInclude>
     <ClInclude Include="include\Shared\NetProtocol.h">
       <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Zombie.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\PowerUp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Human.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Server\GameWorld.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
