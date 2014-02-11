@@ -33,4 +33,5 @@ int TrojanMain()
 	{
 		std::cout << e.what()<<"\n";
 	}
+	std::cin.get();
 }

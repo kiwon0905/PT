@@ -116,8 +116,9 @@ void SplashState::clearGUI(Application & app)
 void SplashState::onEnter(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
-	window.create(sf::VideoMode(800, 600), "", sf::Style::None);
-	
+
+	window.create(sf::VideoMode(800, 600), "", sf::Style::Default, sf::ContextSettings(0, 0, 8, 2, 0));
+
 	HWND hwnd = window.getSystemHandle();
 	SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
 	SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 200, LWA_ALPHA);
