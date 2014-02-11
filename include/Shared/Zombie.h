@@ -1,10 +1,10 @@
 #pragma once
-#include "DynamicEntity.h"
+#include "Shared/DynamicEntity.h"
 
 class Zombie : public DynamicEntity
 {
 public:
-	Zombie();
+	Zombie(Entity::ID id);
 	~Zombie();
 };
 

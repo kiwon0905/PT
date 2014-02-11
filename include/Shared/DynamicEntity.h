@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Shared/Entity.h"
 
 class DynamicEntity : public Entity

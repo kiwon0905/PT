@@ -119,14 +119,15 @@ void SplashState::onEnter(Application & app)
 
 	window.create(sf::VideoMode(800, 600), "", sf::Style::Default, sf::ContextSettings(0, 0, 8, 2, 0));
 
-	HWND hwnd = window.getSystemHandle();
+	/*HWND hwnd = window.getSystemHandle();
 	SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
-	SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 200, LWA_ALPHA);
+	SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 200, LWA_ALPHA);*/
 
 	app.getTextures().get("assets/Splash.png");
 
 	loadGUI(app);
 	initActions(app.getActions());
+	
 
 }
 void SplashState::handleEvent(Application & app)

@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -8,6 +9,7 @@ public:
 	typedef sf::Uint32 ID;
 	enum class Type : sf::Int32
 	{
+		Human,
 		Zombie,
 		PickUp,
 	};

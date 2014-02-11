@@ -1,4 +1,4 @@
-#include "Shared\StaticEntity.h"
+#include "Shared/StaticEntity.h"
 
 StaticEntity::StaticEntity(Entity::ID id) :Entity(id)
 {

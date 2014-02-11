@@ -1,10 +1,11 @@
+#pragma once
 #include "Shared\Entity.h"
 
 class StaticEntity : public Entity
 {
 public:
 	StaticEntity(Entity::ID id);
-	~StaticEntity() = 0;
+	virtual ~StaticEntity() = default;
 
 	void update(float dt) override;
 };

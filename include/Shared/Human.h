@@ -4,7 +4,7 @@
 class Human : public DynamicEntity
 {
 public:
-	Human();
+	Human(Entity::ID id);
 	~Human();
 };
 

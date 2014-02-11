@@ -12,8 +12,8 @@
 #define TrojanMain main
 
 #include <iostream>
-#include "Client\Application.h"
-#include "Client\SplashState.h"
+#include "Client/Application.h"
+#include "Client/SplashState.h"
 
 
 

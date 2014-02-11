@@ -19,15 +19,21 @@
     <ClCompile Include="src\Shared\Zombie.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shared\PowerUp.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\Shared\Human.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Server\Main.cpp" />
     <ClCompile Include="src\Server\GameWorld.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\PickUp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\EntityManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\ValueParser.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,14 +69,20 @@
     <ClInclude Include="include\Shared\Zombie.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shared\PowerUp.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="include\Shared\Human.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Server\GameWorld.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\PickUp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\EntityManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\ValueParser.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

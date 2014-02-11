@@ -1,8 +1,9 @@
 #include "Shared/Human.h"
 
 
-Human::Human()
+Human::Human(Entity::ID id) : DynamicEntity(id)
 {
+	setType(Entity::Type::Human);
 }
 
 
