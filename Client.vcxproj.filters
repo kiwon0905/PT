@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\Client\Main.cpp" />
+    <ClCompile Include="src\Shared\Entity.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\DynamicEntity.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\StaticEntity.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\Application.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\GameStateStack.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\SplashState.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\Drawer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\AudioPlayer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\Player.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\LobbyState.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{a19caa7f-b989-422c-9b49-796a721060dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{091ca125-2234-408d-82f9-4c7a76acf8b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{873b2982-0932-459c-88a2-2d3a6ac8b27d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Client\GameState.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Entity.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\DynamicEntity.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\StaticEntity.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\Application.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\GameStateStack.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\ResourceManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\SFMLResourceLoader.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\SplashState.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\Drawer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\AudioPlayer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\Player.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\LobbyState.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\NetProtocol.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
