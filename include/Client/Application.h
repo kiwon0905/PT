@@ -10,7 +10,7 @@
 #include "Client/GameStateStack.h"
 #include "Client/Drawer.h"
 #include "Client/AudioPlayer.h"
-#include "Client\Player.h"
+#include "Client/Player.h"
 
 class Application
 {
@@ -35,6 +35,9 @@ public:
 	AudioPlayer & getAudioPlayer();
 	Textures & getTextures();
 	thor::ActionMap<Player::Action> & getActions();
+
+	const std::string & getPlayerName() const;
+	void setPlayerName(const std::string & s);
 private:
 	GameStateStack mStates;
 
@@ -48,5 +51,7 @@ private:
 	Textures mTextures;
 	SoundBuffers mSoundBuffers;
 	thor::ActionMap<Player::Action> mActions;
+
+	std::string mPlayerName;
 };
 

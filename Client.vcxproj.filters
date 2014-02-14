@@ -2,15 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Client\Main.cpp" />
-    <ClCompile Include="src\Shared\Entity.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shared\DynamicEntity.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shared\StaticEntity.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\Client\Application.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -32,19 +23,7 @@
     <ClCompile Include="src\Client\LobbyState.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shared\Human.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shared\Zombie.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\Client\GameWorld.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Client\PlayingState.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shared\PickUp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Shared\EntityManager.cpp">
@@ -53,6 +32,34 @@
     <ClCompile Include="src\Shared\ValueParser.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shared\DynamicEntity.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Entity.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Human.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\PickUp.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\PlayingState.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Wall.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\StaticEntity.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\Zombie.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\GameEvent.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Client\ChatBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -64,19 +71,13 @@
     <Filter Include="Util">
       <UniqueIdentifier>{873b2982-0932-459c-88a2-2d3a6ac8b27d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Entity">
+      <UniqueIdentifier>{de318ec2-aaf6-4bfa-b892-c0d72425040f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Client\GameState.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shared\Entity.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shared\DynamicEntity.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shared\StaticEntity.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Client\Application.h">
       <Filter>Core</Filter>
@@ -108,19 +109,7 @@
     <ClInclude Include="include\Shared\NetProtocol.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shared\Human.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shared\Zombie.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="include\Client\GameWorld.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Client\PlayingState.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shared\PickUp.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Shared\EntityManager.h">
@@ -129,5 +118,33 @@
     <ClInclude Include="include\Shared\ValueParser.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="include\Shared\DynamicEntity.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Entity.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Human.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\PickUp.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\PlayingState.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\StaticEntity.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Zombie.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Wall.h">
+      <Filter>Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\GameEvent.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Client\ChatBox.h" />
   </ItemGroup>
 </Project>

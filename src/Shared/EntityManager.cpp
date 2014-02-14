@@ -2,6 +2,7 @@
 #include "Shared/Human.h"
 #include "Shared/Zombie.h"
 #include "Shared/PickUp.h"
+#include "Shared/Wall.h"
 
 EntityManager::EntityManager()
 {
@@ -27,6 +28,9 @@ Entity * EntityManager::create(Entity::ID id, Entity::Type type)
 	case Entity::Type::PickUp:
 		e.reset(new PickUp(id));
 		break;
+		case Entity::Type::Wall:
+		e.reset(new Wall(id));
+		break;
 	default:
 		break;
 	}
@@ -36,6 +40,10 @@ Entity * EntityManager::create(Entity::ID id, Entity::Type type)
 void EntityManager::destroy(Entity::ID id)
 {
 	mEntities.erase(id);
+}
+void EntityManager::destroyAll()
+{
+	mEntities.clear();
 }
 Entity * EntityManager::get(Entity::ID id)
 {

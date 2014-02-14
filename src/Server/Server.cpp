@@ -15,8 +15,6 @@ std::string  getLocalIp()
 	return inet_ntoa(*(struct in_addr *)*host_entry->h_addr_list);
 }
 
-
-
 Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1/30.f))
 {
 	mListener.listen(sf::Socket::AnyPort);
@@ -32,13 +30,30 @@ Server::~Server()
 {
 }
 
+Server::PacketInfo::PacketInfo(Peer * p, sf::Packet * pckt, bool broadcast) : p(p), pckt(pckt), broadcast(broadcast)
+{
+}
+
+Server::PacketInfo::PacketInfo(PacketInfo && p) : p(p.p), pckt(std::move(p.pckt)), broadcast(p.broadcast)
+{
+	p.p = nullptr;
+	p.pckt = nullptr;
+}
+void Server::pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast)
+{
+	mPackets.emplace_back(p, newPacket, broadcast);
+}
+
 void Server::handleNewConnection()
 {
-	if (sf::Socket::Done == mListener.accept(mPeers.back()->mSocket))
+	if (mPeers.size() < nMaxPlayer)
 	{
-		mPeers.push_back(Peer::Ptr(new Peer));
-		std::cout << "new peer\n";
+		if (sf::Socket::Done == mListener.accept(mPeers.back()->mSocket))
+		{
+			mPeers.push_back(Peer::Ptr(new Peer));
+		}
 	}
+
 }
 
 void Server::handleDisconnection()
@@ -49,6 +64,7 @@ void Server::handleDisconnection()
 	};
 	mPeers.erase(std::remove_if(mPeers.begin(), mPeers.end(), disconneced), mPeers.end());
 }
+
 void Server::handlePackets()
 {
 	for (std::size_t i = 0; i < mPeers.size() - 1; ++i)
@@ -64,6 +80,7 @@ void Server::handlePackets()
 		if (s == sf::Socket::Disconnected || s == sf::Socket::Error)
 		{
 			mPeers[i]->disconnect();
+			onPeerDisconnect(*mPeers[i]);
 			std::cout << mPeers[i]->getName() << " disconneced\n";
 		}
 
@@ -76,19 +93,56 @@ void Server::handlePacket(Peer & peer, sf::Packet & packet)
 	switch (type)
 	{
 	case Cl::RequestJoin:
-	{
-		std::string name;
-		packet >> name;
-		peer.setName(name);
-		std::cout << name << " joined the room\n";
-		sf::Packet packet2;
-		packet2 << Sv::ReplyJoin << Sv::Yes;
-		peer.send(packet2);
-	}
+		onRequestJoin(peer, packet);
+		break;
+	case Cl::Chat:
+		onChat(peer, packet);
 		break;
 	default:
 		break;
 	}
+}
+
+void Server::onPeerDisconnect(Peer & p)
+{
+	sf::Packet * packet = new sf::Packet;
+	*packet << Sv::PlayerDisconnected << p.getName();
+	pushPacket(&p, packet, true);
+}
+
+void Server::onRequestJoin(Peer & peer, sf::Packet & packet)
+{
+	std::string name;
+	packet >> name;
+	peer.setName(name);
+	std::cout << name << " joined the room\n";
+	
+	sf::Packet * packet2 =new sf::Packet;//for the peer who joined
+	*packet2 << Sv::ReplyJoin << Sv::Yes;
+	pushPacket(&peer, packet2);
+	
+	sf::Packet * packet3 = new sf::Packet;//for the peer who joined
+	sf::Int32 numPlayers = mPeers.size();
+	*packet3 << Sv::PlayerJoined << numPlayers -1;
+	for (sf::Int32 i = 0; i < numPlayers -1 ; ++i)
+	{
+		*packet3 << mPeers[i]->getName();
+	}
+
+	pushPacket(&peer, packet3);
+
+	sf::Packet * packet4 = new sf::Packet;//for all the others
+	*packet4 << Sv::PlayerJoined << sf::Int32(1) << peer.getName();
+	pushPacket(&peer, packet4, true);
+}
+
+void Server::onChat(Peer & p, sf::Packet & packet)
+{
+	std::string msg;
+	packet >> msg;
+	sf::Packet * packet2 = new sf::Packet;
+	*packet2 << Sv::Chat << p.getName() << msg;
+	pushPacket(nullptr, packet2, true);
 }
 
 void Server::run()
@@ -114,7 +168,25 @@ void Server::run()
 		while (elapsedSync >= TimeSync)
 		{
 			elapsedSync -= TimeSync;
+			sync();
 		}
 
 	}
+}
+
+void Server::sync()
+{
+	//Flush pending packets;
+	for (auto & packetInfo : mPackets)
+	{
+		if (packetInfo.broadcast)
+		{
+			for (auto & peer : mPeers)
+				if (peer.get() != packetInfo.p)
+					peer->send(*packetInfo.pckt);
+		}
+		else
+			packetInfo.p->send(*packetInfo.pckt);
+	}
+	mPackets.clear();
 }

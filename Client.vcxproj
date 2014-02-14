@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Client\Application.cpp" />
+    <ClCompile Include="src\Client\ChatBox.cpp" />
     <ClCompile Include="src\Client\Drawer.cpp" />
     <ClCompile Include="src\Client\GameStateStack.cpp" />
     <ClCompile Include="src\Client\GameWorld.cpp" />
@@ -24,14 +25,17 @@
     <ClCompile Include="src\Shared\DynamicEntity.cpp" />
     <ClCompile Include="src\Shared\Entity.cpp" />
     <ClCompile Include="src\Shared\EntityManager.cpp" />
+    <ClCompile Include="src\Shared\GameEvent.cpp" />
     <ClCompile Include="src\Shared\Human.cpp" />
     <ClCompile Include="src\Shared\PickUp.cpp" />
     <ClCompile Include="src\Shared\StaticEntity.cpp" />
     <ClCompile Include="src\Shared\ValueParser.cpp" />
+    <ClCompile Include="src\Shared\Wall.cpp" />
     <ClCompile Include="src\Shared\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Client\Application.h" />
+    <ClInclude Include="include\Client\ChatBox.h" />
     <ClInclude Include="include\Client\Drawer.h" />
     <ClInclude Include="include\Client\GameState.h" />
     <ClInclude Include="include\Client\GameStateStack.h" />
@@ -46,11 +50,13 @@
     <ClInclude Include="include\Shared\DynamicEntity.h" />
     <ClInclude Include="include\Shared\Entity.h" />
     <ClInclude Include="include\Shared\EntityManager.h" />
+    <ClInclude Include="include\Shared\GameEvent.h" />
     <ClInclude Include="include\Shared\Human.h" />
     <ClInclude Include="include\Shared\NetProtocol.h" />
     <ClInclude Include="include\Shared\PickUp.h" />
     <ClInclude Include="include\Shared\StaticEntity.h" />
     <ClInclude Include="include\Shared\ValueParser.h" />
+    <ClInclude Include="include\Shared\Wall.h" />
     <ClInclude Include="include\Shared\Zombie.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -12,6 +12,8 @@ public:
 		Human,
 		Zombie,
 		PickUp,
+		Wall,
+		Count
 	};
 
 	Entity(ID id);

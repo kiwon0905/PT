@@ -32,8 +32,9 @@ void SplashState::connect(Application & app)
 		return;
 	}
 
-	sf::Socket::Status s= app.getSocket().connect(ip, uport);
-
+	app.getSocket().setBlocking(true);
+	sf::Socket::Status s= app.getSocket().connect(ip, uport, sf::seconds(3.f));
+	app.getSocket().setBlocking(false);
 	if (s == sf::Socket::Done)
 	{
 		sf::Packet packet;
@@ -80,14 +81,24 @@ void SplashState::loadGUI(Application & app)
 	};
 	playButton->GetSignal(sfg::Button::OnLeftClick).Connect(onConnect);
 
+	
+	sfg::Button::Ptr exitButton = sfg::Button::Create("exit");
+	exitButton->SetPosition({ 600.f, 400.f });
+	auto onExit = [this, &app]()
+	{
+		app.quit();
+	};
+	exitButton->GetSignal(sfg::Button::OnLeftClick).Connect(onExit);
+	
+	
 	window->Add(box1);
 	desktop.Add(playButton);
 	desktop.Add(window);
+	desktop.Add(exitButton);
 
 	window->SetAllocation(sf::FloatRect(100, 350, 300, 200));
 
 
-	app.getWindow().resetGLStates();
 }
 
 
@@ -162,6 +173,7 @@ void SplashState::step(Application & app)
 		if (answer == Sv::Yes)
 		{
 			std::cout << "connected\n";
+			app.setPlayerName(std::static_pointer_cast<sfg::Entry>(sfg::Widget::GetWidgetById("nameEntry"))->GetText());
 			app.push(new LobbyState);
 		}
 	}

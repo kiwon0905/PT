@@ -2,14 +2,22 @@
 
 enum class Cl : sf::Int32
 {
-	RequestJoin
+	RequestJoin,
+	StartGame, //only room master can do this. name
+	Chat
 };
 
 enum class Sv : sf::Int32
 {
 	Yes,
 	No,
-	ReplyJoin
+
+	
+	ReplyJoin,
+	PlayerJoined,
+	PlayerDisconnected,
+	Chat, 
+	GameStarted //name
 };
 
 //packet operators for enum

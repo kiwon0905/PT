@@ -1,13 +1,14 @@
 #include "Client/LobbyState.h"
 #include "Client/Application.h"
-#include "Thor/Vectors.hpp"
+#include "Shared/NetProtocol.h"
+
 #include <SFML/Graphics.hpp>
 
 
-LobbyState::LobbyState() :e(1)
+
+LobbyState::LobbyState() : mChatBox({ 400, 200 }, {400, 30})
 {
-	e.setSize({ 50.f, 50.f });
-	e.setAcceleration(4000.f);
+
 	
 }
 
@@ -16,90 +17,134 @@ LobbyState::~LobbyState()
 {
 }
 
+
+void LobbyState::loadGUI(Application & app)
+{
+	sfg::Desktop & desktop = app.getDesktop();
+	
+	sfg::Button::Ptr readyButton = sfg::Button::Create("Ready");
+	readyButton->SetId("readyButton");
+	readyButton->SetRequisition({ 100.f, 50.f });
+	readyButton->SetPosition({ 500.f, 500.f });
+	desktop.Add(readyButton);
+	mChatBox.add(desktop);
+}
+void LobbyState::clearGUI(Application & app)
+{
+	app.getDesktop().RemoveAll();
+	mChatBox.remove(app.getDesktop());
+}
 void LobbyState::onEnter(Application & app)
 {
-
+	loadGUI(app);
+	mChatBox.setSocket(app.getSocket());
 }
 void LobbyState::handleEvent(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
 	sf::Event event;
-	auto & actions = app.getActions();
-	actions.clearEvents();
+
 
 	while (window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 			app.quit();
-		actions.pushEvent(event);
+
+		app.getDesktop().HandleEvent(event);
+	}
+	handlePackets(app);
+}
+
+void LobbyState::handlePackets(Application & app)
+{
+	sf::Packet packet;
+	sf::TcpSocket & socket = app.getSocket();
+
+	sf::Socket::Status s = socket.receive(packet);
+	while (s == sf::Socket::Done)
+	{
+		handlePacket(app, packet);
+		packet.clear();
+		s = socket.receive(packet);
 	}
 }
+
+void LobbyState::handlePacket(Application & app, sf::Packet & packet)
+{
+	Sv type;
+	packet >> type;
+	switch (type)
+	{
+	case Sv::PlayerJoined:
+		onPlayerJoin(app, packet);
+		break;
+	case Sv::PlayerDisconnected:
+		onPlayerDisconnect(app, packet);
+		break;
+	case Sv::Chat:
+		onChat(app, packet);
+		break;
+	case Sv::GameStarted:
+		break;
+	default:
+		break;
+	}
+}
+
+void LobbyState::onPlayerJoin(Application & app, sf::Packet & packet)
+{
+	sf::Int32 num;
+	packet >> num;
+	for (sf::Int32 i = 0; i < num; ++i)
+	{
+		std::string name;
+		packet >> name;
+		if (name == app.getPlayerName())
+			name = "You";
+		mChatBox.push(name + " joined the room.");
+	}
+}
+
+void LobbyState::onPlayerDisconnect(Application & app, sf::Packet & packet)
+{
+	std::string name;
+	packet >> name;
+	mChatBox.push(name + " left the room.");
+}
+
+void LobbyState::onChat(Application & app, sf::Packet & packet)
+{
+	std::string peer, msg;
+	packet >> peer >> msg;
+	if (peer == app.getPlayerName())
+		peer = "You";
+	mChatBox.push(peer + ": " + msg);
+}
+
 void LobbyState::step(Application & app)
 {
-	const float speed = 500.f;
-	auto & actions = app.getActions();
-	
-	if (actions.isActive(Player::MoveNE))
-		e.setGoalVelocity(thor::PolarVector2f(speed, -45));
-	else if (actions.isActive(Player::MoveNW))
-		e.setGoalVelocity(thor::PolarVector2f(speed, -135));
-	else if (actions.isActive(Player::MoveSW))
-		e.setGoalVelocity(thor::PolarVector2f(speed, -225));
-	else if (actions.isActive(Player::MoveSE))
-		e.setGoalVelocity(thor::PolarVector2f(speed, -315));
-
-	else if (actions.isActive(Player::MoveE))
-		e.setGoalVelocity(thor::PolarVector2f(speed, 0));
-	else if (actions.isActive(Player::MoveN))
-		e.setGoalVelocity(thor::PolarVector2f(-speed, 90));
-	else if (actions.isActive(Player::MoveW))
-		e.setGoalVelocity(thor::PolarVector2f(speed, 180));
-	else if (actions.isActive(Player::MoveS))
-		e.setGoalVelocity(thor::PolarVector2f(-speed, 270));
-	
-	else
-		e.setGoalVelocity({ 0, 0 });
-
-	sf::Vector2i mousepos = sf::Mouse::getPosition(app.getWindow());
-	float dx = mousepos.x - e.getPosition().x;
-	float dy = mousepos.y - e.getPosition().y;
-	e.setRotation(thor::toDegree(std::atan2f(dy, dx)));
-
-	e.update(app.TimeStep.asSeconds());
+	app.getDesktop().Update(app.TimeStep.asSeconds());
 
 }
 void LobbyState::draw(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
+
+
 	window.clear();
-
-	sf::RectangleShape r;
-	r.setRotation(e.getRotation());
-
-	sf::RectangleShape bound;
-	bound.setOrigin(e.getSize() / 2.f);
-	bound.setPosition(e.getPosition());
-	bound.setSize(e.getSize());
-	bound.setOutlineColor(sf::Color::Green);
-	bound.setFillColor(sf::Color::Transparent);
-	bound.setOutlineThickness(5.f);
-
-	r.setSize({ 50.f, 50.f });
-	r.setOrigin(e.getSize() / 2.f);
-	r.setPosition(e.getPosition());
-	window.draw(bound);
-	window.draw(r);
+	app.getGUI().Display(window);
 	window.display();
 }
 void LobbyState::onExit(Application & app)
 {
-
+	clearGUI(app);
+	app.getSocket().disconnect();
 }
 void LobbyState::onObscure(Application & app)
 {
-
+	clearGUI(app);
 }
 void LobbyState::onReveal(Application & app)
 {
-
+	loadGUI(app);
 }

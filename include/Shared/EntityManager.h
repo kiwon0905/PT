@@ -10,6 +10,7 @@ public:
 
 	Entity * create(Entity::ID id, Entity::Type type);
 	void destroy(Entity::ID id);
+	void destroyAll();
 	Entity * get(Entity::ID id);
 private:
 	std::unordered_map<Entity::ID, std::unique_ptr<Entity>> mEntities;

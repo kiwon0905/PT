@@ -1,4 +1,4 @@
-#include "Client\Application.h"
+#include "Client/Application.h"
 
 
 
@@ -6,6 +6,8 @@ Application::Application() :TimeStep(sf::seconds(1 / 60.f)),
 mWindow(), mSoundBuffers(), mTextures(),
 mDrawer(mWindow, mTextures), mAudioPlayer(mSoundBuffers)
 {
+	mWindow.resetGLStates();
+	mSocket.setBlocking(false);
 }
 
 
@@ -83,4 +85,13 @@ void Application::run()
 			mStates.applyChanges(*this);
 		}
 	}
+}
+
+const std::string & Application::getPlayerName() const
+{
+	return mPlayerName;
+}
+void Application::setPlayerName(const std::string & s)
+{
+	mPlayerName = s;
 }

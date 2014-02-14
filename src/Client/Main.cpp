@@ -16,7 +16,6 @@
 #include "Client/SplashState.h"
 
 
-
 int TrojanMain()
 {
 #ifdef _DEBUG
@@ -35,3 +34,7 @@ int TrojanMain()
 	}
 	std::cin.get();
 }
+#undef TrojanMain
+
+
+
