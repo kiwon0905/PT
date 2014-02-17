@@ -1,7 +1,7 @@
 #include "Server/Peer.h"
 
 
-Peer::Peer() :mDisconnected(false)
+Peer::Peer() :mDisconnected(false), mReady(false)
 {
 	mSocket.setBlocking(false);
 }
@@ -36,4 +36,12 @@ void Peer::disconnect()
 bool Peer::isDisconnected() const
 {
 	return mDisconnected;
+}
+void Peer::setReady(bool ready)
+{
+	mReady = ready;
+}
+bool Peer::isReady() const
+{
+	return mReady;
 }

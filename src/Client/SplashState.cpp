@@ -2,6 +2,7 @@
 #include "Client/Application.h"
 #include "Client/LobbyState.h"
 #include "Shared/NetProtocol.h"
+#include "Client/Icon.h"
 #include <cassert>
 
 SplashState::SplashState() :GameState()
@@ -138,7 +139,7 @@ void SplashState::onEnter(Application & app)
 
 	loadGUI(app);
 	initActions(app.getActions());
-	
+	window.setIcon(icon.width, icon.height, icon.pixel_data);
 
 }
 void SplashState::handleEvent(Application & app)

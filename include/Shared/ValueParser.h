@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
+#include <string>
 
 class ValueParser
 {
@@ -21,6 +23,12 @@ public:
 	bool get(const std::string & key, std::string & val);
 	bool get(const std::string & key, char & c);
 	bool get(const std::string & key, bool & b);
+
+	void printAll()
+	{
+		for (auto & val : mData)
+			std::cout << val.first <<" "<< val.second << "\n";
+	}
 private:
 	std::size_t getIndexOf(const std::string & key);
 

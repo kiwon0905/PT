@@ -31,5 +31,7 @@ private:
 	void onChat(Application & app, sf::Packet & packet);
 
 	ChatBox mChatBox;
+
+	bool mPlay;
 };
 

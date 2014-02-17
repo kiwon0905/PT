@@ -1,12 +1,13 @@
 #include "Client/LobbyState.h"
 #include "Client/Application.h"
 #include "Shared/NetProtocol.h"
+#include "Client/PlayingState.h"
 
 #include <SFML/Graphics.hpp>
 
 
 
-LobbyState::LobbyState() : mChatBox({ 400, 200 }, {400, 30})
+LobbyState::LobbyState() : mChatBox({ 400, 200 }, { 400, 30 }), mPlay(false)
 {
 
 	
@@ -26,6 +27,15 @@ void LobbyState::loadGUI(Application & app)
 	readyButton->SetId("readyButton");
 	readyButton->SetRequisition({ 100.f, 50.f });
 	readyButton->SetPosition({ 500.f, 500.f });
+	
+	auto onReady = [&app]()
+	{
+		sf::Packet packet;
+		packet << Cl::Ready;
+		app.getSocket().send(packet);
+	};
+	readyButton->GetSignal(sfg::Button::OnLeftClick).Connect(onReady);
+	
 	desktop.Add(readyButton);
 	mChatBox.add(desktop);
 }
@@ -65,6 +75,12 @@ void LobbyState::handlePackets(Application & app)
 	{
 		handlePacket(app, packet);
 		packet.clear();
+		if (mPlay)
+		{
+			app.push(new PlayingState);
+			mPlay = false;
+			break;
+		}
 		s = socket.receive(packet);
 	}
 }
@@ -85,6 +101,7 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 		onChat(app, packet);
 		break;
 	case Sv::GameStarted:
+		mPlay = true;
 		break;
 	default:
 		break;

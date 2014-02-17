@@ -8,13 +8,13 @@
 #endif
 #endif  // _DEBUG
 
+#include "Server/GameWorld.h"
 int main()
 {
 
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
 	try
 	{
 		Server server;
@@ -24,6 +24,6 @@ int main()
 	{
 		std::cout << e.what() << "\n";
 	}
-
 	std::cin.get();	
+	
 }

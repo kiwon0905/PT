@@ -40,5 +40,5 @@ bool GameWorld::loadFromFile(const std::string & s)
 	bool success=false;
 	
 	success = parser.loadFromFile(s);
-
+	return true;
 }

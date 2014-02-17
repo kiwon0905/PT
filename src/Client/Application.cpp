@@ -1,7 +1,6 @@
 #include "Client/Application.h"
 
 
-
 Application::Application() :TimeStep(sf::seconds(1 / 60.f)), 
 mWindow(), mSoundBuffers(), mTextures(),
 mDrawer(mWindow, mTextures), mAudioPlayer(mSoundBuffers)

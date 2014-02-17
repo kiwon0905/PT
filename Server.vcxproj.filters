@@ -99,5 +99,6 @@
     <ClInclude Include="include\Shared\GameEvent.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="include\Shared\Icon.h" />
   </ItemGroup>
 </Project>

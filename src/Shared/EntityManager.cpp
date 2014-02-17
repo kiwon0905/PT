@@ -28,13 +28,14 @@ Entity * EntityManager::create(Entity::ID id, Entity::Type type)
 	case Entity::Type::PickUp:
 		e.reset(new PickUp(id));
 		break;
-		case Entity::Type::Wall:
+	case Entity::Type::Wall:
 		e.reset(new Wall(id));
 		break;
 	default:
 		break;
 	}
 	mEntities.insert({ id, std::move(e) });
+	return mEntities.at(id).get();
 
 }
 void EntityManager::destroy(Entity::ID id)

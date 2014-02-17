@@ -3,7 +3,7 @@
 enum class Cl : sf::Int32
 {
 	RequestJoin,
-	StartGame, //only room master can do this. name
+	Ready,
 	Chat
 };
 

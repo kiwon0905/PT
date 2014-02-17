@@ -17,6 +17,9 @@ public:
 private:
 	void pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast = false);
 	
+	bool isReady();
+
+	void step();
 	void sync();
 
 	void handleNewConnection();
@@ -43,5 +46,9 @@ private:
 	std::vector<Peer::Ptr> mPeers;
 	sf::TcpListener mListener;
 	std::unique_ptr<GameWorld> mGameWorld;
+
+	std::vector<std::string> mMapList;
+	void loadMaps();
+	const std::string & getRandomMap();
 };
 

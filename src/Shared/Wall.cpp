@@ -3,6 +3,7 @@
 
 Wall::Wall(Entity::ID id) : StaticEntity(id)
 {
+	setType(Entity::Type::Wall);
 }
 
 

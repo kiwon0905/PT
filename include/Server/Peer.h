@@ -19,9 +19,13 @@ public:
 
 	void disconnect();
 	bool isDisconnected() const;
+
+	void setReady(bool ready);
+	bool isReady() const;
 private:
 	sf::TcpSocket mSocket;
 	std::string mName;
 	bool mDisconnected;
+	bool mReady;
 };
 

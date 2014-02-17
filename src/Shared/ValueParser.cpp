@@ -97,7 +97,6 @@ bool ValueParser::close()
 {
 	if (mFileName != "")
 	{
-		std::cout << "closing " << mFileName << "\n";
 		std::ofstream fout(mFileName);
 		mFileName = "";
 		if (!fout.good())

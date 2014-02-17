@@ -146,5 +146,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Client\ChatBox.h" />
+    <ClInclude Include="include\Shared\Icon.h" />
   </ItemGroup>
 </Project>

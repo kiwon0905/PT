@@ -5,6 +5,8 @@
 
 #include <winsock.h>
 #pragma comment(lib, "wsock32.lib")
+#include <fstream>
+#include <Thor/Math.hpp>
 
 std::string  getLocalIp()
 {
@@ -15,7 +17,7 @@ std::string  getLocalIp()
 	return inet_ntoa(*(struct in_addr *)*host_entry->h_addr_list);
 }
 
-Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1/30.f))
+Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1 / 30.f))
 {
 	mListener.listen(sf::Socket::AnyPort);
 	mListener.setBlocking(false);
@@ -23,8 +25,29 @@ Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1/30.f))
 
 	std::cout << "Server IP: " << getLocalIp() << "\n";
 	std::cout << "Server Port: " << mListener.getLocalPort() << "\n";
+
+	loadMaps();
+	std::cout << "Maps: ";
+	for (auto & s : mMapList)
+		std::cout << s << ", ";
+	std::cout << std::endl;
 }
 
+void Server::loadMaps()
+{
+	std::ifstream fin;
+	fin.open("maps/mapList.txt");
+	while (fin.good())
+	{
+		std::string s;
+		std::getline(fin, s);
+		mMapList.push_back(s);
+	}
+}
+const std::string & Server::getRandomMap()
+{
+	return mMapList[thor::random(0u, mMapList.size() - 1)];
+}
 
 Server::~Server()
 {
@@ -46,7 +69,7 @@ void Server::pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast)
 
 void Server::handleNewConnection()
 {
-	if (mPeers.size() < nMaxPlayer)
+	if (mPeers.size() < nMaxPlayer && !mGameWorld)
 	{
 		if (sf::Socket::Done == mListener.accept(mPeers.back()->mSocket))
 		{
@@ -98,6 +121,10 @@ void Server::handlePacket(Peer & peer, sf::Packet & packet)
 	case Cl::Chat:
 		onChat(peer, packet);
 		break;
+	case Cl::Ready:
+		peer.setReady(true);
+		std::cout << peer.getName() << " readied\n";
+		break;
 	default:
 		break;
 	}
@@ -118,7 +145,7 @@ void Server::onRequestJoin(Peer & peer, sf::Packet & packet)
 	std::cout << name << " joined the room\n";
 	
 	sf::Packet * packet2 =new sf::Packet;//for the peer who joined
-	*packet2 << Sv::ReplyJoin << Sv::Yes;
+	*packet2 << Sv::ReplyJoin << Sv::Yes ;
 	pushPacket(&peer, packet2);
 	
 	sf::Packet * packet3 = new sf::Packet;//for the peer who joined
@@ -164,11 +191,45 @@ void Server::run()
 		while (elapsedStep >= TimeStep)
 		{
 			elapsedStep -= TimeStep;
+			step();
 		}
 		while (elapsedSync >= TimeSync)
 		{
 			elapsedSync -= TimeSync;
 			sync();
+		}
+
+	}
+}
+bool Server::isReady()
+{
+	if (mPeers.size() < 3)
+		return false;
+	for (std::size_t i = 0; i < mPeers.size()-1; ++i)
+		if (!mPeers[i]->isReady())
+			return false;
+	return true;
+}
+void Server::step()
+{
+	// if game hasn't started yet
+
+	if (!mGameWorld)
+	{
+		//check if everyone is ready
+		if (isReady())
+		{
+			mGameWorld.reset(new GameWorld);
+			std::string mapName = getRandomMap();
+			if (!mGameWorld->loadFromFile(mapName))
+				std::cout << "failed to load " << mapName << "\n";
+
+			sf::Packet * packet = new sf::Packet;
+			*packet << Sv::GameStarted;
+			pushPacket(nullptr, packet, true);
+
+			for (auto & p : mPeers)
+				p->setReady(false);
 		}
 
 	}

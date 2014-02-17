@@ -105,6 +105,7 @@
     <ClInclude Include="include\Shared\EntityManager.h" />
     <ClInclude Include="include\Shared\GameEvent.h" />
     <ClInclude Include="include\Shared\Human.h" />
+    <ClInclude Include="include\Shared\Icon.h" />
     <ClInclude Include="include\Shared\NetProtocol.h" />
     <ClInclude Include="include\Shared\PickUp.h" />
     <ClInclude Include="include\Shared\StaticEntity.h" />

@@ -1,6 +1,7 @@
 #include "Server/GameWorld.h"
 #include "Shared/ValueParser.h"
 #include "Shared/Wall.h"
+#include <iostream>
 
 
 GameWorld::GameWorld()
@@ -39,34 +40,37 @@ bool GameWorld::loadFromFile(const std::string & s)
 {
 	//Open file
 	ValueParser parser;
+	
 
 	if (!parser.loadFromFile(s))
 		return false;
-
+	parser.printAll();
 	// get size
-	if (!parser.get("x", mSize.x))
+	if (!parser.get("X", mSize.x))
 		return false;
-	if (!parser.get("y", mSize.y))
+
+
+	if (!parser.get("Y", mSize.y))
 		return false;
 
 	//Load wall data
 	int wallCount = 0;
-	if (!parser.get("wallCount", wallCount))
+	if (!parser.get("WallCount", wallCount))
 		return false;
 	
 	for (int i = 0; i < wallCount; ++i)
 	{
 		float x, y, width, height;
-		if (!parser.get("wall" + std::to_string(i) + "X", x))
+		if (!parser.get("Wall" + std::to_string(i) + "X", x))
 			return false;
 
-		if (!parser.get("wall" + std::to_string(i) + "Y", y))
+		if (!parser.get("Wall" + std::to_string(i) + "Y", y))
 			return false;
 
-		if (!parser.get("wall" + std::to_string(i) + "Width", width))
+		if (!parser.get("Wall" + std::to_string(i) + "Width", width))
 			return false;
 
-		if (!parser.get("wall" + std::to_string(i) + "Height", height))
+		if (!parser.get("Wall" + std::to_string(i) + "Height", height))
 			return false;
 
 		Wall * wall = static_cast<Wall*>(createEntity(Entity::Type::Wall));
@@ -76,6 +80,13 @@ bool GameWorld::loadFromFile(const std::string & s)
 		addEntity(wall->getID());
 	}
 
+	std::cout << "Wall count: " << mEntitiesByType.at(static_cast<std::size_t>(Entity::Type::Wall)).size() << "\n";
 
+
+
+
+
+
+	return true;
 
 }
