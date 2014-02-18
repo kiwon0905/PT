@@ -4,7 +4,9 @@ enum class Cl : sf::Int32
 {
 	RequestJoin,
 	Ready,
-	Chat
+	Chat,
+
+	GameEvent
 };
 
 enum class Sv : sf::Int32
@@ -17,7 +19,9 @@ enum class Sv : sf::Int32
 	PlayerJoined,
 	PlayerDisconnected,
 	Chat, 
-	GameStarted //name
+	GameStarted, //name
+	GameMapData,
+	GameEvent
 };
 
 //packet operators for enum

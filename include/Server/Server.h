@@ -14,10 +14,14 @@ public:
 	~Server();
 
 	void run();
-private:
+	bool playersAreReady();
+	void unreadyPlayers();
+
 	void pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast = false);
-	
-	bool isReady();
+	const std::string & getRandomMap();
+private:
+
+
 
 	void step();
 	void sync();
@@ -45,10 +49,9 @@ private:
 	std::vector<PacketInfo> mPackets;
 	std::vector<Peer::Ptr> mPeers;
 	sf::TcpListener mListener;
-	std::unique_ptr<GameWorld> mGameWorld;
+	GameWorld mGameWorld;
 
 	std::vector<std::string> mMapList;
 	void loadMaps();
-	const std::string & getRandomMap();
 };
 

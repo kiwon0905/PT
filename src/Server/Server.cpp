@@ -69,7 +69,7 @@ void Server::pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast)
 
 void Server::handleNewConnection()
 {
-	if (mPeers.size() < nMaxPlayer && !mGameWorld)
+	if (mPeers.size() < nMaxPlayer)
 	{
 		if (sf::Socket::Done == mListener.accept(mPeers.back()->mSocket))
 		{
@@ -124,6 +124,9 @@ void Server::handlePacket(Peer & peer, sf::Packet & packet)
 	case Cl::Ready:
 		peer.setReady(true);
 		std::cout << peer.getName() << " readied\n";
+		break;
+	case Cl::GameEvent:
+		mGameWorld.handlePacket(packet);
 		break;
 	default:
 		break;
@@ -201,7 +204,7 @@ void Server::run()
 
 	}
 }
-bool Server::isReady()
+bool Server::playersAreReady()
 {
 	if (mPeers.size() < 3)
 		return false;
@@ -210,29 +213,15 @@ bool Server::isReady()
 			return false;
 	return true;
 }
+
+void Server::unreadyPlayers()
+{
+	for (auto & peer : mPeers)
+		peer->setReady(false);
+}
 void Server::step()
 {
-	// if game hasn't started yet
-
-	if (!mGameWorld)
-	{
-		//check if everyone is ready
-		if (isReady())
-		{
-			mGameWorld.reset(new GameWorld);
-			std::string mapName = getRandomMap();
-			if (!mGameWorld->loadFromFile(mapName))
-				std::cout << "failed to load " << mapName << "\n";
-
-			sf::Packet * packet = new sf::Packet;
-			*packet << Sv::GameStarted << mapName;
-			pushPacket(nullptr, packet, true);
-
-			for (auto & p : mPeers)
-				p->setReady(false);
-		}
-
-	}
+	mGameWorld.step(*this);
 }
 
 void Server::sync()

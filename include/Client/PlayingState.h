@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client/GameState.h"
+#include "Client/GameWorld.h"
 #include <string>
 
 class Application;
@@ -12,7 +13,7 @@ namespace sf
 class PlayingState : public GameState
 {
 public:
-	PlayingState(const std::string & mapName);
+	PlayingState();
 	~PlayingState();
 
 	virtual void onEnter(Application & app);
@@ -28,5 +29,7 @@ private:
 
 	void handlePackets(Application & app);
 	void handlePacket(Application & app, sf::Packet & packet);
+
+	GameWorld mGameWorld;
 };
 

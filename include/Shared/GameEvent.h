@@ -11,6 +11,8 @@ enum class GameEvent : sf::Int32
 	CreateHuman,
 	CreateWall,
 	CreatePickUp,
+	CreateZombie,
+
 	
 	DestroyHuman,
 	DestroyPickUp,

@@ -93,11 +93,7 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 		onChat(app, packet);
 		break;
 	case Sv::GameStarted:
-	{
-		std::string mapName;
-		packet >> mapName;
-		app.push(new PlayingState(mapName));
-	}
+		app.push(new PlayingState);
 		break;
 	default:
 		break;
