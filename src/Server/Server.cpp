@@ -225,7 +225,7 @@ void Server::step()
 				std::cout << "failed to load " << mapName << "\n";
 
 			sf::Packet * packet = new sf::Packet;
-			*packet << Sv::GameStarted;
+			*packet << Sv::GameStarted << mapName;
 			pushPacket(nullptr, packet, true);
 
 			for (auto & p : mPeers)

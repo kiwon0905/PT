@@ -7,10 +7,8 @@
 
 
 
-LobbyState::LobbyState() : mChatBox({ 400, 200 }, { 400, 30 }), mPlay(false)
-{
-
-	
+LobbyState::LobbyState() : mChatBox({ 400, 200 }, { 400, 30 })
+{	
 }
 
 
@@ -75,12 +73,6 @@ void LobbyState::handlePackets(Application & app)
 	{
 		handlePacket(app, packet);
 		packet.clear();
-		if (mPlay)
-		{
-			app.push(new PlayingState);
-			mPlay = false;
-			break;
-		}
 		s = socket.receive(packet);
 	}
 }
@@ -101,7 +93,11 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 		onChat(app, packet);
 		break;
 	case Sv::GameStarted:
-		mPlay = true;
+	{
+		std::string mapName;
+		packet >> mapName;
+		app.push(new PlayingState(mapName));
+	}
 		break;
 	default:
 		break;

@@ -1,5 +1,7 @@
 #include "Client/GameWorld.h"
 #include "Shared/ValueParser.h"
+#include "Shared/Wall.h"
+
 
 
 GameWorld::GameWorld()
@@ -37,8 +39,10 @@ void GameWorld::reset()
 bool GameWorld::loadFromFile(const std::string & s)
 {
 	ValueParser parser;
-	bool success=false;
+	parser.loadFromFile(s);
+
 	
-	success = parser.loadFromFile(s);
-	return true;
+	std::string backgroundTexture;
+	if (parser.get("BackgroundTexture", backgroundTexture))
+		return false;
 }

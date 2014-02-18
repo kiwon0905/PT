@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client/GameState.h"
+#include <string>
 
 class Application;
 namespace sf
@@ -11,7 +12,7 @@ namespace sf
 class PlayingState : public GameState
 {
 public:
-	PlayingState();
+	PlayingState(const std::string & mapName);
 	~PlayingState();
 
 	virtual void onEnter(Application & app);

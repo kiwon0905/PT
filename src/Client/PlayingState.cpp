@@ -2,7 +2,7 @@
 #include "Client/Application.h"
 
 
-PlayingState::PlayingState()
+PlayingState::PlayingState(const std::string & mapName)
 {
 }
 
