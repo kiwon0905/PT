@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Server\Game.cpp" />
     <ClCompile Include="src\Server\GameWorld.cpp" />
     <ClCompile Include="src\Server\Main.cpp" />
     <ClCompile Include="src\Server\Peer.cpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="src\Shared\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Server\Game.h" />
     <ClInclude Include="include\Server\GameWorld.h" />
     <ClInclude Include="include\Server\Peer.h" />
     <ClInclude Include="include\Server\Server.h" />

@@ -3,12 +3,14 @@
 
 #include "Shared/Entity.h"
 #include "Shared/EntityManager.h"
+#include "Client/Drawer.h"
 
+class Application;
 //Client
 class GameWorld
 {
 public:
-	GameWorld();
+	GameWorld(Application & app);
 	~GameWorld();
 	
 	Entity * createEntity(Entity::ID id, Entity::Type type);
@@ -18,11 +20,16 @@ public:
 	bool loadFromFile(const std::string & s);
 	void reset();
 
-private:
+	void step(float dt);
+	void draw();
 
+private:
+	const std::vector<Entity * > & getEntitiesOfType(Entity::Type t) const;
+	
+	Drawer mDrawer;
 	EntityManager mEntityMgr;
 	std::vector<std::vector<Entity *>> mEntitiesByType;
-
+	
 
 };
 

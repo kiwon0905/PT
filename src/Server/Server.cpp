@@ -26,57 +26,20 @@ Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1 / 30.f
 	std::cout << "Server IP: " << getLocalIp() << "\n";
 	std::cout << "Server Port: " << mListener.getLocalPort() << "\n";
 
-	loadMaps();
-	std::cout << "Maps: ";
-	for (auto & s : mMapList)
-		std::cout << s << ", ";
-	std::cout << std::endl;
 }
 
-void Server::loadMaps()
-{
-	std::ifstream fin;
-	fin.open("maps/mapList.txt");
-	while (fin.good())
-	{
-		std::string s;
-		std::getline(fin, s);
-		mMapList.push_back(s);
-	}
-}
-const std::string & Server::getRandomMap()
-{
-	return mMapList[thor::random(0u, mMapList.size() - 1)];
-}
 
 Server::~Server()
 {
 }
 
-Server::PacketInfo::PacketInfo(Peer * p, sf::Packet * pckt, bool broadcast) : p(p), pckt(pckt), broadcast(broadcast)
-{
-}
-
-Server::PacketInfo::PacketInfo(PacketInfo && p) : p(p.p), pckt(std::move(p.pckt)), broadcast(p.broadcast)
-{
-	p.p = nullptr;
-	p.pckt = nullptr;
-}
-void Server::pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast)
-{
-	mPackets.emplace_back(p, newPacket, broadcast);
-}
 
 void Server::handleNewConnection()
 {
-	if (mPeers.size() < nMaxPlayer)
+	if (sf::Socket::Done == mListener.accept(mPeers.back()->mSocket))
 	{
-		if (sf::Socket::Done == mListener.accept(mPeers.back()->mSocket))
-		{
-			mPeers.push_back(Peer::Ptr(new Peer));
-		}
+		mPeers.push_back(Peer::Ptr(new Peer));
 	}
-
 }
 
 void Server::handleDisconnection()
@@ -103,7 +66,7 @@ void Server::handlePackets()
 		if (s == sf::Socket::Disconnected || s == sf::Socket::Error)
 		{
 			mPeers[i]->disconnect();
-			onPeerDisconnect(*mPeers[i]);
+			mGame.leave(*this, *mPeers[i]);
 			std::cout << mPeers[i]->getName() << " disconneced\n";
 		}
 
@@ -116,64 +79,20 @@ void Server::handlePacket(Peer & peer, sf::Packet & packet)
 	switch (type)
 	{
 	case Cl::RequestJoin:
-		onRequestJoin(peer, packet);
-		break;
-	case Cl::Chat:
-		onChat(peer, packet);
-		break;
-	case Cl::Ready:
-		peer.setReady(true);
-		std::cout << peer.getName() << " readied\n";
-		break;
-	case Cl::GameEvent:
-		mGameWorld.handlePacket(packet);
+	{
+		std::string name;
+		packet >> name;
+		peer.setName(name);
+		std::cout << name << " joined the room\n";
+		mGame.join(*this, peer);
+	}
 		break;
 	default:
+		mGame.handlePacket(peer, type, packet);
 		break;
 	}
 }
 
-void Server::onPeerDisconnect(Peer & p)
-{
-	sf::Packet * packet = new sf::Packet;
-	*packet << Sv::PlayerDisconnected << p.getName();
-	pushPacket(&p, packet, true);
-}
-
-void Server::onRequestJoin(Peer & peer, sf::Packet & packet)
-{
-	std::string name;
-	packet >> name;
-	peer.setName(name);
-	std::cout << name << " joined the room\n";
-	
-	sf::Packet * packet2 =new sf::Packet;//for the peer who joined
-	*packet2 << Sv::ReplyJoin << Sv::Yes ;
-	pushPacket(&peer, packet2);
-	
-	sf::Packet * packet3 = new sf::Packet;//for the peer who joined
-	sf::Int32 numPlayers = mPeers.size();
-	*packet3 << Sv::PlayerJoined << numPlayers -1;
-	for (sf::Int32 i = 0; i < numPlayers -1 ; ++i)
-	{
-		*packet3 << mPeers[i]->getName();
-	}
-
-	pushPacket(&peer, packet3);
-
-	sf::Packet * packet4 = new sf::Packet;//for all the others
-	*packet4 << Sv::PlayerJoined << sf::Int32(1) << peer.getName();
-	pushPacket(&peer, packet4, true);
-}
-
-void Server::onChat(Peer & p, sf::Packet & packet)
-{
-	std::string msg;
-	packet >> msg;
-	sf::Packet * packet2 = new sf::Packet;
-	*packet2 << Sv::Chat << p.getName() << msg;
-	pushPacket(nullptr, packet2, true);
-}
 
 void Server::run()
 {
@@ -194,49 +113,14 @@ void Server::run()
 		while (elapsedStep >= TimeStep)
 		{
 			elapsedStep -= TimeStep;
-			step();
+			mGame.step(*this);
 		}
 		while (elapsedSync >= TimeSync)
 		{
 			elapsedSync -= TimeSync;
-			sync();
+			mGame.sync(*this);
 		}
 
 	}
 }
-bool Server::playersAreReady()
-{
-	if (mPeers.size() < 3)
-		return false;
-	for (std::size_t i = 0; i < mPeers.size()-1; ++i)
-		if (!mPeers[i]->isReady())
-			return false;
-	return true;
-}
 
-void Server::unreadyPlayers()
-{
-	for (auto & peer : mPeers)
-		peer->setReady(false);
-}
-void Server::step()
-{
-	mGameWorld.step(*this);
-}
-
-void Server::sync()
-{
-	//Flush pending packets;
-	for (auto & packetInfo : mPackets)
-	{
-		if (packetInfo.broadcast)
-		{
-			for (auto & peer : mPeers)
-				if (peer.get() != packetInfo.p)
-					peer->send(*packetInfo.pckt);
-		}
-		else
-			packetInfo.p->send(*packetInfo.pckt);
-	}
-	mPackets.clear();
-}

@@ -11,9 +11,6 @@
     <ClCompile Include="src\Client\SplashState.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Client\Drawer.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\Client\AudioPlayer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -60,6 +57,9 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Client\ChatBox.cpp" />
+    <ClCompile Include="src\Client\Drawer.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -92,9 +92,6 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="include\Client\SplashState.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Client\Drawer.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="include\Client\AudioPlayer.h">
@@ -147,5 +144,8 @@
     </ClInclude>
     <ClInclude Include="include\Client\ChatBox.h" />
     <ClInclude Include="include\Client\Icon.h" />
+    <ClInclude Include="include\Client\Drawer.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

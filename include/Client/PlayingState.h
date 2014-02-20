@@ -30,6 +30,8 @@ private:
 	void handlePackets(Application & app);
 	void handlePacket(Application & app, sf::Packet & packet);
 
-	GameWorld mGameWorld;
+	void onGameMapData(sf::Packet & packet);
+
+	std::unique_ptr<GameWorld> mGameWorld;
 };
 

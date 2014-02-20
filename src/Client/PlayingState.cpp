@@ -1,8 +1,8 @@
 #include "Client/PlayingState.h"
 #include "Client/Application.h"
 #include "Shared/NetProtocol.h"
-
-PlayingState::PlayingState()
+#include "Shared/Wall.h"
+PlayingState::PlayingState() 
 {
 }
 
@@ -24,6 +24,8 @@ void PlayingState::onEnter(Application & app)
 	sf::Packet packet;
 	packet << Cl::Ready; // ready to receive mapdata
 	app.getSocket().send(packet);
+
+	mGameWorld.reset(new GameWorld(app));
 }
 void PlayingState::handleEvent(Application & app)
 {
@@ -39,12 +41,14 @@ void PlayingState::handleEvent(Application & app)
 void PlayingState::step(Application & app)
 {
 	app.getDesktop().Update(app.TimeStep.asSeconds());
+	mGameWorld->step(app.TimeStep.asSeconds());
 
 }
 void PlayingState::draw(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
 	window.clear();
+	mGameWorld->draw();
 	window.display();
 }
 void PlayingState::onExit(Application & app)
@@ -82,12 +86,7 @@ void PlayingState::handlePacket(Application & app, sf::Packet & packet)
 	{
 	case Sv::GameMapData:
 	{
-		std::cout << "map data received";
-		std::string mapName;
-		packet >> s;
-		mGameWorld.loadFromFile(mapName);
-
-
+		onGameMapData(packet);
 	}
 
 		break;
@@ -96,4 +95,29 @@ void PlayingState::handlePacket(Application & app, sf::Packet & packet)
 	default:
 		break;
 	}
+}
+
+void PlayingState::onGameMapData(sf::Packet & packet)
+{
+	std::string mapName;
+	packet >> mapName;
+	mGameWorld->loadFromFile(mapName);
+
+	std::cout << "map data received: " << mapName << "\n";
+
+	sf::Int32 wallCount;
+	packet >> wallCount;
+	std::cout << "wall count: " << wallCount << "\n";
+
+	for (int i = 0; i < wallCount; ++i)
+	{
+		Entity::ID id;
+		float x, y, width, height;
+		packet >> id >> x >> y >> width >> height;
+		Wall * wall = static_cast<Wall*>(mGameWorld->createEntity(id, Entity::Type::Wall));
+		wall->setPosition({ x, y });
+		wall->setSize({ width, height });
+		mGameWorld->addEntity(wall->getID());
+	}
+	
 }

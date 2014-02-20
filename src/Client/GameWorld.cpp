@@ -2,9 +2,9 @@
 #include "Shared/ValueParser.h"
 #include "Shared/Wall.h"
 
+#include "Client/Application.h"
 
-
-GameWorld::GameWorld()
+GameWorld::GameWorld(Application & app) : mDrawer(app.getWindow(), app.getTextures())
 {
 	mEntitiesByType.resize(static_cast<std::size_t>(Entity::Type::Count));
 }
@@ -45,4 +45,21 @@ bool GameWorld::loadFromFile(const std::string & s)
 	std::string backgroundTexture;
 	if (parser.get("BackgroundTexture", backgroundTexture))
 		return false;
+}
+
+const std::vector<Entity * > & GameWorld::getEntitiesOfType(Entity::Type t) const
+{
+	return mEntitiesByType.at(static_cast<std::size_t>(t));
+}
+
+void GameWorld::step(float dt)
+{
+	mDrawer.update(dt);
+}
+
+void GameWorld::draw()
+{
+	auto & walls = getEntitiesOfType(Entity::Type::Wall);
+	for (Entity * e : walls)
+		mDrawer.drawWall(static_cast<Wall &>(*e));
 }

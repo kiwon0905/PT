@@ -46,6 +46,7 @@ void LobbyState::onEnter(Application & app)
 {
 	loadGUI(app);
 	mChatBox.setSocket(app.getSocket());
+	mChatBox.push("You joined the room.");
 }
 void LobbyState::handleEvent(Application & app)
 {
@@ -102,14 +103,13 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 
 void LobbyState::onPlayerJoin(Application & app, sf::Packet & packet)
 {
+	std::cout << "on Player join" << std::endl;
 	sf::Int32 num;
 	packet >> num;
 	for (sf::Int32 i = 0; i < num; ++i)
 	{
 		std::string name;
 		packet >> name;
-		if (name == app.getPlayerName())
-			name = "You";
 		mChatBox.push(name + " joined the room.");
 	}
 }

@@ -41,6 +41,9 @@
     <ClCompile Include="src\Shared\GameEvent.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="src\Server\Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Server">
@@ -100,5 +103,8 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Shared\Icon.h" />
+    <ClInclude Include="include\Server\Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

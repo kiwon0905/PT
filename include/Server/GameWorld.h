@@ -4,7 +4,7 @@
 #include "Shared/Entity.h"
 #include "Shared/EntityManager.h"
 
-class Server;
+class Game;
 
 namespace sf
 {
@@ -23,19 +23,11 @@ public:
 
 	bool loadFromFile(const std::string & s);
 
-	void initializePeers(Server & s);
-
-	void handlePacket(sf::Packet & packet);
-	void step(Server & s);
+	void step(Game & s);
 private:
-	enum class State
-	{
-		Waiting,
-		Loading,
-		Playing,
-		Ended
-	} mState;
+
 	sf::Vector2f mSize;
+
 	Entity::ID mNextEntityID;
 	EntityManager mEntityMgr;
 	std::vector<std::vector<Entity *>> mEntitiesByType;

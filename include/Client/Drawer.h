@@ -8,7 +8,7 @@ class Zombie;
 class PickUp;
 class Human;
 class Bullet;
-
+class Wall;
 
 class Drawer
 {
@@ -17,6 +17,7 @@ public:
 
 	void update(float dt);
 	
+	void drawWall(const Wall & w);
 	void drawZombie(const Zombie & z);
 	void drawHuman(const Human & h);
 	void drawPickUp(const PickUp & p);

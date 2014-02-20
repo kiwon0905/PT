@@ -160,23 +160,30 @@ void SplashState::step(Application & app)
 	sfg::Desktop & desktop = app.getDesktop();
 	AudioPlayer & audioPlayer = app.getAudioPlayer();
 	Drawer & drawer = app.getDrawer();
-
 	sf::TcpSocket & socket = app.getSocket();
 
 	sf::Packet packet;
-	if (socket.receive(packet) == sf::Socket::Done)
+	//In splash state, we are only looking for server's response.
+	//must not receive more than one packet
+	if (socket.receive(packet)==sf::Socket::Done)
 	{
 		Sv response, answer;
 		packet >> response >> answer;
 		
-		assert(response == Sv::ReplyJoin);
-
+		assert(response == Sv::ReplyJoin && "server's response is not reply join");
 		if (answer == Sv::Yes)
 		{
 			std::cout << "connected\n";
 			app.setPlayerName(std::static_pointer_cast<sfg::Entry>(sfg::Widget::GetWidgetById("nameEntry"))->GetText());
 			app.push(new LobbyState);
 		}
+		else if (answer == Sv::No)
+		{
+			std::cout << "rejected by server\n";
+			socket.disconnect();
+		}
+
+		packet.clear();
 	}
 
 	drawer.update(app.TimeStep.asSeconds());

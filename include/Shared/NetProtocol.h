@@ -1,10 +1,11 @@
+#pragma once
 #include <SFML/Network.hpp>
 
 enum class Cl : sf::Int32
 {
 	RequestJoin,
 	Ready,
-	Chat,
+	Chat, //name, msg
 
 	GameEvent
 };
