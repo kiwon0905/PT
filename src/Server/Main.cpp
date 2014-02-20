@@ -9,6 +9,7 @@
 #endif  // _DEBUG
 
 #include "Server/GameWorld.h"
+#include "Shared/ValueParser.h"
 int main()
 {
 
@@ -25,5 +26,4 @@ int main()
 		std::cout << e.what() << "\n";
 	}
 	std::cin.get();	
-	
 }

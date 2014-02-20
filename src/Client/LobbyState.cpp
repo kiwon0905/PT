@@ -94,6 +94,7 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 		onChat(app, packet);
 		break;
 	case Sv::GameStarted:
+		std::cout << "game started!" << std::endl;
 		app.push(new PlayingState);
 		break;
 	default:
@@ -103,7 +104,6 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 
 void LobbyState::onPlayerJoin(Application & app, sf::Packet & packet)
 {
-	std::cout << "on Player join" << std::endl;
 	sf::Int32 num;
 	packet >> num;
 	for (sf::Int32 i = 0; i < num; ++i)

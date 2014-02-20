@@ -159,7 +159,6 @@ void SplashState::step(Application & app)
 
 	sfg::Desktop & desktop = app.getDesktop();
 	AudioPlayer & audioPlayer = app.getAudioPlayer();
-	Drawer & drawer = app.getDrawer();
 	sf::TcpSocket & socket = app.getSocket();
 
 	sf::Packet packet;
@@ -185,8 +184,6 @@ void SplashState::step(Application & app)
 
 		packet.clear();
 	}
-
-	drawer.update(app.TimeStep.asSeconds());
 	audioPlayer.update();
 	desktop.Update(app.TimeStep.asSeconds());
 }

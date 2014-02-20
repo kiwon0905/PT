@@ -31,7 +31,6 @@ public:
 	sfg::Desktop & getDesktop();
 	sf::TcpSocket & getSocket();
 	
-	Drawer & getDrawer();
 	AudioPlayer & getAudioPlayer();
 	Textures & getTextures();
 	thor::ActionMap<Player::Action> & getActions();
@@ -46,7 +45,6 @@ private:
 	sfg::Desktop mDesktop;
 	sf::TcpSocket mSocket;
 	
-	Drawer mDrawer;
 	AudioPlayer mAudioPlayer;
 	Textures mTextures;
 	SoundBuffers mSoundBuffers;

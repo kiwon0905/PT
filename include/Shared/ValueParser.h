@@ -27,7 +27,10 @@ public:
 	void printAll()
 	{
 		for (auto & val : mData)
+		{
 			std::cout << val.first <<" "<< val.second << "\n";
+		}
+
 	}
 private:
 	std::size_t getIndexOf(const std::string & key);

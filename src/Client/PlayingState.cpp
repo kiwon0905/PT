@@ -25,7 +25,7 @@ void PlayingState::onEnter(Application & app)
 	packet << Cl::Ready; // ready to receive mapdata
 	app.getSocket().send(packet);
 
-	mGameWorld.reset(new GameWorld(app));
+	mGameWorld.initialize(app.getTextures(), app.getWindow());
 }
 void PlayingState::handleEvent(Application & app)
 {
@@ -41,14 +41,14 @@ void PlayingState::handleEvent(Application & app)
 void PlayingState::step(Application & app)
 {
 	app.getDesktop().Update(app.TimeStep.asSeconds());
-	mGameWorld->step(app.TimeStep.asSeconds());
+	mGameWorld.step(app.TimeStep.asSeconds());
 
 }
 void PlayingState::draw(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
 	window.clear();
-	mGameWorld->draw();
+	mGameWorld.draw();
 	window.display();
 }
 void PlayingState::onExit(Application & app)
@@ -101,7 +101,7 @@ void PlayingState::onGameMapData(sf::Packet & packet)
 {
 	std::string mapName;
 	packet >> mapName;
-	mGameWorld->loadFromFile(mapName);
+	mGameWorld.loadFromFile(mapName);
 
 	std::cout << "map data received: " << mapName << "\n";
 
@@ -114,10 +114,10 @@ void PlayingState::onGameMapData(sf::Packet & packet)
 		Entity::ID id;
 		float x, y, width, height;
 		packet >> id >> x >> y >> width >> height;
-		Wall * wall = static_cast<Wall*>(mGameWorld->createEntity(id, Entity::Type::Wall));
+		Wall * wall = static_cast<Wall*>(mGameWorld.createEntity(id, Entity::Type::Wall));
 		wall->setPosition({ x, y });
 		wall->setSize({ width, height });
-		mGameWorld->addEntity(wall->getID());
+		mGameWorld.addEntity(wall->getID());
 	}
 	
 }

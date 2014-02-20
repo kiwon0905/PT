@@ -32,6 +32,6 @@ private:
 
 	void onGameMapData(sf::Packet & packet);
 
-	std::unique_ptr<GameWorld> mGameWorld;
+	GameWorld mGameWorld;
 };
 

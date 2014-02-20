@@ -33,6 +33,10 @@ void GameWorld::addEntity(Entity::ID id)
 	mEntitiesByType.at(static_cast<std::size_t>(e->getType())).push_back(e);
 }
 
+const std::vector<Entity *> & GameWorld::getEntitiesOfType(Entity::Type t) const
+{
+	return mEntitiesByType.at(static_cast<std::size_t>(t));
+}
 
 bool GameWorld::loadFromFile(const std::string & s)
 {
@@ -80,12 +84,6 @@ bool GameWorld::loadFromFile(const std::string & s)
 	}
 
 	std::cout << "Wall count: " << mEntitiesByType.at(static_cast<std::size_t>(Entity::Type::Wall)).size() << "\n";
-
-
-
-
-
-
 	return true;
 }
 

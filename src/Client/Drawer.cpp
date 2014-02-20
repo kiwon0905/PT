@@ -4,11 +4,15 @@
 #include "Shared/Zombie.h"
 #include "Shared/PickUp.h"
 
-Drawer::Drawer(sf::RenderWindow & window, Textures & textures) :mWindow(window), mTextures(textures)
+void Drawer::setTextures(Textures & textures)
 {
-
+	mTextures = &textures;
 }
 
+void Drawer::setTarget(sf::RenderTarget & target)
+{
+	mTarget = &target;
+}
 void Drawer::update(float dt)
 {
 	mParticles.update(sf::seconds(dt));
@@ -22,5 +26,5 @@ void Drawer::drawWall(const Wall & w)
 	wall.setFillColor(sf::Color::Transparent);
 	wall.setOutlineThickness(5.f);
 	wall.setOutlineColor(sf::Color::Blue);
-	mWindow.draw(wall);
+	mTarget->draw(wall);
 }

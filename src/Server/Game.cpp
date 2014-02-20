@@ -60,6 +60,8 @@ void Game::leave(Server & s, Peer & p)
 
 bool Game::playersAreReady()
 {
+	if (mPlayers.size() == 0)
+		return false;
 	for (auto & players : mPlayers)
 		if (!players.second)
 			return false;
@@ -77,8 +79,37 @@ void Game::step(Server & s)
 	switch (mState)
 	{
 	case Game::State::Waiting:// players clicked "ready" from lobby
+		if (playersAreReady())
+		{
+			sf::Packet * packet = new sf::Packet;
+			*packet << Sv::GameStarted;
+			pushPacket(nullptr, packet, true);
+			
+			unreadyPlayers(); //unready them so they can be ready to receive map data
+			std::cout << "Game is starting!" << std::endl;
+			mState = Game::State::Loading;
+		}
 		break;
 	case Game::State::Loading:
+		if (playersAreReady())
+		{
+			std::string mapName = getRandomMap();
+			mGameWorld.loadFromFile(mapName);
+			sf::Packet * packet = new sf::Packet;
+			*packet << Sv::GameMapData << mapName;
+
+			const std::vector<Entity *> & walls = mGameWorld.getEntitiesOfType(Entity::Type::Wall);
+			*packet << sf::Int32(walls.size());
+			for (Entity * e : walls)
+			{
+				*packet << e->getID();
+				*packet << e->getPosition().x << e->getPosition().y << e->getSize().x << e->getSize().y;
+			}
+
+			pushPacket(nullptr, packet, true);
+			mState = Game::State::Playing;
+		}
+
 		break;
 	case Game::State::Playing:
 		break;
@@ -114,7 +145,7 @@ void Game::handlePacket(Peer & peer, Cl type, sf::Packet & packet)
 	{
 	case Cl::Ready:
 		std::cout << peer.getName() << " readied\n";
-		peer.setReady(true);
+		mPlayers.at(&peer) = true;
 		break;
 	case Cl::Chat:
 	{

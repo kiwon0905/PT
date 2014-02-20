@@ -3,7 +3,7 @@
 
 Application::Application() :TimeStep(sf::seconds(1 / 60.f)), 
 mWindow(), mSoundBuffers(), mTextures(),
-mDrawer(mWindow, mTextures), mAudioPlayer(mSoundBuffers)
+mAudioPlayer(mSoundBuffers)
 {
 	mWindow.resetGLStates();
 	mSocket.setBlocking(false);
@@ -29,10 +29,6 @@ sfg::Desktop & Application::getDesktop()
 sf::TcpSocket & Application::getSocket()
 {
 	return mSocket;
-}
-Drawer & Application::getDrawer()
-{
-	return mDrawer;
 }
 AudioPlayer & Application::getAudioPlayer()
 {

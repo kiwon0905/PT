@@ -4,7 +4,7 @@
 
 #include "Client/Application.h"
 
-GameWorld::GameWorld(Application & app) : mDrawer(app.getWindow(), app.getTextures())
+GameWorld::GameWorld() 
 {
 	mEntitiesByType.resize(static_cast<std::size_t>(Entity::Type::Count));
 }
@@ -12,6 +12,12 @@ GameWorld::GameWorld(Application & app) : mDrawer(app.getWindow(), app.getTextur
 
 GameWorld::~GameWorld()
 {
+}
+
+void GameWorld::initialize(Textures & textures, sf::RenderTarget & target)
+{
+	mDrawer.setTarget(target);
+	mDrawer.setTextures(textures);
 }
 
 Entity * GameWorld::createEntity(Entity::ID id, Entity::Type type)
@@ -45,6 +51,8 @@ bool GameWorld::loadFromFile(const std::string & s)
 	std::string backgroundTexture;
 	if (parser.get("BackgroundTexture", backgroundTexture))
 		return false;
+
+	return true;
 }
 
 const std::vector<Entity * > & GameWorld::getEntitiesOfType(Entity::Type t) const

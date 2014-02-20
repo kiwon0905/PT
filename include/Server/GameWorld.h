@@ -13,6 +13,7 @@ namespace sf
 //Server
 class GameWorld
 {
+	friend class Game;
 public:
 	GameWorld();
 	~GameWorld();
@@ -25,7 +26,7 @@ public:
 
 	void step(Game & s);
 private:
-
+	const std::vector<Entity *> & getEntitiesOfType(Entity::Type t) const;
 	sf::Vector2f mSize;
 
 	Entity::ID mNextEntityID;

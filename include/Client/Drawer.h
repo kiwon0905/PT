@@ -13,7 +13,8 @@ class Wall;
 class Drawer
 {
 public:
-	Drawer(sf::RenderWindow & window, Textures & textures);
+	void setTextures(Textures & textures);
+	void setTarget(sf::RenderTarget & target);
 
 	void update(float dt);
 	
@@ -26,7 +27,7 @@ public:
 	thor::Connection addEmitter(thor::UniversalEmitter & emitter);
 	thor::Connection addEmitter(thor::UniversalEmitter &, sf::Time);
 private:
-	Textures & mTextures;
-	sf::RenderWindow & mWindow;
+	Textures * mTextures;
+	sf::RenderTarget * mTarget;
 	thor::ParticleSystem mParticles;
 };

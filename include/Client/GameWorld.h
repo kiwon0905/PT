@@ -10,9 +10,11 @@ class Application;
 class GameWorld
 {
 public:
-	GameWorld(Application & app);
+	GameWorld();
 	~GameWorld();
 	
+	void initialize(Textures & textures, sf::RenderTarget & target);
+
 	Entity * createEntity(Entity::ID id, Entity::Type type);
 	Entity * getEntity(Entity::ID id);
 	void addEntity(Entity::ID id);
