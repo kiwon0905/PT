@@ -31,6 +31,7 @@ private:
 	void handlePacket(Application & app, sf::Packet & packet);
 
 	void onGameMapData(sf::Packet & packet);
+	void onPlayersData(sf::Packet & packet);
 
 	GameWorld mGameWorld;
 };

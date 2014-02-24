@@ -1,10 +1,16 @@
-#pragma once
+  #pragma once
 
 #include <vector>
+#include <unordered_map>
 #include "Shared/Entity.h"
 #include "Shared/EntityManager.h"
+#include "Server/Peer.h"
+#include "Shared/Zombie.h"
+#include "Shared/PickUp.h"
+#include "Shared/Human.h"
 
 class Game;
+
 
 namespace sf
 {
@@ -26,6 +32,9 @@ public:
 
 	void step(Game & s);
 private:
+	template <class Iterator>
+	void init(Game & g, Iterator & begin, Iterator & end); //called by Game when the game starts
+
 	const std::vector<Entity *> & getEntitiesOfType(Entity::Type t) const;
 	sf::Vector2f mSize;
 
@@ -35,5 +44,63 @@ private:
 
 	std::string mMapName;
 
+	std::unordered_map<Entity::ID, Peer *> mPeersByEntity;
+	std::unordered_map<Peer *, Entity::ID> mEntitiesByPeer;
 };
 
+template <class Iterator>
+void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
+{
+	std::vector<Peer *> players;
+	for (auto iter = begin; iter != end; ++iter)
+		players.push_back(iter->first);
+
+	//choose a zombie
+	Zombie * z = static_cast<Zombie*>(createEntity(Entity::Type::Zombie));
+	Peer * zombiePlayer = players[thor::random(0u, players.size() - 1)];
+	mPeersByEntity[z->getID()] = zombiePlayer;
+	mEntitiesByPeer[zombiePlayer] = z->getID();
+
+	//remove the zombie player from players vector
+	players.erase(std::remove(players.begin(), players.end(), zombiePlayer), players.end());
+
+	//rest are human
+	for (Peer * human : players)
+	{
+		Human * h = static_cast<Human *>(createEntity(Entity::Type::Human));
+		mPeersByEntity[h->getID()] = human;
+		mEntitiesByPeer[human] = h->getID();
+	}
+
+	//@zombie
+	sf::Packet * packet = new sf::Packet;
+	*packet << Sv::PlayersData << Entity::Type::Zombie << z->getID() << players.size();
+	for (Peer * human : players)
+	{
+		//id, 
+		*packet << mEntitiesByPeer[human];
+	}
+	game.pushPacket(zombiePlayer, packet);
+
+
+	//@human
+
+	for (Peer * human : players)
+	{
+		sf::Packet * packet2 = new sf::Packet;        //      zombie id   player id
+		*packet << Sv::PlayersData << Entity::Type::Human << z->getID() << mEntitiesByPeer[human] << players.size() - 1;
+		
+		//insert other's players info
+		for (Peer * human2 : players)
+		{  //other player's id
+			if (human2 != human)
+				*packet << mEntitiesByPeer[human2];
+		}
+		game.pushPacket(human, packet2);
+	}
+
+
+
+
+
+}

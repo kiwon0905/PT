@@ -85,11 +85,10 @@ void PlayingState::handlePacket(Application & app, sf::Packet & packet)
 	switch (s)
 	{
 	case Sv::GameMapData:
-	{
 		onGameMapData(packet);
-	}
-
 		break;
+	case Sv::PlayersData:
+		onPlayersData(packet);
 	case Sv::GameEvent:
 		break;
 	default:
@@ -120,4 +119,9 @@ void PlayingState::onGameMapData(sf::Packet & packet)
 		mGameWorld.addEntity(wall->getID());
 	}
 	
+}
+
+void PlayingState::onPlayersData(sf::Packet & packet)
+{
+	std::cout << "players data received!\n";
 }

@@ -31,7 +31,5 @@ private:
 	Drawer mDrawer;
 	EntityManager mEntityMgr;
 	std::vector<std::vector<Entity *>> mEntitiesByType;
-	
-
 };
 

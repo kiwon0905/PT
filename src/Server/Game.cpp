@@ -108,10 +108,12 @@ void Game::step(Server & s)
 
 			pushPacket(nullptr, packet, true);
 			mState = Game::State::Playing;
+			mGameWorld.init(*this, mPlayers.begin(), mPlayers.end());
 		}
 
 		break;
 	case Game::State::Playing:
+		mGameWorld.step(*this);
 		break;
 	case Game::State::Ended:
 		break;

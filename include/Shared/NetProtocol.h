@@ -22,6 +22,7 @@ enum class Sv : sf::Int32
 	Chat, 
 	GameStarted, //name
 	GameMapData,
+	PlayersData,
 	GameEvent
 };
 

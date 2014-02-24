@@ -1,9 +1,11 @@
 #pragma once
+
+#include <unordered_map>
+#include "Shared/NetProtocol.h"
 #include "Server/GameWorld.h"
 class Server;
 class Peer;
-#include <unordered_map>
-#include "Shared/NetProtocol.h"
+
 class Game
 {
 public:

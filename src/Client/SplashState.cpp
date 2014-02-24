@@ -111,12 +111,6 @@ void SplashState::initActions(thor::ActionMap<Player::Action> & actions)
 	actions[Player::MoveN] = thor::realtimeAction(std::bind(&sf::Keyboard::isKeyPressed, sf::Keyboard::W));
 	actions[Player::MoveW] = thor::realtimeAction(std::bind(&sf::Keyboard::isKeyPressed, sf::Keyboard::A));
 	actions[Player::MoveS] = thor::realtimeAction(std::bind(&sf::Keyboard::isKeyPressed, sf::Keyboard::S));
-	
-	actions[Player::MoveNE] = actions[Player::MoveN] && actions[Player::MoveE];
-	actions[Player::MoveNW] = actions[Player::MoveN] && actions[Player::MoveW];
-	actions[Player::MoveSW] = actions[Player::MoveS] && actions[Player::MoveW];
-	actions[Player::MoveSE] = actions[Player::MoveS] && actions[Player::MoveE];
-
 }
 
 void SplashState::clearGUI(Application & app)
