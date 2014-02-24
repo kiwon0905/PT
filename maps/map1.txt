@@ -1,0 +1,62 @@
+X = 1200
+Y = 1200
+
+WallCount = 10
+
+Wall0X = 225
+Wall0Y = 270
+Wall0Width = 20
+Wall0Height = 450
+
+Wall1X = 225
+Wall1Y = 270
+Wall1Width = 355
+Wall1Height = 20
+
+Wall2X = 225
+Wall2Y = 540
+Wall2Width = 305
+Wall2Height = 20
+
+Wall3X = 225
+Wall3Y = 720
+Wall3Width = 85
+Wall3Height = 2
+
+Wall4X = 365
+Wall4Y = 720
+Wall4Width = 400
+Wall4Height = 20
+
+Wall5X = 450
+Wall5Y = 630
+Wall5Width = 20
+Wall5Height = 85
+
+Wall6X = 450
+Wall6Y = 540
+Wall6Width = 20
+Wall6Height = 40
+
+Wall7X = 750
+Wall7Y = 270
+Wall7Width = 20
+Wall7Height = 450
+
+Wall8X = 620
+Wall8Y = 270
+Wall8Width = 130
+Wall8Height = 20
+
+Wall9X = 580
+Wall9Y = 540
+Wall9Width = 180
+Wall9Height = 20
+
+
+BackgroundTexture = "map1.png"
+
+
+
+
+
