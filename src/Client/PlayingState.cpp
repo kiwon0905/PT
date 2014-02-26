@@ -2,6 +2,8 @@
 #include "Client/Application.h"
 #include "Shared/NetProtocol.h"
 #include "Shared/Wall.h"
+#include "Shared/Zombie.h"
+#include "Shared/Human.h"
 PlayingState::PlayingState() 
 {
 }
@@ -113,7 +115,7 @@ void PlayingState::onGameMapData(sf::Packet & packet)
 		Entity::ID id;
 		float x, y, width, height;
 		packet >> id >> x >> y >> width >> height;
-		Wall * wall = static_cast<Wall*>(mGameWorld.createEntity(id, Entity::Type::Wall));
+		Wall * wall = mGameWorld.createEntity<Wall>(id, Entity::Type::Wall);
 		wall->setPosition({ x, y });
 		wall->setSize({ width, height });
 		mGameWorld.addEntity(wall->getID());
@@ -124,4 +126,51 @@ void PlayingState::onGameMapData(sf::Packet & packet)
 void PlayingState::onPlayersData(sf::Packet & packet)
 {
 	std::cout << "players data received!\n";
+	Entity::Type myType;
+	packet >> myType;
+
+	if (myType == Entity::Type::Zombie)
+	{		
+		Entity::ID myID;
+		packet >> myID;
+		Zombie * z = mGameWorld.createEntity<Zombie>(myID, myType);
+		mGameWorld.setPlayerEntity(z->getID());
+		
+		sf::Int32 humanCount;
+		packet >> humanCount;
+		std::cout << "You are the zombie! human count: " << humanCount << std::endl;
+
+		for (sf::Int32 i = 0; i < humanCount; ++i)
+		{
+			Entity::ID id;
+			packet >> id;
+			Human * h = mGameWorld.createEntity<Human>(id, Entity::Type::Human);
+		}
+	}
+
+	else if (myType == Entity::Type::Human)
+	{
+		Entity::ID zombieID, myID;
+		packet >> zombieID >> myID;
+		sf::Int32 playerCount;
+		packet >> playerCount;
+		std::cout << "Zombie ID: " << zombieID << "Other human count: " << playerCount<<std::endl;
+
+		Zombie * z = mGameWorld.createEntity<Zombie>(zombieID, Entity::Type::Zombie);
+		mGameWorld.addEntity(z->getID());
+		Human * h = mGameWorld.createEntity<Human>(myID, Entity::Type::Human);
+		mGameWorld.setPlayerEntity(h->getID());
+		std::cout << "Other human count: " << playerCount << std::endl;
+		//create other players
+		for (sf::Int32 i = 0; i < playerCount; ++i)
+		{
+			Entity::ID humanID;
+			packet >> humanID;
+			
+			Human * h = mGameWorld.createEntity<Human>(humanID, Entity::Type::Human);
+			mGameWorld.addEntity(h->getID());
+		}
+	}
+	else
+		assert(false && "something got fucked up");
 }

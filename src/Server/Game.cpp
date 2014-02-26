@@ -20,6 +20,7 @@ Game::~Game()
 Game::PacketInfo::PacketInfo(Peer * p, sf::Packet * pckt, bool broadcast) : p(p), pckt(pckt), broadcast(broadcast)
 {
 }
+
 Game::PacketInfo::PacketInfo(PacketInfo && p) : p(p.p), pckt(std::move(p.pckt)), broadcast(p.broadcast)
 {
 	p.p = nullptr;
@@ -28,7 +29,7 @@ Game::PacketInfo::PacketInfo(PacketInfo && p) : p(p.p), pckt(std::move(p.pckt)),
 
 void Game::pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast)
 {
-	mPackets.emplace_back(p, newPacket, broadcast);
+	mPackets.push_back(PacketInfo(p, newPacket, broadcast));
 }
 
 void Game::join(Server & s, Peer & peer)

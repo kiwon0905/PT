@@ -20,11 +20,6 @@ void GameWorld::initialize(Textures & textures, sf::RenderTarget & target)
 	mDrawer.setTextures(textures);
 }
 
-Entity * GameWorld::createEntity(Entity::ID id, Entity::Type type)
-{
-	return mEntityMgr.create(id, type);
-}
-
 Entity * GameWorld::getEntity(Entity::ID id)
 {
 	return mEntityMgr.get(id);
@@ -70,4 +65,9 @@ void GameWorld::draw()
 	auto & walls = getEntitiesOfType(Entity::Type::Wall);
 	for (Entity * e : walls)
 		mDrawer.drawWall(static_cast<Wall &>(*e));
+}
+
+void GameWorld::setPlayerEntity(Entity::ID id)
+{
+	mPlayerEntity = id;
 }

@@ -24,7 +24,8 @@ public:
 	GameWorld();
 	~GameWorld();
 
-	Entity * createEntity(Entity::Type type);
+	template <class T>
+	T * createEntity(Entity::Type type);
 	Entity * getEntity(Entity::ID id);
 	void addEntity(Entity::ID id);
 
@@ -48,6 +49,12 @@ private:
 	std::unordered_map<Peer *, Entity::ID> mEntitiesByPeer;
 };
 
+template <class T>
+T * GameWorld::createEntity(Entity::Type type)
+{
+	return mEntityMgr.create<T>(mNextEntityID++, type);
+}
+
 template <class Iterator>
 void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
 {
@@ -56,7 +63,7 @@ void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
 		players.push_back(iter->first);
 
 	//choose a zombie
-	Zombie * z = static_cast<Zombie*>(createEntity(Entity::Type::Zombie));
+	Zombie * z = createEntity<Zombie>(Entity::Type::Zombie);
 	Peer * zombiePlayer = players[thor::random(0u, players.size() - 1)];
 	mPeersByEntity[z->getID()] = zombiePlayer;
 	mEntitiesByPeer[zombiePlayer] = z->getID();
@@ -67,14 +74,14 @@ void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
 	//rest are human
 	for (Peer * human : players)
 	{
-		Human * h = static_cast<Human *>(createEntity(Entity::Type::Human));
+		Human * h = createEntity<Human>(Entity::Type::Human);
 		mPeersByEntity[h->getID()] = human;
 		mEntitiesByPeer[human] = h->getID();
 	}
 
 	//@zombie
 	sf::Packet * packet = new sf::Packet;
-	*packet << Sv::PlayersData << Entity::Type::Zombie << z->getID() << players.size();
+	*packet << Sv::PlayersData << Entity::Type::Zombie << z->getID() << sf::Int32(players.size());
 	for (Peer * human : players)
 	{
 		//id, 
@@ -84,12 +91,12 @@ void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
 
 
 	//@human
-
+	std::cout << "Zombie ID: " << z->getID() << "Human count: " << players.size() << std::endl;
 	for (Peer * human : players)
 	{
 		sf::Packet * packet2 = new sf::Packet;        //      zombie id   player id
-		*packet << Sv::PlayersData << Entity::Type::Human << z->getID() << mEntitiesByPeer[human] << players.size() - 1;
-		
+		*packet2 << Sv::PlayersData << Entity::Type::Human << z->getID() << mEntitiesByPeer[human] << sf::Int32(players.size() - 1);
+
 		//insert other's players info
 		for (Peer * human2 : players)
 		{  //other player's id

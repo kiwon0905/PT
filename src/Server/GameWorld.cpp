@@ -17,11 +17,6 @@ GameWorld::~GameWorld()
 {
 }
 
-Entity * GameWorld::createEntity(Entity::Type type)
-{
-	return mEntityMgr.create(mNextEntityID++, type);
-}
-
 Entity * GameWorld::getEntity(Entity::ID id)
 {
 	return mEntityMgr.get(id);
@@ -76,14 +71,14 @@ bool GameWorld::loadFromFile(const std::string & s)
 		if (!parser.get("Wall" + std::to_string(i) + "Height", height))
 			return false;
 
-		Wall * wall = static_cast<Wall*>(createEntity(Entity::Type::Wall));
+		Wall * wall = createEntity<Wall>(Entity::Type::Wall);
 		wall->setPosition({ x, y });
 		wall->setSize({ width, height });
 
 		addEntity(wall->getID());
 	}
 
-	std::cout << "Wall count: " << mEntitiesByType.at(static_cast<std::size_t>(Entity::Type::Wall)).size() << "\n";
+	std::cout << "Wall count: " << sf::Int32(mEntitiesByType.at(static_cast<std::size_t>(Entity::Type::Wall)).size()) << "\n";
 	return true;
 }
 
