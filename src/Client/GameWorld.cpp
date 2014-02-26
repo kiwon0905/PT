@@ -18,6 +18,8 @@ void GameWorld::initialize(Textures & textures, sf::RenderTarget & target)
 {
 	mDrawer.setTarget(target);
 	mDrawer.setTextures(textures);
+
+	textures.get("assets/background.png")->setRepeated(true);
 }
 
 Entity * GameWorld::getEntity(Entity::ID id)
@@ -46,6 +48,7 @@ bool GameWorld::loadFromFile(const std::string & s)
 	std::string backgroundTexture;
 	if (parser.get("BackgroundTexture", backgroundTexture))
 		return false;
+	
 
 	return true;
 }
@@ -57,14 +60,34 @@ const std::vector<Entity * > & GameWorld::getEntitiesOfType(Entity::Type t) cons
 
 void GameWorld::step(float dt)
 {
+	Entity * player =getEntity(mPlayerEntity);
+	if (player)
+		player->update(dt);
 	mDrawer.update(dt);
 }
 
 void GameWorld::draw()
 {
-	auto & walls = getEntitiesOfType(Entity::Type::Wall);
-	for (Entity * e : walls)
+	mDrawer.drawTexture("assets/background.png");
+
+	for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
 		mDrawer.drawWall(static_cast<Wall &>(*e));
+	for (Entity * e : getEntitiesOfType(Entity::Type::PickUp))
+		mDrawer.drawPickUp(static_cast<PickUp &>(*e));
+	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
+		mDrawer.drawHuman(static_cast<Human &>(*e));
+	for (Entity * e : getEntitiesOfType(Entity::Type::Zombie))
+		mDrawer.drawZombie(static_cast<Zombie &>(*e));
+	
+	Entity * player = getEntity(mPlayerEntity);
+	if (player)
+	{
+		if (player->getType() == Entity::Type::Human)
+			mDrawer.drawHuman(static_cast<Human &>(*player));
+		else if (player->getType() == Entity::Type::Zombie)
+			mDrawer.drawZombie(static_cast<Zombie &>(*player));
+	}
+
 }
 
 void GameWorld::setPlayerEntity(Entity::ID id)

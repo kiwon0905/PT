@@ -1,6 +1,16 @@
 #pragma once
-#include "Shared/Entity.h"
 
+class DynamicEntity;
+
+namespace sf
+{
+	class TcpSocket;
+}
+namespace thor
+{
+	template <class T>
+	class ActionMap;
+}
 class Player
 {
 public:
@@ -14,7 +24,11 @@ public:
 		MoveS,	//270
 		Skill1
 	};
+
+	void setEntity(DynamicEntity * e);
+	void sync(sf::TcpSocket & socket);
+	void handleEvent(thor::ActionMap<Player::Action> & mActions);
 private:
-	Entity::ID mID;
+	DynamicEntity * mEntity;
 };
 

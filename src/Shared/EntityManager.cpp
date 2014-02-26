@@ -20,5 +20,8 @@ void EntityManager::destroyAll()
 }
 Entity * EntityManager::get(Entity::ID id)
 {
-	return mEntities.at(id).get();
+	if (mEntities.count(id) != 0)
+		return mEntities.at(id).get();
+	else
+		return nullptr;
 }

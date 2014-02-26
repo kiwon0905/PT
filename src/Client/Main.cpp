@@ -18,10 +18,11 @@
 
 int TrojanMain()
 {
-#ifdef _DEBUG
+#if defined _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
+#if !defined _DEBUG
 	try
 	{
 		Application app;
@@ -33,6 +34,11 @@ int TrojanMain()
 		std::cout << e.what()<<"\n";
 	}
 	std::cin.get();
+#elif defined _DEBUG
+	Application app;
+	app.push(new SplashState);
+	app.run();
+#endif
 }
 #undef TrojanMain
 

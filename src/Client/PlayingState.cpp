@@ -32,12 +32,16 @@ void PlayingState::onEnter(Application & app)
 void PlayingState::handleEvent(Application & app)
 {
 	sf::Event ev;
+	app.getActions().clearEvents();
 	while (app.getWindow().pollEvent(ev))
 	{
 		if (ev.type == sf::Event::Closed)
 			app.quit();
 		app.getDesktop().HandleEvent(ev);
+		app.getActions().pushEvent(ev);
+		mPlayer.handleEvent(app.getActions());
 	}
+
 	handlePackets(app);
 }
 void PlayingState::step(Application & app)
@@ -71,6 +75,7 @@ void PlayingState::handlePackets(Application & app)
 
 	sf::Packet packet;
 	sf::Socket::Status s = socket.receive(packet);
+
 	while (s == sf::Socket::Done)
 	{
 		handlePacket(app, packet);
@@ -133,8 +138,9 @@ void PlayingState::onPlayersData(sf::Packet & packet)
 	{		
 		Entity::ID myID;
 		packet >> myID;
-		Zombie * z = mGameWorld.createEntity<Zombie>(myID, myType);
-		mGameWorld.setPlayerEntity(z->getID());
+		Zombie * me = mGameWorld.createEntity<Zombie>(myID, myType);
+		mGameWorld.setPlayerEntity(me->getID());
+		mPlayer.setEntity(me);
 		
 		sf::Int32 humanCount;
 		packet >> humanCount;
@@ -158,8 +164,10 @@ void PlayingState::onPlayersData(sf::Packet & packet)
 
 		Zombie * z = mGameWorld.createEntity<Zombie>(zombieID, Entity::Type::Zombie);
 		mGameWorld.addEntity(z->getID());
-		Human * h = mGameWorld.createEntity<Human>(myID, Entity::Type::Human);
-		mGameWorld.setPlayerEntity(h->getID());
+		Human * me = mGameWorld.createEntity<Human>(myID, Entity::Type::Human);
+		mGameWorld.setPlayerEntity(me->getID());
+		mPlayer.setEntity(me);
+
 		std::cout << "Other human count: " << playerCount << std::endl;
 		//create other players
 		for (sf::Int32 i = 0; i < playerCount; ++i)

@@ -28,3 +28,39 @@ void Drawer::drawWall(const Wall & w)
 	wall.setOutlineColor(sf::Color::Blue);
 	mTarget->draw(wall);
 }
+
+
+void Drawer::drawZombie(const Zombie & z)
+{
+	sf::RectangleShape shape;
+	shape.setFillColor(sf::Color::Red);
+	shape.setSize(z.getSize());
+	shape.setPosition(z.getPosition());
+	shape.setRotation(z.getRotation());
+	mTarget->draw(shape);
+}
+void Drawer::drawHuman(const Human & h)
+{
+	sf::RectangleShape shape;
+	shape.setFillColor(sf::Color::Black);
+	shape.setSize(h.getSize());
+	shape.setPosition(h.getPosition());
+	shape.setRotation(h.getRotation());
+	mTarget->draw(shape);
+}
+void Drawer::drawPickUp(const PickUp & p)
+{
+
+}
+void Drawer::drawBullet(const Bullet & b)
+{
+
+}
+
+void Drawer::drawTexture(const std::string & s)
+{
+	sf::Sprite sprite;
+	sprite.setTextureRect(sf::IntRect(0, 0, 800, 600));
+	sprite.setTexture(*mTextures->get(s));
+	mTarget->draw(sprite);
+}

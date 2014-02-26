@@ -2,6 +2,7 @@
 
 #include "Client/GameState.h"
 #include "Client/GameWorld.h"
+#include "Client/Player.h"
 #include <string>
 
 class Application;
@@ -34,5 +35,6 @@ private:
 	void onPlayersData(sf::Packet & packet);
 
 	GameWorld mGameWorld;
+	Player mPlayer;
 };
 

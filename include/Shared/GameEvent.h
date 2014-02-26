@@ -6,17 +6,9 @@ class GameWorld;
 
 enum class GameEvent : sf::Int32
 {
-	MoveEntity,
-
-	CreateHuman,
-	CreateWall,
-	CreatePickUp,
-	CreateZombie,
-
+	MoveEntity,  //id, x, y
 	
-	DestroyHuman,
-	DestroyPickUp,
-	
+	DestroyEntity
 };
 
 struct GameCommand
@@ -26,7 +18,6 @@ struct GameCommand
 
 struct MoveEntity : GameCommand
 {
-	MoveEntity(Entity * e, float x, float y);
 	void operator()() override;
 	Entity * e;
 	float x, y;
