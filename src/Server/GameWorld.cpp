@@ -29,7 +29,7 @@ void GameWorld::addEntity(Entity::ID id)
 	mEntitiesByType.at(static_cast<std::size_t>(e->getType())).push_back(e);
 }
 
-const std::vector<Entity *> & GameWorld::getEntitiesOfType(Entity::Type t) const
+std::vector<Entity *> & GameWorld::getEntitiesOfType(Entity::Type t)
 {
 	return mEntitiesByType.at(static_cast<std::size_t>(t));
 }
@@ -87,9 +87,7 @@ void GameWorld::leave(Peer * p, Game & game)
 {
 	//if this peer has an entity associated with it, kill it
 	if (mEntitiesByPeer.count(p) == 1)
-	{
 		getEntity(mEntitiesByPeer[p])->kill();
-	}
 	
 	sf::Packet * packet = new sf::Packet;
 	*packet << Sv::GameEvent << GameEvent::DestroyEntity << mEntitiesByPeer[p];
@@ -97,10 +95,27 @@ void GameWorld::leave(Peer * p, Game & game)
 	
 	mPeersByEntity.erase(mEntitiesByPeer[p]);
 	mEntitiesByPeer.erase(p);
+}
 
-
+void GameWorld::removeDeadEntities()
+{
+	//remove dead entities
+	auto isDead = [this](Entity * e)
+	{
+		if (!e->isAlive())
+		{
+			mEntityMgr.destroy(e->getID());
+			return true;
+		}
+		return false;
+	};
+	auto & zombies = getEntitiesOfType(Entity::Type::Zombie);
+	zombies.erase(std::remove_if(zombies.begin(), zombies.end(), isDead), zombies.end());
+	auto & humans = getEntitiesOfType(Entity::Type::Human);
+	humans.erase(std::remove_if(humans.begin(), humans.end(), isDead), humans.end());
 }
 
 void GameWorld::step(Game & game)
 {
+	removeDeadEntities();
 }

@@ -36,8 +36,9 @@ public:
 private:
 	template <class Iterator>
 	void init(Game & g, Iterator & begin, Iterator & end); //called by Game when the game starts
+	void removeDeadEntities();
 
-	const std::vector<Entity *> & getEntitiesOfType(Entity::Type t) const;
+	std::vector<Entity *> & getEntitiesOfType(Entity::Type t);
 	sf::Vector2f mSize;
 
 	Entity::ID mNextEntityID;
