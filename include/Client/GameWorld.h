@@ -5,6 +5,10 @@
 #include "Shared/EntityManager.h"
 #include "Client/Drawer.h"
 
+namespace sf
+{
+	class Packet;
+}
 class Application;
 //Client
 class GameWorld
@@ -28,8 +32,12 @@ public:
 
 	void setPlayerEntity(Entity::ID id);
 
+	void handlePacket(sf::Packet & packet);
+
 private:
-	const std::vector<Entity * > & getEntitiesOfType(Entity::Type t) const;
+	std::vector<Entity * > & getEntitiesOfType(Entity::Type t);
+
+	void removeDeadEntities();
 	
 	Drawer mDrawer;
 	EntityManager mEntityMgr;

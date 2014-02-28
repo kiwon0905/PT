@@ -1,8 +1,9 @@
 #include "Client/GameWorld.h"
 #include "Shared/ValueParser.h"
 #include "Shared/Wall.h"
-
+#include "Shared/GameEvent.h"
 #include "Client/Application.h"
+#include "Shared/NetProtocol.h"
 
 GameWorld::GameWorld() 
 {
@@ -53,13 +54,33 @@ bool GameWorld::loadFromFile(const std::string & s)
 	return true;
 }
 
-const std::vector<Entity * > & GameWorld::getEntitiesOfType(Entity::Type t) const
+std::vector<Entity * > & GameWorld::getEntitiesOfType(Entity::Type t)
 {
 	return mEntitiesByType.at(static_cast<std::size_t>(t));
 }
 
+void GameWorld::removeDeadEntities()
+{
+	//remove dead entities
+	auto isDead = [this](Entity * e)
+	{
+		if (!e->isAlive())
+		{
+			mEntityMgr.destroy(e->getID());
+			return true;
+		}
+		return false;
+	};
+	auto & zombies = getEntitiesOfType(Entity::Type::Zombie);
+	zombies.erase(std::remove_if(zombies.begin(), zombies.end(), isDead), zombies.end());
+	auto & humans = getEntitiesOfType(Entity::Type::Human);
+	humans.erase(std::remove_if(humans.begin(), humans.end(), isDead), humans.end());
+}
+
 void GameWorld::step(float dt)
 {
+	removeDeadEntities();
+
 	Entity * player =getEntity(mPlayerEntity);
 	if (player)
 		player->update(dt);
@@ -93,4 +114,25 @@ void GameWorld::draw()
 void GameWorld::setPlayerEntity(Entity::ID id)
 {
 	mPlayerEntity = id;
+}
+
+void GameWorld::handlePacket(sf::Packet & packet)
+{
+	GameEvent ev;
+	packet >> ev;
+	switch (ev)
+	{
+	case GameEvent::MoveEntity:
+		break;
+	case GameEvent::DestroyEntity:
+	{
+		Entity::ID id;
+		packet >> id;
+		getEntity(id)->kill();
+	}
+		break;
+	default:
+		break;
+	}
+
 }

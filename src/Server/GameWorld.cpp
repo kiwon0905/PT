@@ -3,6 +3,7 @@
 #include "Shared/ValueParser.h"
 #include "Shared/Wall.h"
 #include "Shared/NetProtocol.h"
+#include "Shared/GameEvent.h"
 
 #include <Thor/Math.hpp>
 #include <iostream>
@@ -82,7 +83,23 @@ bool GameWorld::loadFromFile(const std::string & s)
 	return true;
 }
 
+void GameWorld::leave(Peer * p, Game & game)
+{
+	//if this peer has an entity associated with it, kill it
+	if (mEntitiesByPeer.count(p) == 1)
+	{
+		getEntity(mEntitiesByPeer[p])->kill();
+	}
+	
+	sf::Packet * packet = new sf::Packet;
+	*packet << Sv::GameEvent << GameEvent::DestroyEntity << mEntitiesByPeer[p];
+	game.pushPacket(p, packet, true);
+	
+	mPeersByEntity.erase(mEntitiesByPeer[p]);
+	mEntitiesByPeer.erase(p);
 
+
+}
 
 void GameWorld::step(Game & game)
 {

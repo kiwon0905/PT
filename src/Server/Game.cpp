@@ -57,6 +57,7 @@ void Game::leave(Server & s, Peer & p)
 	sf::Packet * packet = new sf::Packet;
 	*packet << Sv::PlayerDisconnected << p.getName() << "\n";
 	pushPacket(nullptr, packet, true);
+	mGameWorld.leave(&p, *this);
 }
 
 bool Game::playersAreReady()

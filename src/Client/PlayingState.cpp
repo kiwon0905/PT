@@ -97,7 +97,9 @@ void PlayingState::handlePacket(Application & app, sf::Packet & packet)
 	case Sv::PlayersData:
 		onPlayersData(packet);
 	case Sv::GameEvent:
+			mGameWorld.handlePacket(packet);	
 		break;
+
 	default:
 		break;
 	}
@@ -151,6 +153,7 @@ void PlayingState::onPlayersData(sf::Packet & packet)
 			Entity::ID id;
 			packet >> id;
 			Human * h = mGameWorld.createEntity<Human>(id, Entity::Type::Human);
+			mGameWorld.addEntity(h->getID());
 		}
 	}
 

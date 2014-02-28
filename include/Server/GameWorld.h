@@ -31,6 +31,7 @@ public:
 
 	bool loadFromFile(const std::string & s);
 
+	void leave(Peer * p, Game & s);
 	void step(Game & s);
 private:
 	template <class Iterator>
