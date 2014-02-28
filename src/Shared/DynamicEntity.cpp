@@ -22,6 +22,8 @@ float DynamicEntity::accelerate(float current, float goal, float dt)
 
 void DynamicEntity::update(float dt)
 {
+	if (thor::length(mCurrentVelocity) > mMaxSpeed)
+		thor::setLength(mCurrentVelocity, mMaxSpeed);
 	mCurrentVelocity.x = accelerate(mCurrentVelocity.x, mGoalVelocity.x, dt);
 	mCurrentVelocity.y = accelerate(mCurrentVelocity.y, mGoalVelocity.y, dt);
 	setPosition(getPosition() + mCurrentVelocity * dt);
@@ -44,4 +46,8 @@ void DynamicEntity::setRotation(float angle)
 void DynamicEntity::setGoalVelocity(sf::Vector2f speed)
 {
 	mGoalVelocity = speed;
+}
+void DynamicEntity::setMaxSpeed(float speed)
+{
+	mMaxSpeed = speed;
 }

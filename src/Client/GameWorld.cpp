@@ -81,9 +81,15 @@ void GameWorld::step(float dt)
 {
 	removeDeadEntities();
 
+	for (auto & command : mCommands)
+		(*command)();
+	mCommands.clear();
+	
 	Entity * player =getEntity(mPlayerEntity);
 	if (player)
 		player->update(dt);
+
+
 	mDrawer.update(dt);
 }
 
@@ -123,6 +129,28 @@ void GameWorld::handlePacket(sf::Packet & packet)
 	switch (ev)
 	{
 	case GameEvent::MoveEntity:
+	{
+		sf::Int32 num;
+		packet >> num;
+		std::cout << num << "\n";
+		for (sf::Int32 i = 0; i < num; ++i)
+		{
+			Entity::ID id;
+			packet >> id;
+			Entity * e = getEntity(id);
+
+			float x, y;
+			packet >> x >> y;
+			
+			MoveEntity * move = new MoveEntity;
+			move->e = e;
+			move->x = x;
+			move->y = y;
+			//if (e &&( mPlayerEntity = e->getID()))
+				mCommands.emplace_back(move);
+		}
+		
+	}
 		break;
 	case GameEvent::DestroyEntity:
 	{

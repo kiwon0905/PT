@@ -48,7 +48,7 @@ void PlayingState::step(Application & app)
 {
 	app.getDesktop().Update(app.TimeStep.asSeconds());
 	mGameWorld.step(app.TimeStep.asSeconds());
-
+	mPlayer.sync(app.getSocket());
 }
 void PlayingState::draw(Application & app)
 {
@@ -97,7 +97,7 @@ void PlayingState::handlePacket(Application & app, sf::Packet & packet)
 	case Sv::PlayersData:
 		onPlayersData(packet);
 	case Sv::GameEvent:
-			mGameWorld.handlePacket(packet);	
+		mGameWorld.handlePacket(packet);	
 		break;
 
 	default:

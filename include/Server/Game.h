@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "Shared/NetProtocol.h"
 #include "Server/GameWorld.h"
+
 class Server;
 class Peer;
 
@@ -22,6 +23,7 @@ public:
 	void pushPacket(Peer * p, sf::Packet * newPacket, bool broadcast = false);
 
 	void handlePacket(Peer & p, Cl type, sf::Packet & packet);
+
 private:
 	struct PacketInfo
 	{

@@ -8,6 +8,7 @@
 #include "Shared/Zombie.h"
 #include "Shared/PickUp.h"
 #include "Shared/Human.h"
+#include "Shared/GameEvent.h"
 
 class Game;
 
@@ -32,7 +33,11 @@ public:
 	bool loadFromFile(const std::string & s);
 
 	void leave(Peer * p, Game & s);
+
+	void sync(Game & g);
 	void step(Game & s);
+
+	void handlePacket(sf::Packet & packet);
 private:
 	template <class Iterator>
 	void init(Game & g, Iterator & begin, Iterator & end); //called by Game when the game starts
@@ -40,6 +45,7 @@ private:
 
 	std::vector<Entity *> & getEntitiesOfType(Entity::Type t);
 	sf::Vector2f mSize;
+	std::vector<std::unique_ptr<GameCommand>> mCommands;
 
 	Entity::ID mNextEntityID;
 	EntityManager mEntityMgr;
@@ -47,7 +53,6 @@ private:
 
 	std::string mMapName;
 
-	std::unordered_map<Entity::ID, Peer *> mPeersByEntity;
 	std::unordered_map<Peer *, Entity::ID> mEntitiesByPeer;
 };
 
@@ -67,7 +72,7 @@ void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
 	//choose a zombie
 	Zombie * z = createEntity<Zombie>(Entity::Type::Zombie);
 	Peer * zombiePlayer = players[thor::random(0u, players.size() - 1)];
-	mPeersByEntity[z->getID()] = zombiePlayer;
+	addEntity(z->getID());
 	mEntitiesByPeer[zombiePlayer] = z->getID();
 
 	//remove the zombie player from players vector
@@ -77,8 +82,8 @@ void GameWorld::init(Game & game, Iterator & begin, Iterator & end)
 	for (Peer * human : players)
 	{
 		Human * h = createEntity<Human>(Entity::Type::Human);
-		mPeersByEntity[h->getID()] = human;
 		mEntitiesByPeer[human] = h->getID();
+		addEntity(h->getID());
 	}
 
 	//@zombie

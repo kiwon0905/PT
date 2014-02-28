@@ -14,6 +14,8 @@ public:
 	void setRotation(float angle);
 	void setGoalVelocity(sf::Vector2f v);
 	void setAcceleration(float accleration);
+
+	void setMaxSpeed(float vel);
 private:
 	float accelerate(float current, float goal, float dt);
 	
@@ -21,5 +23,6 @@ private:
 	sf::Vector2f mCurrentVelocity;
 	float mAcceleration;
 	float mRotation;
+	float mMaxSpeed;
 };
 

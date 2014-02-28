@@ -4,6 +4,7 @@
 #include "Shared/Entity.h"
 #include "Shared/EntityManager.h"
 #include "Client/Drawer.h"
+#include "Shared/GameEvent.h"
 
 namespace sf
 {
@@ -36,7 +37,7 @@ public:
 
 private:
 	std::vector<Entity * > & getEntitiesOfType(Entity::Type t);
-
+	std::vector<std::unique_ptr<GameCommand>> mCommands;
 	void removeDeadEntities();
 	
 	Drawer mDrawer;

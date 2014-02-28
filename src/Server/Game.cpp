@@ -126,7 +126,10 @@ void Game::step(Server & s)
 
 void Game::sync(Server & s)
 {
-	//flush the pending packets
+	if (mState == State::Playing)
+		mGameWorld.sync(*this);
+		//flush the pending packets
+	
 	for (auto & packetInfo : mPackets)
 	{
 		if (packetInfo.broadcast)
@@ -161,6 +164,7 @@ void Game::handlePacket(Peer & peer, Cl type, sf::Packet & packet)
 	}
 		break;
 	case Cl::GameEvent:
+		mGameWorld.handlePacket(packet);
 		break;
 	default:
 		break;

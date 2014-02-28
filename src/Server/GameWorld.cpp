@@ -92,8 +92,7 @@ void GameWorld::leave(Peer * p, Game & game)
 	sf::Packet * packet = new sf::Packet;
 	*packet << Sv::GameEvent << GameEvent::DestroyEntity << mEntitiesByPeer[p];
 	game.pushPacket(p, packet, true);
-	
-	mPeersByEntity.erase(mEntitiesByPeer[p]);
+
 	mEntitiesByPeer.erase(p);
 }
 
@@ -118,4 +117,59 @@ void GameWorld::removeDeadEntities()
 void GameWorld::step(Game & game)
 {
 	removeDeadEntities();
+	for (auto & command : mCommands)
+		(*command)();
+	mCommands.clear();
+}
+
+void GameWorld::sync(Game & game)
+{
+	//update positions
+	//to all peers in the game, broadcast all the entity's position in the world except for himself
+
+	sf::Packet * packet = new sf::Packet;
+	*packet << Sv::GameEvent << GameEvent::MoveEntity << sf::Int32(getEntitiesOfType(Entity::Type::Zombie).size());
+	for (Entity * e : getEntitiesOfType(Entity::Type::Zombie))
+		*packet << e->getID() <<e->getPosition().x << e->getPosition().y;
+	game.pushPacket(nullptr, packet, true);
+	
+	sf::Packet * packet2 = new sf::Packet;
+	*packet2 << Sv::GameEvent << GameEvent::MoveEntity << sf::Int32(getEntitiesOfType(Entity::Type::Human).size());
+	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
+		*packet2 << e->getID() << e->getPosition().x << e->getPosition().y;
+	game.pushPacket(nullptr, packet2, true);
+
+	std::cout << sf::Int32(getEntitiesOfType(Entity::Type::Zombie).size()) << " " << sf::Int32(getEntitiesOfType(Entity::Type::Human).size()) << "\n";
+}
+
+
+void GameWorld::handlePacket(sf::Packet & packet)
+{
+	GameEvent ev;
+	packet >> ev;
+	switch (ev)
+	{
+	case GameEvent::MoveEntity:
+	{
+		Entity::ID id;
+		packet >> id;
+		Entity * e = getEntity(id);
+		if (e)
+		{
+			float x, y;
+			packet >> x >> y;
+			MoveEntity * move = new MoveEntity;
+			move->e = e;
+			move->x = x;
+			move->y = y;
+			mCommands.emplace_back(move);
+		}
+		break;
+	}
+		
+	case GameEvent::DestroyEntity:
+		break;
+	default:
+		break;
+	}
 }
