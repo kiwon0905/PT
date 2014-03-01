@@ -56,17 +56,3 @@ Wall9Height = 20
 
 BackgroundTexture = "map1.png"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

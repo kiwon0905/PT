@@ -93,7 +93,7 @@ void GameWorld::step(float dt)
 	mDrawer.update(dt);
 }
 
-void GameWorld::draw()
+void GameWorld::draw(sf::RenderWindow & window)
 {
 	mDrawer.drawTexture("assets/background.png");
 
@@ -132,7 +132,6 @@ void GameWorld::handlePacket(sf::Packet & packet)
 	{
 		sf::Int32 num;
 		packet >> num;
-		std::cout << num << "\n";
 		for (sf::Int32 i = 0; i < num; ++i)
 		{
 			Entity::ID id;
@@ -141,13 +140,16 @@ void GameWorld::handlePacket(sf::Packet & packet)
 
 			float x, y;
 			packet >> x >> y;
-			
-			MoveEntity * move = new MoveEntity;
-			move->e = e;
-			move->x = x;
-			move->y = y;
-			//if (e &&( mPlayerEntity = e->getID()))
-				mCommands.emplace_back(move);
+			//if (id != mPlayerEntity)
+			{
+				MoveEntity * move = new MoveEntity;
+				move->e = e;
+				move->x = x;
+				move->y = y;
+				//if (e &&( mPlayerEntity = e->getID()))
+					mCommands.emplace_back(move);
+			}
+
 		}
 		
 	}

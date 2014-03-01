@@ -1,8 +1,10 @@
 #pragma once
 
-#include <vector>
+#include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
+
 
 class ValueParser
 {
@@ -10,49 +12,35 @@ public:
 	ValueParser();
 	~ValueParser();
 
+	bool loadFromFile(const std::string& filename);
+	bool close() const;
 
-	bool loadFromFile(const std::string & name);
-	bool createNewFile(const std::string & name);
-	bool close();
+	bool isChanged() const;
 
-	template <class T>
-	void set(const std::string & key, const T & value);
+	bool get(const std::string& param, std::string &value) const;
+	bool get(const std::string& param, bool &value) const;
+	bool get(const std::string& param, char &value) const;
+	bool get(const std::string& param, int &value) const;
+	bool get(const std::string& param, float &value) const;
 
-	bool get(const std::string & key, float & val);
-	bool get(const std::string & key, int & val);
-	bool get(const std::string & key, std::string & val);
-	bool get(const std::string & key, char & c);
-	bool get(const std::string & key, bool & b);
+	void set(const std::string& param, std::string value);
+	void set(const std::string& param, bool value);
+	void set(const std::string& param, char value);
+	void set(const std::string& param, int value);
+	void set(const std::string& param, float value);
 
 	void printAll()
 	{
-		for (auto & val : mData)
-		{
-			std::cout << val.first <<" "<< val.second << "\n";
-		}
-
+		for (auto & d : m_data)
+			std::cout << d.first << " = " << d.second << std::endl;
 	}
 private:
-	std::size_t getIndexOf(const std::string & key);
+	int findIndex(const std::string& param) const;
+	bool read();
+	bool write() const;
 
-	std::string mFileName;
-	std::vector<std::pair<std::string, std::string>> mData;
+	bool m_isChanged;
+	std::string m_filename;
+	std::vector<std::pair<std::string, std::string> > m_data;
+	size_t m_size;
 };
-
-namespace std
-{
-	std::string to_string(const std::string & s);
-}
-
-template <class T>
-void ValueParser::set(const std::string & key, const T & value)
-{
-	if (mFileName != "")
-	{
-		std::size_t i = getIndexOf(key);
-		if (i != -1)
-			mData[i].second = std::to_string(value);
-		else
-			mData.push_back({ key, std::to_string(value) });
-	}
-}

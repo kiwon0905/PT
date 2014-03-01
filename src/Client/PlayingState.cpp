@@ -49,12 +49,14 @@ void PlayingState::step(Application & app)
 	app.getDesktop().Update(app.TimeStep.asSeconds());
 	mGameWorld.step(app.TimeStep.asSeconds());
 	mPlayer.sync(app.getSocket());
+	mPlayer.update(app.getWindow());
 }
 void PlayingState::draw(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
 	window.clear();
-	mGameWorld.draw();
+	mGameWorld.draw(window);
+	mPlayer.draw(window);
 	window.display();
 }
 void PlayingState::onExit(Application & app)

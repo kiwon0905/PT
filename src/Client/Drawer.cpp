@@ -35,8 +35,14 @@ void Drawer::drawZombie(const Zombie & z)
 	sf::RectangleShape shape;
 	shape.setFillColor(sf::Color::Red);
 	shape.setSize(z.getSize());
-	shape.setPosition(z.getPosition());
+	shape.setOrigin(z.getSize() / 2.f);
+
+
+	shape.setPosition(z.getPosition()+z.getSize()/2.f);
+
+	shape.setOrigin(z.getSize() / 2.f);
 	shape.setRotation(z.getRotation());
+
 	mTarget->draw(shape);
 }
 void Drawer::drawHuman(const Human & h)
@@ -44,7 +50,9 @@ void Drawer::drawHuman(const Human & h)
 	sf::RectangleShape shape;
 	shape.setFillColor(sf::Color::Black);
 	shape.setSize(h.getSize());
-	shape.setPosition(h.getPosition());
+	shape.setOrigin(h.getSize() / 2.f);
+
+	shape.setPosition(h.getPosition() + h.getSize()/2.f);
 	shape.setRotation(h.getRotation());
 	mTarget->draw(shape);
 }

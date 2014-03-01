@@ -17,7 +17,7 @@ std::string  getLocalIp()
 	return inet_ntoa(*(struct in_addr *)*host_entry->h_addr_list);
 }
 
-Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1 / 30.f))
+Server::Server() :TimeStep(sf::seconds(1 / 60.f)), TimeSync(sf::seconds(1 / 60.f))
 {
 	mListener.listen(sf::Socket::AnyPort);
 	mListener.setBlocking(false);

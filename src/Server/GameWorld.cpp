@@ -45,11 +45,10 @@ bool GameWorld::loadFromFile(const std::string & s)
 	parser.printAll();
 	mMapName = s;
 	// get size
-	if (!parser.get("X", mSize.x))
+	if (!parser.get("SizeX", mSize.x))
 		return false;
 
-
-	if (!parser.get("Y", mSize.y))
+	if (!parser.get("SizeY", mSize.y))
 		return false;
 
 	//Load wall data
@@ -138,8 +137,6 @@ void GameWorld::sync(Game & game)
 	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
 		*packet2 << e->getID() << e->getPosition().x << e->getPosition().y;
 	game.pushPacket(nullptr, packet2, true);
-
-	std::cout << sf::Int32(getEntitiesOfType(Entity::Type::Zombie).size()) << " " << sf::Int32(getEntitiesOfType(Entity::Type::Human).size()) << "\n";
 }
 
 
@@ -166,7 +163,22 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		}
 		break;
 	}
-		
+	case GameEvent::RotateEntity:
+	{
+		Entity::ID id;
+		packet >> id;
+		Entity * e = getEntity(id);
+		if (e)
+		{
+			float angle;
+			packet >> angle;
+			RotateEntity * rotate = new RotateEntity;
+			rotate->e = static_cast<DynamicEntity *>(e);
+			rotate->a = angle;
+			mCommands.emplace_back(rotate);
+		}
+	}
+	break;
 	case GameEvent::DestroyEntity:
 		break;
 	default:
