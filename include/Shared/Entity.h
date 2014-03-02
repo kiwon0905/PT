@@ -22,6 +22,7 @@ public:
 	Entity::ID getID();
 	void setPosition(const sf::Vector2f & v);
 	const sf::Vector2f & getPosition() const;
+	const sf::Vector2f & getCenter() const;
 	const sf::Vector2f & getSize() const;
 	void setSize(const sf::Vector2f & v);
 	Type getType() const;

@@ -123,9 +123,8 @@ void GameWorld::step(Game & game)
 
 void GameWorld::sync(Game & game)
 {
-	//update positions
-	//to all peers in the game, broadcast all the entity's position in the world except for himself
-
+	
+	//position
 	sf::Packet * packet = new sf::Packet;
 	*packet << Sv::GameEvent << GameEvent::MoveEntity << sf::Int32(getEntitiesOfType(Entity::Type::Zombie).size());
 	for (Entity * e : getEntitiesOfType(Entity::Type::Zombie))
@@ -137,6 +136,19 @@ void GameWorld::sync(Game & game)
 	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
 		*packet2 << e->getID() << e->getPosition().x << e->getPosition().y;
 	game.pushPacket(nullptr, packet2, true);
+
+	sf::Packet * packet3 = new sf::Packet;
+	*packet3 << Sv::GameEvent << GameEvent::RotateEntity << sf::Int32(getEntitiesOfType(Entity::Type::Zombie).size());
+	for (Entity * e : getEntitiesOfType(Entity::Type::Zombie))
+		*packet3 << e->getID() << static_cast<DynamicEntity*>(e)->getRotation();
+	game.pushPacket(nullptr, packet3, true);
+
+	sf::Packet * packet4 = new sf::Packet;
+	*packet4 << Sv::GameEvent << GameEvent::RotateEntity << sf::Int32(getEntitiesOfType(Entity::Type::Human).size());
+	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
+		*packet4 << e->getID() << static_cast<DynamicEntity*>(e)->getRotation();
+	game.pushPacket(nullptr, packet4, true);
+	
 }
 
 
@@ -176,6 +188,7 @@ void GameWorld::handlePacket(sf::Packet & packet)
 			rotate->e = static_cast<DynamicEntity *>(e);
 			rotate->a = angle;
 			mCommands.emplace_back(rotate);
+			std::cout << "Rotate " << id << " " << angle << " degrees " << std::endl;
 		}
 	}
 	break;

@@ -20,6 +20,11 @@ const sf::Vector2f & Entity::getPosition() const
 {
 	return mPosition;
 }
+
+const sf::Vector2f & Entity::getCenter() const
+{
+	return mPosition + getSize() / 2.f;
+}
 const sf::Vector2f & Entity::getSize() const
 {
 	return mSize;

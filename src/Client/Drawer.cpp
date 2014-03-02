@@ -33,24 +33,29 @@ void Drawer::drawWall(const Wall & w)
 void Drawer::drawZombie(const Zombie & z)
 {
 	sf::RectangleShape shape;
+	shape.setOrigin(z.getSize() / 2.f);
+	
 	shape.setFillColor(sf::Color::Red);
 	shape.setSize(z.getSize());
-	shape.setOrigin(z.getSize() / 2.f);
-
-
-	shape.setPosition(z.getPosition()+z.getSize()/2.f);
-
-	shape.setOrigin(z.getSize() / 2.f);
+	shape.setPosition(z.getPosition() + z.getSize()/2.f);
 	shape.setRotation(z.getRotation());
 
 	mTarget->draw(shape);
+
+	sf::RectangleShape s;
+	s.setPosition(z.getPosition());
+	s.setSize({ 7.f, 7.f });
+	s.setOrigin(3.5f, 3.5f);
+
+	mTarget->draw(s);
 }
 void Drawer::drawHuman(const Human & h)
 {
 	sf::RectangleShape shape;
+	shape.setOrigin(h.getSize() / 2.f);
 	shape.setFillColor(sf::Color::Black);
 	shape.setSize(h.getSize());
-	shape.setOrigin(h.getSize() / 2.f);
+
 
 	shape.setPosition(h.getPosition() + h.getSize()/2.f);
 	shape.setRotation(h.getRotation());

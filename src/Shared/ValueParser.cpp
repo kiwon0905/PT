@@ -95,7 +95,7 @@ bool ValueParser::isChanged() const
 
 int ValueParser::findIndex(const std::string& param) const
 {
-	for (int i = 0; i < m_size; ++i)
+	for (std::size_t i = 0; i < m_size; ++i)
 	{
 		if (m_data[i].first[0] == '#')
 			continue;

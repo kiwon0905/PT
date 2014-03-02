@@ -140,18 +140,40 @@ void GameWorld::handlePacket(sf::Packet & packet)
 
 			float x, y;
 			packet >> x >> y;
-			//if (id != mPlayerEntity)
+			
+			if (id != mPlayerEntity && e)
 			{
 				MoveEntity * move = new MoveEntity;
 				move->e = e;
 				move->x = x;
 				move->y = y;
-				//if (e &&( mPlayerEntity = e->getID()))
-					mCommands.emplace_back(move);
+				mCommands.emplace_back(move);
 			}
+		}		
+	}
+		break;
 
+	case GameEvent::RotateEntity:
+	{
+		sf::Int32 num;
+		packet >> num;
+		for (sf::Int32 i = 0; i < num; ++i)
+		{
+			Entity::ID id;
+			packet >> id;
+			Entity * e = getEntity(id);
+
+			float a;
+			packet >> a;
+
+			if (id != mPlayerEntity && e)
+			{
+				RotateEntity * rotate = new RotateEntity;
+				rotate->e = static_cast<DynamicEntity *>(e);
+				rotate->a = a;
+				mCommands.emplace_back(rotate);
+			}
 		}
-		
 	}
 		break;
 	case GameEvent::DestroyEntity:
