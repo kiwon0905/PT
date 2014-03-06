@@ -82,13 +82,28 @@ void GameWorld::step(float dt)
 {
 	removeDeadEntities();
 
+	
+
 	for (auto & command : mCommands)
 		(*command)();
 	mCommands.clear();
 	
 	Entity * player =getEntity(mPlayerEntity);
 	if (player)
+	{
 		player->update(dt);
+		for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
+		{
+			Wall * wall = static_cast<Wall*>(e);
+			sf::FloatRect intersection;
+			if (player->getAABB().intersects(wall->getAABB(), intersection))
+			{
+
+			}
+			
+		}
+	}
+
 
 
 	mDrawer.update(dt);
