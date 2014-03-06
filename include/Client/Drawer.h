@@ -24,7 +24,6 @@ public:
 	void drawPickUp(const PickUp & p);
 	void drawBullet(const Bullet & b);
 
-	void drawTexture(const std::string & s);
 
 	thor::Connection addEmitter(thor::UniversalEmitter & emitter);
 	thor::Connection addEmitter(thor::UniversalEmitter &, sf::Time);

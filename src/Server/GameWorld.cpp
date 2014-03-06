@@ -188,7 +188,6 @@ void GameWorld::handlePacket(sf::Packet & packet)
 			rotate->e = static_cast<DynamicEntity *>(e);
 			rotate->a = angle;
 			mCommands.emplace_back(rotate);
-			std::cout << "Rotate " << id << " " << angle << " degrees " << std::endl;
 		}
 	}
 	break;

@@ -21,6 +21,7 @@ void GameWorld::initialize(Textures & textures, sf::RenderTarget & target)
 	mDrawer.setTextures(textures);
 
 	textures.get("assets/background.png")->setRepeated(true);
+	textures.get("assets/background.png")->setSmooth(true);
 }
 
 Entity * GameWorld::getEntity(Entity::ID id)
@@ -93,9 +94,13 @@ void GameWorld::step(float dt)
 	mDrawer.update(dt);
 }
 
-void GameWorld::draw(sf::RenderWindow & window)
+void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 {
-	mDrawer.drawTexture("assets/background.png");
+	sf::Texture & texture = *textures.get("assets/background.png");
+	sf::Sprite background;
+	background.setTexture(texture);
+	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
+	window.draw(background);
 
 	for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
 		mDrawer.drawWall(static_cast<Wall &>(*e));

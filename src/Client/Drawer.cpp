@@ -34,16 +34,16 @@ void Drawer::drawZombie(const Zombie & z)
 {
 	sf::RectangleShape shape;
 	shape.setOrigin(z.getSize() / 2.f);
-	
 	shape.setFillColor(sf::Color::Red);
 	shape.setSize(z.getSize());
+
 	shape.setPosition(z.getPosition() + z.getSize()/2.f);
 	shape.setRotation(z.getRotation());
 
 	mTarget->draw(shape);
 
 	sf::RectangleShape s;
-	s.setPosition(z.getPosition());
+	s.setPosition(z.getCenter());
 	s.setSize({ 7.f, 7.f });
 	s.setOrigin(3.5f, 3.5f);
 
@@ -68,12 +68,4 @@ void Drawer::drawPickUp(const PickUp & p)
 void Drawer::drawBullet(const Bullet & b)
 {
 
-}
-
-void Drawer::drawTexture(const std::string & s)
-{
-	sf::Sprite sprite;
-	sprite.setTextureRect(sf::IntRect(0, 0, 800, 600));
-	sprite.setTexture(*mTextures->get(s));
-	mTarget->draw(sprite);
 }

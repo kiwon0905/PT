@@ -41,13 +41,13 @@ void Player::update(sf::RenderWindow & window)
 {
 	if (mEntity)
 	{
-		sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-		sf::Vector2f d = mousePos - static_cast<sf::Vector2f>(window.mapCoordsToPixel(mEntity->getCenter()));
-		float angle = std::atan2f(d.y, d.x);
-		mEntity->setRotation(thor::toDegree(angle));
-
+		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+		mousePos = window.mapPixelToCoords(sf::Vector2i(mousePos));
+		sf::Vector2f center = mEntity->getCenter();
+		sf::Vector2f d = mousePos - center;
 	
-
+		float angle = thor::toDegree(std::atan2f(d.y, d.x));
+		mEntity->setRotation(angle);
 	}
 
 }

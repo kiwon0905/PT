@@ -29,7 +29,7 @@ public:
 	void reset();
 
 	void step(float dt);
-	void draw(sf::RenderWindow & window);
+	void draw(Textures & textures, sf::RenderWindow & window);
 
 	void setPlayerEntity(Entity::ID id);
 

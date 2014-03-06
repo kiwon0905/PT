@@ -55,7 +55,7 @@ void PlayingState::draw(Application & app)
 {
 	sf::RenderWindow & window = app.getWindow();
 	window.clear();
-	mGameWorld.draw(window);
+	mGameWorld.draw(app.getTextures(), window);
 	mPlayer.draw(window);
 	window.display();
 }
