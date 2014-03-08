@@ -43,12 +43,9 @@ void Drawer::drawZombie(const Zombie & z)
 	mTarget->draw(shape);
 
 	sf::RectangleShape s;
-	s.setFillColor(sf::Color::Transparent);
-	s.setOutlineThickness(5.f);
-	s.setOutlineColor(sf::Color::Yellow);
-	sf::FloatRect bound = z.getAABB();
-	s.setSize({ bound.width, bound.height });
-	s.setPosition(bound.left, bound.top);
+	s.setPosition(z.getCenter());
+	s.setSize({ 7.f, 7.f });
+	s.setOrigin(3.5f, 3.5f);
 
 	mTarget->draw(s);
 }

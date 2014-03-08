@@ -7,7 +7,6 @@ mAudioPlayer(mSoundBuffers)
 {
 	mWindow.resetGLStates();
 	mSocket.setBlocking(false);
-	mWindow.setFramerateLimit(60);
 }
 
 

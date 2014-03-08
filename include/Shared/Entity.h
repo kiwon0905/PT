@@ -20,7 +20,6 @@ public:
 	virtual ~Entity()=default;
 
 	Entity::ID getID();
-	void move(const sf::Vector2f & v);
 	void setPosition(const sf::Vector2f & v);
 	const sf::Vector2f & getPosition() const;
 	const sf::Vector2f & getCenter() const;
