@@ -4,21 +4,13 @@
 #include "Shared/Zombie.h"
 #include "Shared/PickUp.h"
 
-void Drawer::setTextures(Textures & textures)
-{
-	mTextures = &textures;
-}
 
-void Drawer::setTarget(sf::RenderTarget & target)
-{
-	mTarget = &target;
-}
 void Drawer::update(float dt)
 {
 	mParticles.update(sf::seconds(dt));
 }
 
-void Drawer::drawWall(const Wall & w)
+void Drawer::drawWall(Textures & textures, sf::RenderWindow & window, const Wall & w)
 {
 	sf::RectangleShape wall;
 	wall.setSize(w.getSize());
@@ -26,11 +18,11 @@ void Drawer::drawWall(const Wall & w)
 	wall.setFillColor(sf::Color::Transparent);
 	wall.setOutlineThickness(5.f);
 	wall.setOutlineColor(sf::Color::Blue);
-	mTarget->draw(wall);
+	window.draw(wall);
 }
 
 
-void Drawer::drawZombie(const Zombie & z)
+void Drawer::drawZombie(Textures & textures, sf::RenderWindow & window, const Zombie & z)
 {
 	sf::RectangleShape shape;
 	shape.setOrigin(z.getSize() / 2.f);
@@ -40,16 +32,16 @@ void Drawer::drawZombie(const Zombie & z)
 	shape.setPosition(z.getPosition() + z.getSize()/2.f);
 	shape.setRotation(z.getRotation());
 
-	mTarget->draw(shape);
+	window.draw(shape);
 
 	sf::RectangleShape s;
 	s.setPosition(z.getCenter());
 	s.setSize({ 7.f, 7.f });
 	s.setOrigin(3.5f, 3.5f);
 
-	mTarget->draw(s);
+
 }
-void Drawer::drawHuman(const Human & h)
+void Drawer::drawHuman(Textures & textures, sf::RenderWindow & window, const Human & h)
 {
 	sf::RectangleShape shape;
 	shape.setOrigin(h.getSize() / 2.f);
@@ -59,13 +51,13 @@ void Drawer::drawHuman(const Human & h)
 
 	shape.setPosition(h.getPosition() + h.getSize()/2.f);
 	shape.setRotation(h.getRotation());
-	mTarget->draw(shape);
+	window.draw(shape);
 }
-void Drawer::drawPickUp(const PickUp & p)
+void Drawer::drawPickUp(Textures & textures, sf::RenderWindow & window, const PickUp & p)
 {
 
 }
-void Drawer::drawBullet(const Bullet & b)
+void Drawer::drawBullet(Textures & textures, sf::RenderWindow & window, const Bullet & b)
 {
 
 }

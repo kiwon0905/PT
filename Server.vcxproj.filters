@@ -8,9 +8,6 @@
       <Filter>Server</Filter>
     </ClCompile>
     <ClCompile Include="src\Server\Main.cpp" />
-    <ClCompile Include="src\Server\GameWorld.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\Shared\EntityManager.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -41,7 +38,13 @@
     <ClCompile Include="src\Shared\GameEvent.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Server\Game.cpp">
+    <ClCompile Include="src\Server\ServerGameWorld.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Server\ServerGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shared\GameMap.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,9 +71,6 @@
     </ClInclude>
     <ClInclude Include="include\Shared\NetProtocol.h">
       <Filter>Server</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Server\GameWorld.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Shared\EntityManager.h">
       <Filter>Game</Filter>
@@ -103,7 +103,13 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="include\Shared\Icon.h" />
-    <ClInclude Include="include\Server\Game.h">
+    <ClInclude Include="include\Server\ServerGameWorld.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Server\ServerGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\GameMap.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

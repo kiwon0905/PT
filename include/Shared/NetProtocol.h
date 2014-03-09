@@ -20,7 +20,9 @@ enum class Sv : sf::Int32
 	PlayerJoined,
 	PlayerDisconnected,
 	Chat, 
-	GameStarted, //name
+
+	LoadGame,
+	StartGame,
 	GameMapData,
 	PlayersData,
 	GameEvent

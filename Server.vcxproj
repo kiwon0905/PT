@@ -81,8 +81,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Server\Game.cpp" />
-    <ClCompile Include="src\Server\GameWorld.cpp" />
+    <ClCompile Include="src\Server\ServerGame.cpp" />
+    <ClCompile Include="src\Server\ServerGameWorld.cpp" />
     <ClCompile Include="src\Server\Main.cpp" />
     <ClCompile Include="src\Server\Peer.cpp" />
     <ClCompile Include="src\Server\Server.cpp" />
@@ -90,6 +90,7 @@
     <ClCompile Include="src\Shared\Entity.cpp" />
     <ClCompile Include="src\Shared\EntityManager.cpp" />
     <ClCompile Include="src\Shared\GameEvent.cpp" />
+    <ClCompile Include="src\Shared\GameMap.cpp" />
     <ClCompile Include="src\Shared\Human.cpp" />
     <ClCompile Include="src\Shared\PickUp.cpp" />
     <ClCompile Include="src\Shared\StaticEntity.cpp" />
@@ -98,14 +99,15 @@
     <ClCompile Include="src\Shared\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Server\Game.h" />
-    <ClInclude Include="include\Server\GameWorld.h" />
+    <ClInclude Include="include\Server\ServerGame.h" />
+    <ClInclude Include="include\Server\ServerGameWorld.h" />
     <ClInclude Include="include\Server\Peer.h" />
     <ClInclude Include="include\Server\Server.h" />
     <ClInclude Include="include\Shared\DynamicEntity.h" />
     <ClInclude Include="include\Shared\Entity.h" />
     <ClInclude Include="include\Shared\EntityManager.h" />
     <ClInclude Include="include\Shared\GameEvent.h" />
+    <ClInclude Include="include\Shared\GameMap.h" />
     <ClInclude Include="include\Shared\Human.h" />
     <ClInclude Include="include\Shared\Icon.h" />
     <ClInclude Include="include\Shared\NetProtocol.h" />

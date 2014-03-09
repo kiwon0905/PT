@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Client/GameState.h"
-#include "Client/GameWorld.h"
+#include "Client/ClientGameWorld.h"
+#include "Client/ClientGame.h"
 #include "Client/Player.h"
 #include <string>
 
@@ -31,10 +32,6 @@ private:
 	void handlePackets(Application & app);
 	void handlePacket(Application & app, sf::Packet & packet);
 
-	void onGameMapData(sf::Packet & packet);
-	void onPlayersData(sf::Packet & packet);
-
-	GameWorld mGameWorld;
-	Player mPlayer;
+	Game mGame;
 };
 

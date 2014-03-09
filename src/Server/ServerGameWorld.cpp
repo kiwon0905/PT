@@ -1,5 +1,5 @@
-#include "Server/GameWorld.h"
-#include "Server/Game.h"
+#include "Server/ServerGameWorld.h"
+#include "Server/ServerGame.h"
 #include "Shared/ValueParser.h"
 #include "Shared/Wall.h"
 #include "Shared/NetProtocol.h"
@@ -34,52 +34,17 @@ std::vector<Entity *> & GameWorld::getEntitiesOfType(Entity::Type t)
 	return mEntitiesByType.at(static_cast<std::size_t>(t));
 }
 
-bool GameWorld::loadFromFile(const std::string & s)
+void GameWorld::loadMap(const std::string & s)
 {
-	//Open file
-	ValueParser parser;
-	
+	mGameMap.loadFromFile(s);
 
-	if (!parser.loadFromFile(s))
-		return false;
-	parser.printAll();
-	mMapName = s;
-	// get size
-	if (!parser.get("SizeX", mSize.x))
-		return false;
-
-	if (!parser.get("SizeY", mSize.y))
-		return false;
-
-	//Load wall data
-	int wallCount = 0;
-	if (!parser.get("WallCount", wallCount))
-		return false;
-	
-	for (int i = 0; i < wallCount; ++i)
+	for (auto & wall : mGameMap.getWalls())
 	{
-		float x, y, width, height;
-		if (!parser.get("Wall" + std::to_string(i) + "X", x))
-			return false;
-
-		if (!parser.get("Wall" + std::to_string(i) + "Y", y))
-			return false;
-
-		if (!parser.get("Wall" + std::to_string(i) + "Width", width))
-			return false;
-
-		if (!parser.get("Wall" + std::to_string(i) + "Height", height))
-			return false;
-
-		Wall * wall = createEntity<Wall>(Entity::Type::Wall);
-		wall->setPosition({ x, y });
-		wall->setSize({ width, height });
-
-		addEntity(wall->getID());
+		Wall * w = createEntity<Wall>(Entity::Type::Wall);
+		w->setPosition({ wall.left, wall.top });
+		w->setSize({ wall.width, wall.height });
+		addEntity(w->getID());
 	}
-
-	std::cout << "Wall count: " << sf::Int32(mEntitiesByType.at(static_cast<std::size_t>(Entity::Type::Wall)).size()) << "\n";
-	return true;
 }
 
 void GameWorld::leave(Peer * p, Game & game)

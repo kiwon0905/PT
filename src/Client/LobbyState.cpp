@@ -93,8 +93,8 @@ void LobbyState::handlePacket(Application & app, sf::Packet & packet)
 	case Sv::Chat:
 		onChat(app, packet);
 		break;
-	case Sv::GameStarted:
-		std::cout << "game started!" << std::endl;
+	case Sv::LoadGame:
+		std::cout << "game loading!" << std::endl;
 		app.push(new PlayingState);
 		break;
 	default:

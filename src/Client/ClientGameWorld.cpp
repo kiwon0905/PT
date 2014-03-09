@@ -1,4 +1,4 @@
-#include "Client/GameWorld.h"
+#include "Client/ClientGameWorld.h"
 #include "Shared/ValueParser.h"
 #include "Shared/Wall.h"
 #include "Shared/GameEvent.h"
@@ -13,15 +13,6 @@ GameWorld::GameWorld()
 
 GameWorld::~GameWorld()
 {
-}
-
-void GameWorld::initialize(Textures & textures, sf::RenderTarget & target)
-{
-	mDrawer.setTarget(target);
-	mDrawer.setTextures(textures);
-
-	textures.get("assets/background.png")->setRepeated(true);
-	textures.get("assets/background.png")->setSmooth(true);
 }
 
 Entity * GameWorld::getEntity(Entity::ID id)
@@ -82,6 +73,11 @@ void GameWorld::step(float dt)
 {
 	removeDeadEntities();
 
+	for (auto & a : mEntitiesByType)
+		std::cout << a.size() << " ";
+	std::cout << std::endl;
+	std::cout << "Command: "<<mCommands.size() << std::endl;
+
 	for (auto & command : mCommands)
 		(*command)();
 	mCommands.clear();
@@ -97,27 +93,33 @@ void GameWorld::step(float dt)
 void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 {
 	sf::Texture & texture = *textures.get("assets/background.png");
+	texture.setRepeated(true);
+	texture.setSmooth(true);
+
 	sf::Sprite background;
 	background.setTexture(texture);
 	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
 	window.draw(background);
 
 	for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
-		mDrawer.drawWall(static_cast<Wall &>(*e));
+		mDrawer.drawWall(textures, window, static_cast<Wall &>(*e));
 	for (Entity * e : getEntitiesOfType(Entity::Type::PickUp))
-		mDrawer.drawPickUp(static_cast<PickUp &>(*e));
+		mDrawer.drawPickUp(textures, window, static_cast<PickUp &>(*e));
 	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
-		mDrawer.drawHuman(static_cast<Human &>(*e));
+		mDrawer.drawHuman(textures, window, static_cast<Human &>(*e));
 	for (Entity * e : getEntitiesOfType(Entity::Type::Zombie))
-		mDrawer.drawZombie(static_cast<Zombie &>(*e));
+		mDrawer.drawZombie(textures, window, static_cast<Zombie &>(*e));
 	
 	Entity * player = getEntity(mPlayerEntity);
 	if (player)
 	{
+		sf::View view = window.getView();
+		view.setCenter(player->getCenter());
+		window.setView(view);
 		if (player->getType() == Entity::Type::Human)
-			mDrawer.drawHuman(static_cast<Human &>(*player));
+			mDrawer.drawHuman(textures, window, static_cast<Human &>(*player));
 		else if (player->getType() == Entity::Type::Zombie)
-			mDrawer.drawZombie(static_cast<Zombie &>(*player));
+			mDrawer.drawZombie(textures, window, static_cast<Zombie &>(*player));
 	}
 
 }

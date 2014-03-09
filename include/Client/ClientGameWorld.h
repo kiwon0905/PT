@@ -14,11 +14,11 @@ class Application;
 //Client
 class GameWorld
 {
+	friend class PlayingState;
+	friend class Game;
 public:
 	GameWorld();
 	~GameWorld();
-	
-	void initialize(Textures & textures, sf::RenderTarget & target);
 
 	template <class T>
 	T * createEntity(Entity::ID id, Entity::Type type);

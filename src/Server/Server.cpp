@@ -83,7 +83,6 @@ void Server::handlePacket(Peer & peer, sf::Packet & packet)
 		std::string name;
 		packet >> name;
 		peer.setName(name);
-		std::cout << name << " joined the room\n";
 		mGame.join(*this, peer);
 	}
 		break;

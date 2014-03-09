@@ -8,8 +8,7 @@
 #endif
 #endif  // _DEBUG
 
-#include "Server/GameWorld.h"
-#include "Shared/ValueParser.h"
+#include "Server/Server.h"
 int main()
 {
 

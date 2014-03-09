@@ -2,8 +2,8 @@
 
 #include <vector>
 #include "Server/Peer.h"
-#include "Server/GameWorld.h"
-#include "Server/Game.h"
+#include "Server/ServerGameWorld.h"
+#include "Server/ServerGame.h"
 class Server
 {
 public:

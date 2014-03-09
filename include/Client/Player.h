@@ -30,7 +30,7 @@ public:
 	void sync(sf::TcpSocket & socket);
 	void update(sf::RenderWindow & window);
 	void handleEvent(thor::ActionMap<Player::Action> & mActions);
-	void draw(sf::RenderWindow & window);
+
 private:
 	DynamicEntity * mEntity;
 };

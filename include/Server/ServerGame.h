@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include "Shared/NetProtocol.h"
-#include "Server/GameWorld.h"
+#include "Server/ServerGameWorld.h"
 
 class Server;
 class Peer;
@@ -39,7 +39,7 @@ private:
 
 	enum class State
 	{
-		Waiting, //players are in lobby
+		Waiting, //players are in lobby, waiting for players to be ready to recieve map data
 		Loading, //players are downloading map data
 		Playing, //game is playing
 		Ended,
@@ -50,11 +50,10 @@ private:
 	
 	bool playersAreReady();
 	void unreadyPlayers();
+	void initializePlayers();
 
 	GameWorld mGameWorld;
 	std::vector<std::string> mMapList;
-	
 	void loadMaps();
-
 };
 

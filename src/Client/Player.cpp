@@ -70,12 +70,3 @@ void Player::handleEvent(thor::ActionMap<Player::Action> & mActions)
 	}
 	
 }
-void Player::draw(sf::RenderWindow & window)
-{
-	if (mEntity)
-	{
-		sf::View view = window.getDefaultView();
-		view.setCenter(mEntity->getCenter());
-		window.setView(view);
-	}
-}
