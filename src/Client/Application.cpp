@@ -65,6 +65,20 @@ void Application::run()
 	sf::Clock clock;
 	sf::Time elapsed = sf::Time::Zero;
 
+	sf::Http http("http://www.thestudioresource.com/");
+	sf::Http::Request req("/images/larrysm.jpg");
+	sf::Http::Response image_res = http.sendRequest(req);
+
+	const std::string& body = image_res.getBody();
+	
+	sf::Texture trojanLarry;
+	trojanLarry.loadFromMemory(body.data(), body.length());
+
+	sf::Sprite larrySprite;
+	larrySprite.setTexture(trojanLarry);
+	float x = 400 - larrySprite.getGlobalBounds().width / 2;
+	float y = 300 - larrySprite.getGlobalBounds().height / 2;
+	larrySprite.setPosition(x, y);
 	while (!mStates.isEmpty())
 	{
 		mStates.draw(*this);
@@ -80,6 +94,14 @@ void Application::run()
 			mStates.applyChanges(*this);
 		}
 	}
+	sf::Clock larryClock;
+	while (larryClock.getElapsedTime() < sf::seconds(1))
+	{
+	mWindow.clear();
+	mWindow.draw(larrySprite);
+	mWindow.display();
+	}
+
 }
 
 const std::string & Application::getPlayerName() const

@@ -15,6 +15,8 @@
 #include "Client/Application.h"
 #include "Client/SplashState.h"
 
+#include <fstream>
+
 
 int TrojanMain()
 {
@@ -34,6 +36,7 @@ int TrojanMain()
 		std::cout << e.what()<<"\n";
 	}
 	std::cin.get();
+
 #elif defined _DEBUG
 	Application app;
 	app.push(new SplashState);
