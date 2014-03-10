@@ -35,9 +35,12 @@ void Drawer::drawZombie(Textures & textures, sf::RenderWindow & window, const Zo
 	window.draw(shape);
 
 	sf::RectangleShape s;
-	s.setPosition(z.getCenter());
-	s.setSize({ 7.f, 7.f });
-	s.setOrigin(3.5f, 3.5f);
+	s.setPosition(z.getPosition());
+	s.setSize(z.getSize());
+	s.setFillColor(sf::Color::Transparent);
+	s.setOutlineColor(sf::Color::Yellow);
+	s.setOutlineThickness(5.f);
+	window.draw(s);
 
 
 }

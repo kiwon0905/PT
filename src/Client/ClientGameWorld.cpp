@@ -73,19 +73,44 @@ void GameWorld::step(float dt)
 {
 	removeDeadEntities();
 
-	for (auto & a : mEntitiesByType)
-		std::cout << a.size() << " ";
-	std::cout << std::endl;
-	std::cout << "Command: "<<mCommands.size() << std::endl;
-
 	for (auto & command : mCommands)
 		(*command)();
 	mCommands.clear();
-	
+
 	Entity * player =getEntity(mPlayerEntity);
 	if (player)
+	{
 		player->update(dt);
 
+		for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
+		{
+			Wall * wall = static_cast<Wall*>(e);
+			sf::FloatRect intersection;
+			if (wall->getAABB().intersects(player->getAABB(), intersection))
+			{
+				if (intersection.width > intersection.height) //vertical
+				{
+					if (intersection.top < wall->getPosition().y + wall->getSize().y && player->getPosition().y < wall->getPosition().y)
+						player->setPosition(player->getPosition() + sf::Vector2f(0, -intersection.height));
+
+					else if (intersection.top + intersection.height > wall->getPosition().y)
+						player->setPosition(player->getPosition() + sf::Vector2f(0, intersection.height));
+				}
+				else
+				{
+					if (intersection.left < wall->getPosition().x + wall->getSize().x && player->getPosition().x < wall->getPosition().x)
+						player->setPosition(player->getPosition() + sf::Vector2f(-intersection.width, 0));
+
+					else if (intersection.left + intersection.width > wall->getPosition().x)
+						player->setPosition(player->getPosition() + sf::Vector2f(intersection.width, 0));
+				}
+			}
+		}
+
+	
+	
+	}
+		
 
 	mDrawer.update(dt);
 }

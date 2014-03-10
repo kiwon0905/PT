@@ -46,7 +46,7 @@ void Entity::setType(Type type)
 
 sf::FloatRect Entity::getAABB() const
 {
-	return sf::FloatRect(mPosition.x - mSize.x / 2, mPosition.y - mSize.y / 2, mSize.x, mPosition.y);
+	return sf::FloatRect(mPosition.x , mPosition.y , mSize.x, mSize.y);
 }
 bool Entity::isAlive() const
 {
