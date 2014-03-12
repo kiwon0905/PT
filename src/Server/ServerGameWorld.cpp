@@ -46,6 +46,7 @@ void GameWorld::loadMap(const std::string & s)
 		w->setSize({ wall.width, wall.height });
 		addEntity(w->getID());
 	}
+	//std::cout << "width: " << mGameMap.getSize().x << "height: " << mGameMap.getSize().y << std::endl;
 }
 
 void GameWorld::leave(Peer * p, Game & game)
@@ -55,20 +56,22 @@ void GameWorld::leave(Peer * p, Game & game)
 		getEntity(mEntitiesByPeer[p])->kill();
 	
 	sf::Packet * packet = new sf::Packet;
-	*packet << Sv::GameEvent << GameEvent::DestroyEntity << mEntitiesByPeer[p];
+	*packet << Sv::GameEvent << GameEvent::DestroyEntity << sf::Int32(1) << mEntitiesByPeer[p];
 	game.pushPacket(p, packet, true);
 
 	mEntitiesByPeer.erase(p);
 }
 
-void GameWorld::removeDeadEntities()
+void GameWorld::removeDeadEntities(Game & g)
 {
 	//remove dead entities
-	auto isDead = [this](Entity * e)
+	std::vector<Entity::ID> deadEntities;
+	auto isDead = [this, &deadEntities](Entity * e)
 	{
 		if (!e->isAlive())
 		{
 			mEntityMgr.destroy(e->getID());
+			deadEntities.push_back(e->getID());
 			return true;
 		}
 		return false;
@@ -77,19 +80,36 @@ void GameWorld::removeDeadEntities()
 	zombies.erase(std::remove_if(zombies.begin(), zombies.end(), isDead), zombies.end());
 	auto & humans = getEntitiesOfType(Entity::Type::Human);
 	humans.erase(std::remove_if(humans.begin(), humans.end(), isDead), humans.end());
+
+	auto & bullets = getEntitiesOfType(Entity::Type::Bullet);
+	bullets.erase(std::remove_if(bullets.begin(), bullets.end(), isDead), bullets.end());
+
+	if (deadEntities.size() > 0)
+	{
+		sf::Packet * packet = new sf::Packet;
+		*packet << Sv::GameEvent << GameEvent::DestroyEntity << sf::Int32(deadEntities.size());
+		for (Entity::ID id : deadEntities)
+			*packet << id;
+	}
+
 }
 
 void GameWorld::step(Game & game, float dt)
 {
-	removeDeadEntities();
+	removeDeadEntities(game);
 	for (auto & command : mCommands)
 		(*command)();
 	mCommands.clear();
 
 	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 	{
-		static_cast<Bullet*>(e)->update(dt);
+		if (!mGameMap.getBound().intersects(e->getAABB()))
+			e->kill();
+		else
+			static_cast<Bullet*>(e)->update(dt);
+		
 	}
+	std::cout << "Bullet size: " << getEntitiesOfType(Entity::Type::Bullet).size() << std::endl;
 
 }
 

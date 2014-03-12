@@ -98,7 +98,7 @@ void Application::run()
 	mWindow.clear();
 	mWindow.draw(larrySprite);
 	mWindow.display();
-	sf::sleep(sf::seconds(0.03f));
+	sf::sleep(sf::seconds(0.1f));
 
 }
 

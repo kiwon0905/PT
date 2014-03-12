@@ -42,7 +42,7 @@ public:
 
 private:
 
-	void removeDeadEntities();
+	void removeDeadEntities(Game & g);
 
 	std::vector<Entity *> & getEntitiesOfType(Entity::Type t);
 	sf::Vector2f mSize;

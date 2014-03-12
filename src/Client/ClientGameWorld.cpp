@@ -34,16 +34,7 @@ void GameWorld::reset()
 
 bool GameWorld::loadFromFile(const std::string & s)
 {
-	ValueParser parser;
-	parser.loadFromFile(s);
-
-	
-	std::string backgroundTexture;
-	if (parser.get("BackgroundTexture", backgroundTexture))
-		return false;
-	
-
-	return true;
+	return mGameMap.loadFromFile(s);
 }
 
 std::vector<Entity * > & GameWorld::getEntitiesOfType(Entity::Type t)
@@ -67,12 +58,14 @@ void GameWorld::removeDeadEntities()
 	zombies.erase(std::remove_if(zombies.begin(), zombies.end(), isDead), zombies.end());
 	auto & humans = getEntitiesOfType(Entity::Type::Human);
 	humans.erase(std::remove_if(humans.begin(), humans.end(), isDead), humans.end());
+	auto & bullets = getEntitiesOfType(Entity::Type::Bullet);
+	bullets.erase(std::remove_if(bullets.begin(), bullets.end(), isDead), bullets.end());
 }
 
 void GameWorld::step(float dt)
 {
 	removeDeadEntities();
-
+	//std::cout <<"Bullet size: "<< getEntitiesOfType(Entity::Type::Bullet).size() << std::endl;
 	for (auto & command : mCommands)
 		(*command)();
 	mCommands.clear();
@@ -123,7 +116,7 @@ void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 
 	sf::Sprite background;
 	background.setTexture(texture);
-	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
+	background.setTextureRect(sf::IntRect(0, 0, mGameMap.getSize().x, mGameMap.getSize().y));
 	window.draw(background);
 
 	for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
@@ -212,9 +205,17 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		break;
 	case GameEvent::DestroyEntity:
 	{
-		Entity::ID id;
-		packet >> id;
-		getEntity(id)->kill();
+		sf::Int32 num;
+		packet >> num;
+		for (sf::Int32 i = 0; i < num; ++i)
+		{
+			Entity::ID id;
+			packet >> id;
+			if (getEntity(id)->getType() == Entity::Type::Zombie)
+				std::cout << "Destroying zombie\n";
+			getEntity(id)->kill();
+		}
+
 	}
 		break;
 
@@ -223,13 +224,11 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		Entity::ID id;
 		float direction, x, y;
 		packet >> id >> direction >> x >> y;
-		std::cout << "shoot bullet: " << id <<" " << direction <<" " << x <<" "<< y << std::endl;
 		Bullet * b = createEntity<Bullet>(id, Entity::Type::Bullet);
 		b->setPosition({ x, y });
 		b->setDirection(direction);
 		addEntity(b->getID());
 
-		std::cout << getEntitiesOfType(Entity::Type::Bullet).size() << "\n";
 	}
 		break;
 	default:

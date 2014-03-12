@@ -82,6 +82,7 @@ void Game::onGameMapData(sf::Packet & packet)
 
 	packet >> mapName >> wallCount;
 	std::cout << "map data received: " << mapName <<std::endl;
+	mGameWorld.loadFromFile(mapName);
 	for (sf::Int32 i = 0; i < wallCount; ++i)
 	{
 		Entity::ID id;

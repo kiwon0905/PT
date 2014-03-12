@@ -12,7 +12,7 @@ Bullet::Bullet(Entity::ID id) : DynamicEntity(id)
 void Bullet::setDirection(float angle)
 {
 	setRotation(angle);
-	setGoalVelocity({ 400.f, 0 });
+	setGoalVelocity(thor::PolarVector2f(800.f, angle));
 }
 
 

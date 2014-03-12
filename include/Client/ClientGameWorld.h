@@ -5,6 +5,7 @@
 #include "Shared/EntityManager.h"
 #include "Client/Drawer.h"
 #include "Shared/GameEvent.h"
+#include "Shared/GameMap.h"
 
 namespace sf
 {
@@ -44,6 +45,7 @@ private:
 	EntityManager mEntityMgr;
 	std::vector<std::vector<Entity *>> mEntitiesByType;
 	Entity::ID mPlayerEntity;
+	GameMap mGameMap;
 };
 
 template <class T>

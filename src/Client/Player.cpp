@@ -42,7 +42,7 @@ void Player::sync(sf::TcpSocket & socket)
 			if (mEntity->getType() == Entity::Type::Human)
 			{
 				sf::Packet packet;
-				packet << Cl::GameEvent << GameEvent::ShootBullet << mEntity->getRotation() <<mEntity->getPosition().x << mEntity->getPosition().y;
+				packet << Cl::GameEvent << GameEvent::ShootBullet << mEntity->getRotation() << mEntity->getCenter().x << mEntity->getCenter().y;
 				socket.send(packet);
 			}
 		}
@@ -89,10 +89,6 @@ void Player::handleEvent(thor::ActionMap<Player::Action> & mActions)
 		else if (mEntity->getType() == Entity::Type::Human)
 		{
 			mSkill1 = mActions.isActive(Player::Action::Skill1);
-			if (mLastSkill1Used.getElapsedTime() < Human::Skill1CoolDown)
-				mSkill1 = false;
-			else if (mSkill1)
-				mLastSkill1Used.restart();
 		}
 		
 			

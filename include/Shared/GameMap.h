@@ -12,6 +12,7 @@ public:
 	const std::vector<sf::FloatRect> & getWalls();
 	const sf::Vector2f & getSize();
 	const std::string & getName();
+	sf::FloatRect  getBound();
 private:
 	std::string mMapName;
 	sf::Vector2f mSize;

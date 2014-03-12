@@ -63,3 +63,7 @@ const std::string & GameMap::getName()
 {
 	return mMapName;
 }
+sf::FloatRect GameMap::getBound()
+{
+	return sf::FloatRect(0, 0, mSize.x, mSize.y);
+}

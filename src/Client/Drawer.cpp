@@ -63,10 +63,11 @@ void Drawer::drawPickUp(Textures & textures, sf::RenderWindow & window, const Pi
 }
 void Drawer::drawBullet(Textures & textures, sf::RenderWindow & window, const Bullet & b)
 {
-	sf::RectangleShape shape;
+	sf::CircleShape shape;
+	
 	shape.setOrigin(b.getSize() / 2.f);
 	shape.setFillColor(sf::Color::Black);
-	shape.setSize(b.getSize());
+	shape.setRadius(b.getSize().x/2);
 
 
 	shape.setPosition(b.getPosition() + b.getSize() / 2.f);
