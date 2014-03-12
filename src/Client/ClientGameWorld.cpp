@@ -134,6 +134,8 @@ void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 		mDrawer.drawHuman(textures, window, static_cast<Human &>(*e));
 	for (Entity * e : getEntitiesOfType(Entity::Type::Zombie))
 		mDrawer.drawZombie(textures, window, static_cast<Zombie &>(*e));
+	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
+		mDrawer.drawBullet(textures, window, static_cast<Bullet &>(*e));
 	
 	Entity * player = getEntity(mPlayerEntity);
 	if (player)
@@ -213,6 +215,21 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		Entity::ID id;
 		packet >> id;
 		getEntity(id)->kill();
+	}
+		break;
+
+	case GameEvent::ShootBullet:
+	{
+		Entity::ID id;
+		float direction, x, y;
+		packet >> id >> direction >> x >> y;
+		std::cout << "shoot bullet: " << id <<" " << direction <<" " << x <<" "<< y << std::endl;
+		Bullet * b = createEntity<Bullet>(id, Entity::Type::Bullet);
+		b->setPosition({ x, y });
+		b->setDirection(direction);
+		addEntity(b->getID());
+
+		std::cout << getEntitiesOfType(Entity::Type::Bullet).size() << "\n";
 	}
 		break;
 	default:

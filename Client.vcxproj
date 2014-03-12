@@ -23,6 +23,7 @@
     <ClCompile Include="src\Client\Player.cpp" />
     <ClCompile Include="src\Client\PlayingState.cpp" />
     <ClCompile Include="src\Client\SplashState.cpp" />
+    <ClCompile Include="src\Shared\Bullet.cpp" />
     <ClCompile Include="src\Shared\DynamicEntity.cpp" />
     <ClCompile Include="src\Shared\Entity.cpp" />
     <ClCompile Include="src\Shared\EntityManager.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="include\Client\ResourceManager.h" />
     <ClInclude Include="include\Client\SFMLResourceLoader.h" />
     <ClInclude Include="include\Client\SplashState.h" />
+    <ClInclude Include="include\Shared\Bullet.h" />
     <ClInclude Include="include\Shared\DynamicEntity.h" />
     <ClInclude Include="include\Shared\Entity.h" />
     <ClInclude Include="include\Shared\EntityManager.h" />

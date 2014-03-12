@@ -34,9 +34,9 @@ public:
 	void leave(Peer * p, Game & s);
 
 	void sync(Game & g);
-	void step(Game & s);
+	void step(Game & s, float dt);
 
-	void handlePacket(sf::Packet & packet);
+	void handlePacket(Game & g, sf::Packet & packet);
 
 	void loadMap(const std::string & s);
 

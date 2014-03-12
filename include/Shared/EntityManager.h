@@ -4,6 +4,7 @@
 #include "Shared/Zombie.h"
 #include "Shared/PickUp.h"
 #include "Shared/Wall.h"
+#include "Shared/Bullet.h"
 
 class EntityManager
 {
@@ -39,6 +40,8 @@ T * EntityManager::create(Entity::ID id, Entity::Type type)
 	case Entity::Type::Wall:
 		e.reset(new Wall(id));
 		break;
+	case Entity::Type::Bullet:
+		e.reset(new Bullet(id));
 	default:
 		break;
 	}

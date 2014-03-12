@@ -1,7 +1,7 @@
 #pragma once
 
 class DynamicEntity;
-
+#include <SFML/System.hpp>
 namespace sf
 {
 	class TcpSocket;
@@ -12,6 +12,7 @@ namespace thor
 	template <class T>
 	class ActionMap;
 }
+
 class Player
 {
 public:
@@ -25,6 +26,9 @@ public:
 		MoveS,	//270
 		Skill1
 	};
+
+	sf::Clock mLastSkill1Used;
+	bool mSkill1;
 
 	void setEntity(DynamicEntity * e);
 	void sync(sf::TcpSocket & socket);

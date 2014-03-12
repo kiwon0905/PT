@@ -122,7 +122,7 @@ void Game::step(Server & s)
 
 		break;
 	case Game::State::Playing:
-		mGameWorld.step(*this);
+		mGameWorld.step(*this, s.TimeStep.asSeconds());
 		break;
 	case Game::State::Ended:
 		break;
@@ -171,7 +171,7 @@ void Game::handlePacket(Peer & peer, Cl type, sf::Packet & packet)
 	}
 		break;
 	case Cl::GameEvent:
-		mGameWorld.handlePacket(packet);
+		mGameWorld.handlePacket(*this, packet);
 		break;
 	default:
 		break;

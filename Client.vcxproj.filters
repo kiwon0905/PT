@@ -66,6 +66,9 @@
     <ClCompile Include="src\Shared\GameMap.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shared\Bullet.cpp">
+      <Filter>Game\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="include\Shared\GameMap.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shared\Bullet.h">
+      <Filter>Game\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

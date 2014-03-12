@@ -4,6 +4,7 @@
 #include "Shared/Wall.h"
 #include "Shared/NetProtocol.h"
 #include "Shared/GameEvent.h"
+#include "Shared/Bullet.h"
 
 #include <Thor/Math.hpp>
 #include <iostream>
@@ -78,12 +79,18 @@ void GameWorld::removeDeadEntities()
 	humans.erase(std::remove_if(humans.begin(), humans.end(), isDead), humans.end());
 }
 
-void GameWorld::step(Game & game)
+void GameWorld::step(Game & game, float dt)
 {
 	removeDeadEntities();
 	for (auto & command : mCommands)
 		(*command)();
 	mCommands.clear();
+
+	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
+	{
+		static_cast<Bullet*>(e)->update(dt);
+	}
+
 }
 
 void GameWorld::sync(Game & game)
@@ -114,10 +121,15 @@ void GameWorld::sync(Game & game)
 		*packet4 << e->getID() << static_cast<DynamicEntity*>(e)->getRotation();
 	game.pushPacket(nullptr, packet4, true);
 	
+	sf::Packet * packet5 = new sf::Packet;
+	*packet5 << Sv::GameEvent << GameEvent::MoveEntity << sf::Int32(getEntitiesOfType(Entity::Type::Bullet).size());
+	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
+		*packet5 << e->getID() << e->getPosition().x << e->getPosition().y;
+	game.pushPacket(nullptr, packet5, true);
 }
 
 
-void GameWorld::handlePacket(sf::Packet & packet)
+void GameWorld::handlePacket(Game & g, sf::Packet & packet)
 {
 	GameEvent ev;
 	packet >> ev;
@@ -156,6 +168,20 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		}
 	}
 	break;
+	case GameEvent::ShootBullet:
+	{
+		float direction, x, y;
+		packet >> direction >> x>> y;
+		Bullet * bullet = createEntity<Bullet>(Entity::Type::Bullet);
+		bullet->setPosition({ x, y });
+		bullet->setDirection(direction);
+		addEntity(bullet->getID());
+		
+		sf::Packet * packet = new sf::Packet;
+		*packet << Sv::GameEvent << GameEvent::ShootBullet << bullet->getID() << direction << x << y;
+		g.pushPacket(nullptr, packet, true);
+	}
+		break;
 	case GameEvent::DestroyEntity:
 		break;
 	default:

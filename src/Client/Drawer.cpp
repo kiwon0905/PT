@@ -3,6 +3,7 @@
 #include "Shared/Human.h"
 #include "Shared/Zombie.h"
 #include "Shared/PickUp.h"
+#include "Shared/Bullet.h"
 
 
 void Drawer::update(float dt)
@@ -62,5 +63,13 @@ void Drawer::drawPickUp(Textures & textures, sf::RenderWindow & window, const Pi
 }
 void Drawer::drawBullet(Textures & textures, sf::RenderWindow & window, const Bullet & b)
 {
+	sf::RectangleShape shape;
+	shape.setOrigin(b.getSize() / 2.f);
+	shape.setFillColor(sf::Color::Black);
+	shape.setSize(b.getSize());
 
+
+	shape.setPosition(b.getPosition() + b.getSize() / 2.f);
+	shape.setRotation(b.getRotation());
+	window.draw(shape);
 }

@@ -9,7 +9,8 @@ enum class GameEvent : sf::Int32
 {
 	MoveEntity,  //id, x, y
 	RotateEntity, //id, r
-	DestroyEntity
+	DestroyEntity,
+	ShootBullet
 };
 
 struct GameCommand

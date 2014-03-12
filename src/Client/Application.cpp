@@ -94,13 +94,11 @@ void Application::run()
 			mStates.applyChanges(*this);
 		}
 	}
-	sf::Clock larryClock;
-	while (larryClock.getElapsedTime() < sf::seconds(1))
-	{
+
 	mWindow.clear();
 	mWindow.draw(larrySprite);
 	mWindow.display();
-	}
+	sf::sleep(sf::seconds(0.03f));
 
 }
 

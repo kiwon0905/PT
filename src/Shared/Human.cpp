@@ -1,5 +1,6 @@
 #include "Shared/Human.h"
 
+const sf::Time Human::Skill1CoolDown = sf::seconds(0.2f);
 
 Human::Human(Entity::ID id) : DynamicEntity(id)
 {

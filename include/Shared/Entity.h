@@ -13,6 +13,7 @@ public:
 		Zombie,
 		PickUp,
 		Wall,
+		Bullet,
 		Count
 	};
 

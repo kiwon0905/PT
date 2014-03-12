@@ -86,6 +86,7 @@
     <ClCompile Include="src\Server\Main.cpp" />
     <ClCompile Include="src\Server\Peer.cpp" />
     <ClCompile Include="src\Server\Server.cpp" />
+    <ClCompile Include="src\Shared\Bullet.cpp" />
     <ClCompile Include="src\Shared\DynamicEntity.cpp" />
     <ClCompile Include="src\Shared\Entity.cpp" />
     <ClCompile Include="src\Shared\EntityManager.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="include\Server\ServerGameWorld.h" />
     <ClInclude Include="include\Server\Peer.h" />
     <ClInclude Include="include\Server\Server.h" />
+    <ClInclude Include="include\Shared\Bullet.h" />
     <ClInclude Include="include\Shared\DynamicEntity.h" />
     <ClInclude Include="include\Shared\Entity.h" />
     <ClInclude Include="include\Shared\EntityManager.h" />

@@ -3,9 +3,12 @@
 #include <Thor/Input.hpp>
 #include <Thor/Vectors.hpp>
 #include "Shared/DynamicEntity.h"
+#include "Shared/Human.h"
+#include "Shared/Zombie.h"
 #include "Shared/NetProtocol.h"
 #include "Shared/GameEvent.h"
 #include <cmath>
+#include <iostream>
 
 Player::Player() 
 {
@@ -33,6 +36,16 @@ void Player::sync(sf::TcpSocket & socket)
 		
 		packet << Cl::GameEvent << GameEvent::RotateEntity << mEntity->getID() << mEntity->getRotation();
 		socket.send(packet);
+	
+		if (mSkill1)
+		{
+			if (mEntity->getType() == Entity::Type::Human)
+			{
+				sf::Packet packet;
+				packet << Cl::GameEvent << GameEvent::ShootBullet << mEntity->getRotation() <<mEntity->getPosition().x << mEntity->getPosition().y;
+				socket.send(packet);
+			}
+		}
 	}
 
 }
@@ -67,6 +80,25 @@ void Player::handleEvent(thor::ActionMap<Player::Action> & mActions)
 			vel += sf::Vector2f(0, 300);
 
 		mEntity->setGoalVelocity(vel);
+	
+		if (mEntity->getType() == Entity::Type::Zombie)
+		{
+
+		
+		}
+		else if (mEntity->getType() == Entity::Type::Human)
+		{
+			mSkill1 = mActions.isActive(Player::Action::Skill1);
+			if (mLastSkill1Used.getElapsedTime() < Human::Skill1CoolDown)
+				mSkill1 = false;
+			else if (mSkill1)
+				mLastSkill1Used.restart();
+		}
+		
+			
+
 	}
+
+	
 	
 }
