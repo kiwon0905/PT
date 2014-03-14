@@ -211,8 +211,9 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		{
 			Entity::ID id;
 			packet >> id;
-			if (getEntity(id)->getType() == Entity::Type::Zombie)
-				std::cout << "Destroying zombie\n";
+			std::cout << "destroy: " << id << std::endl;
+			//if (getEntity(id)->getType() == Entity::Type::Zombie)
+			//	std::cout << "Destroying zombie\n";
 			getEntity(id)->kill();
 		}
 

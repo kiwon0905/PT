@@ -65,12 +65,11 @@ void Drawer::drawBullet(Textures & textures, sf::RenderWindow & window, const Bu
 {
 	sf::CircleShape shape;
 	
-	shape.setOrigin(b.getSize() / 2.f);
-	shape.setFillColor(sf::Color::Black);
+	shape.setFillColor(sf::Color::Yellow);
 	shape.setRadius(b.getSize().x/2);
 
 
-	shape.setPosition(b.getPosition() + b.getSize() / 2.f);
-	shape.setRotation(b.getRotation());
+	shape.setPosition(b.getPosition());
+
 	window.draw(shape);
 }

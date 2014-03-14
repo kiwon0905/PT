@@ -110,6 +110,14 @@ void Game::handlePacket(sf::Packet & packet)
 
 }
 
+void Game::handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Player::Action> & actions)
+{
+	if (mState == State::Playing)
+	{
+		mPlayer.handleRealtimeEvent(window, actions);
+	}
+}
+
 void Game::handleEvent(thor::ActionMap<Player::Action> & actions)
 {
 	if (mState == State::Playing)

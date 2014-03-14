@@ -5,8 +5,10 @@ Bullet::Bullet(Entity::ID id) : DynamicEntity(id)
 {
 	setType(Entity::Type::Bullet);
 	setSize({ 5.f, 5.f });
-	setAcceleration(3000.f);
-	setMaxSpeed(800);
+	setAcceleration(50000000.f);
+	setMaxSpeed(800);	
+	
+	
 }
 
 void Bullet::setDirection(float angle)

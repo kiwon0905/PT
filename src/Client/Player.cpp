@@ -49,8 +49,15 @@ void Player::sync(sf::TcpSocket & socket)
 	}
 
 }
+
 #include <iostream>
 void Player::update(sf::RenderWindow & window)
+{
+	
+
+}
+
+void Player::handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Player::Action> & actions)
 {
 	if (mEntity)
 	{
@@ -58,25 +65,22 @@ void Player::update(sf::RenderWindow & window)
 		mousePos = window.mapPixelToCoords(sf::Vector2i(mousePos));
 		sf::Vector2f center = mEntity->getCenter();
 		sf::Vector2f d = mousePos - center;
-	
+
 		float angle = thor::toDegree(std::atan2f(d.y, d.x));
 		mEntity->setRotation(angle);
 	}
 
-}
-void Player::handleEvent(thor::ActionMap<Player::Action> & mActions)
-{
 	if (mEntity)
 	{
 		sf::Vector2f vel;
 
-		if (mActions.isActive(Player::Action::MoveE))
+		if (actions.isActive(Player::Action::MoveE))
 			vel += sf::Vector2f(300, 0);
-		if (mActions.isActive(Player::Action::MoveW))
+		if (actions.isActive(Player::Action::MoveW))
 			vel += sf::Vector2f(-300, 0);
-		if (mActions.isActive(Player::Action::MoveN))
+		if (actions.isActive(Player::Action::MoveN))
 			vel += sf::Vector2f(0, -300);
-		if (mActions.isActive(Player::Action::MoveS))
+		if (actions.isActive(Player::Action::MoveS))
 			vel += sf::Vector2f(0, 300);
 
 		mEntity->setGoalVelocity(vel);
@@ -88,12 +92,17 @@ void Player::handleEvent(thor::ActionMap<Player::Action> & mActions)
 		}
 		else if (mEntity->getType() == Entity::Type::Human)
 		{
-			mSkill1 = mActions.isActive(Player::Action::Skill1);
+			mSkill1 = (actions.isActive(Player::Action::Skill1) && mLastSkill1Used.getElapsedTime() > Human::Skill1CoolDown);
+			if (mSkill1)
+				mLastSkill1Used.restart();
 		}
 		
-			
-
 	}
+}
+
+void Player::handleEvent(thor::ActionMap<Player::Action> & actions)
+{
+
 
 	
 	

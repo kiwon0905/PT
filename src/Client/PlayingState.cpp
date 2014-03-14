@@ -39,7 +39,7 @@ void PlayingState::handleEvent(Application & app)
 		app.getActions().pushEvent(ev);
 		mGame.handleEvent(app.getActions());
 	}
-
+	mGame.handleRealtimeEvent(app.getWindow(), app.getActions());
 	handlePackets(app);
 }
 void PlayingState::step(Application & app)

@@ -33,7 +33,9 @@ public:
 	void setEntity(DynamicEntity * e);
 	void sync(sf::TcpSocket & socket);
 	void update(sf::RenderWindow & window);
-	void handleEvent(thor::ActionMap<Player::Action> & mActions);
+
+	void handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Player::Action> & actions);
+	void handleEvent(thor::ActionMap<Player::Action> & actions);
 
 private:
 	DynamicEntity * mEntity;

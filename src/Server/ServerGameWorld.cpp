@@ -70,12 +70,13 @@ void GameWorld::removeDeadEntities(Game & g)
 	{
 		if (!e->isAlive())
 		{
-			mEntityMgr.destroy(e->getID());
 			deadEntities.push_back(e->getID());
+			mEntityMgr.destroy(e->getID());
 			return true;
 		}
 		return false;
 	};
+	
 	auto & zombies = getEntitiesOfType(Entity::Type::Zombie);
 	zombies.erase(std::remove_if(zombies.begin(), zombies.end(), isDead), zombies.end());
 	auto & humans = getEntitiesOfType(Entity::Type::Human);
@@ -90,7 +91,9 @@ void GameWorld::removeDeadEntities(Game & g)
 		*packet << Sv::GameEvent << GameEvent::DestroyEntity << sf::Int32(deadEntities.size());
 		for (Entity::ID id : deadEntities)
 			*packet << id;
+		g.pushPacket(nullptr, packet, true);
 	}
+	deadEntities.clear();
 
 }
 
