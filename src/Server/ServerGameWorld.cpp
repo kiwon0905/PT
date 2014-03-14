@@ -106,14 +106,22 @@ void GameWorld::step(Game & game, float dt)
 
 	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 	{
-		if (!mGameMap.getBound().intersects(e->getAABB()))
+		bool collided = !mGameMap.getBound().intersects(e->getAABB());
+		for (Entity * wall : getEntitiesOfType(Entity::Type::Wall))
+		{
+			if (wall->getAABB().intersects(e->getAABB()))
+			{
+				collided = true;
+				break;
+			}
+			
+		}
+		if (collided)
 			e->kill();
 		else
 			static_cast<Bullet*>(e)->update(dt);
 		
 	}
-	std::cout << "Bullet size: " << getEntitiesOfType(Entity::Type::Bullet).size() << std::endl;
-
 }
 
 void GameWorld::sync(Game & game)

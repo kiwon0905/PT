@@ -116,12 +116,15 @@ void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 
 	sf::Sprite background;
 	background.setTexture(texture);
-	background.setTextureRect(sf::IntRect(0, 0, mGameMap.getSize().x, mGameMap.getSize().y));
+	background.setTextureRect(sf::IntRect(0, 0, static_cast<int>(mGameMap.getSize().x), static_cast<int>(mGameMap.getSize().y)));
 	window.draw(background);
 
+	
+
+	
 	for (Entity * e : getEntitiesOfType(Entity::Type::Wall))
 		mDrawer.drawWall(textures, window, static_cast<Wall &>(*e));
-	for (Entity * e : getEntitiesOfType(Entity::Type::PickUp))
+		for (Entity * e : getEntitiesOfType(Entity::Type::PickUp))
 		mDrawer.drawPickUp(textures, window, static_cast<PickUp &>(*e));
 	for (Entity * e : getEntitiesOfType(Entity::Type::Human))
 		mDrawer.drawHuman(textures, window, static_cast<Human &>(*e));
@@ -129,8 +132,7 @@ void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 		mDrawer.drawZombie(textures, window, static_cast<Zombie &>(*e));
 	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 		mDrawer.drawBullet(textures, window, static_cast<Bullet &>(*e));
-	
-	Entity * player = getEntity(mPlayerEntity);
+		Entity * player = getEntity(mPlayerEntity);
 	if (player)
 	{
 		sf::View view = window.getView();

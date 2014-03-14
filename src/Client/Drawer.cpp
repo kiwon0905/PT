@@ -16,9 +16,9 @@ void Drawer::drawWall(Textures & textures, sf::RenderWindow & window, const Wall
 	sf::RectangleShape wall;
 	wall.setSize(w.getSize());
 	wall.setPosition(w.getPosition());
-	wall.setFillColor(sf::Color::Transparent);
-	wall.setOutlineThickness(5.f);
-	wall.setOutlineColor(sf::Color::Blue);
+	wall.setFillColor(sf::Color::Blue);
+
+
 	window.draw(wall);
 }
 
