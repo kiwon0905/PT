@@ -6,6 +6,7 @@
 #include "Shared/GameEvent.h"
 #include "Shared/Bullet.h"
 
+#include <Thor/Vectors.hpp>
 #include <Thor/Math.hpp>
 #include <iostream>
 
@@ -104,6 +105,8 @@ void GameWorld::step(Game & game, float dt)
 		(*command)();
 	mCommands.clear();
 
+
+	//Bullet collision against wall
 	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 	{
 		bool collided = !mGameMap.getBound().intersects(e->getAABB());
@@ -121,6 +124,28 @@ void GameWorld::step(Game & game, float dt)
 		else
 			static_cast<Bullet*>(e)->update(dt);
 		
+	}
+
+	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
+	{
+		bool collided = false;
+		for (Entity * zombie : getEntitiesOfType(Entity::Type::Zombie))
+		{
+
+			if (zombie->getAABB().intersects(e->getAABB()))
+			{
+				collided = true;
+				break;
+			}
+
+		}
+		if (collided)
+		{
+			e->kill();
+		}
+
+		else
+			static_cast<Bullet*>(e)->update(dt);
 	}
 }
 
@@ -201,11 +226,20 @@ void GameWorld::handlePacket(Game & g, sf::Packet & packet)
 	break;
 	case GameEvent::ShootBullet:
 	{
+		Entity::ID id;
+
+
 		float direction, x, y;
-		packet >> direction >> x>> y;
+		packet >> id >> direction >> x>> y;
+		
+		Human * entity = static_cast<Human*>(getEntity(id));
+		
+
 		Bullet * bullet = createEntity<Bullet>(Entity::Type::Bullet);
 		bullet->setPosition({ x, y });
-		bullet->setDirection(direction);
+		bullet->setDirection(thor::randomDev(direction, thor::length(entity->getVelocity())/100 + 1));
+
+
 		addEntity(bullet->getID());
 		
 		sf::Packet * packet = new sf::Packet;

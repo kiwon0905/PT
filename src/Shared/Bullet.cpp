@@ -6,7 +6,7 @@ Bullet::Bullet(Entity::ID id) : DynamicEntity(id)
 	setType(Entity::Type::Bullet);
 	setSize({ 5.f, 5.f });
 	setAcceleration(50000000.f);
-	setMaxSpeed(800);	
+	setMaxSpeed(400);	
 	
 	
 }
@@ -14,7 +14,7 @@ Bullet::Bullet(Entity::ID id) : DynamicEntity(id)
 void Bullet::setDirection(float angle)
 {
 	setRotation(angle);
-	setGoalVelocity(thor::PolarVector2f(800.f, angle));
+	setGoalVelocity(thor::PolarVector2f(400.f, angle));
 }
 
 

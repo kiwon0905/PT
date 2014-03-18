@@ -43,6 +43,10 @@ void DynamicEntity::setRotation(float angle)
 {
 	mRotation = angle;
 }
+const sf::Vector2f & DynamicEntity::getVelocity()
+{
+	return mCurrentVelocity;
+}
 void DynamicEntity::setGoalVelocity(sf::Vector2f speed)
 {
 	mGoalVelocity = speed;
@@ -50,4 +54,13 @@ void DynamicEntity::setGoalVelocity(sf::Vector2f speed)
 void DynamicEntity::setMaxSpeed(float speed)
 {
 	mMaxSpeed = speed;
+}
+
+void DynamicEntity::setRemotePosition(const sf::Vector2f & v)
+{
+	mRemotePosition = v;
+}
+const sf::Vector2f & DynamicEntity::getRemotePosition()
+{
+	return mRemotePosition;
 }

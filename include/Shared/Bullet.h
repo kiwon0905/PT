@@ -6,7 +6,9 @@ class Bullet : public DynamicEntity
 {
 public:
 	Bullet(Entity::ID id);
+	~Bullet();	
+	
 	void setDirection(float angle);
-	~Bullet();
+	//const static
 };
 

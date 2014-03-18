@@ -170,14 +170,17 @@ void GameWorld::handlePacket(sf::Packet & packet)
 			float x, y;
 			packet >> x >> y;
 			
-			if (id != mPlayerEntity && e)
-			{
-				MoveEntity * move = new MoveEntity;
-				move->e = e;
-				move->x = x;
-				move->y = y;
-				mCommands.emplace_back(move);
-			}
+
+				if (id != mPlayerEntity && e)
+				{
+					MoveEntity * move = new MoveEntity;
+					move->e = e;
+					move->x = x;
+					move->y = y;
+					mCommands.emplace_back(move);
+				}
+	
+
 		}		
 	}
 		break;
@@ -213,9 +216,6 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		{
 			Entity::ID id;
 			packet >> id;
-			std::cout << "destroy: " << id << std::endl;
-			//if (getEntity(id)->getType() == Entity::Type::Zombie)
-			//	std::cout << "Destroying zombie\n";
 			getEntity(id)->kill();
 		}
 

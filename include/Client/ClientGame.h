@@ -20,6 +20,7 @@ public:
 	void onGameMapData(sf::Packet & packet);
 	void handlePacket(sf::Packet & packet);
 
+	void handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Player::Action> & actions);
 	void handleEvent(thor::ActionMap<Player::Action> & actions);
 	void step(sf::RenderWindow & window, sf::TcpSocket & socket, float dt);
 	void draw(Textures & textures, sf::RenderWindow & window);

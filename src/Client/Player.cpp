@@ -42,7 +42,7 @@ void Player::sync(sf::TcpSocket & socket)
 			if (mEntity->getType() == Entity::Type::Human)
 			{
 				sf::Packet packet;
-				packet << Cl::GameEvent << GameEvent::ShootBullet << mEntity->getRotation() << mEntity->getCenter().x << mEntity->getCenter().y;
+				packet << Cl::GameEvent << GameEvent::ShootBullet <<mEntity->getID() << mEntity->getRotation() << mEntity->getCenter().x << mEntity->getCenter().y;
 				socket.send(packet);
 			}
 		}
