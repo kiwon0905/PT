@@ -54,11 +54,20 @@ void GameWorld::leave(Peer * p, Game & game)
 {
 	//if this peer has an entity associated with it, kill it
 	if (mEntitiesByPeer.count(p) == 1)
-		getEntity(mEntitiesByPeer[p])->kill();
+	{
+		Entity * e = getEntity(mEntitiesByPeer[p]);
+		if (e)
+		{
+			e->kill();
+		sf::Packet * packet = new sf::Packet;
+		*packet << Sv::GameEvent << GameEvent::DestroyEntity << sf::Int32(1) << mEntitiesByPeer[p];
+		game.pushPacket(p, packet, true);
+		}
+
+	}
+
 	
-	sf::Packet * packet = new sf::Packet;
-	*packet << Sv::GameEvent << GameEvent::DestroyEntity << sf::Int32(1) << mEntitiesByPeer[p];
-	game.pushPacket(p, packet, true);
+
 
 	mEntitiesByPeer.erase(p);
 }
@@ -129,7 +138,9 @@ void GameWorld::step(Game & game, float dt)
 
 	}
 
-	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
+	for
+	
+		(Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 	{
 
 		for (Entity * zombie : getEntitiesOfType(Entity::Type::Zombie))
@@ -138,6 +149,7 @@ void GameWorld::step(Game & game, float dt)
 			if (zombie->getAABB().intersects(e->getAABB()))
 			{
 				static_cast<Zombie*>(zombie)->takeDamage(Bullet::Damage);
+				e->kill();
 				break;
 				
 			}
