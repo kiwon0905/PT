@@ -1,6 +1,8 @@
 #include "Shared/Bullet.h"
 #include <Thor/Vectors.hpp> 
 
+const sf::Int32 Bullet::Damage = 10;
+
 Bullet::Bullet(Entity::ID id) : DynamicEntity(id)
 {
 	setType(Entity::Type::Bullet);

@@ -106,6 +106,11 @@ void GameWorld::step(Game & game, float dt)
 	mCommands.clear();
 
 
+	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
+	{
+		static_cast<Bullet*>(e)->update(dt);
+	}
+
 	//Bullet collision against wall
 	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 	{
@@ -117,35 +122,28 @@ void GameWorld::step(Game & game, float dt)
 				collided = true;
 				break;
 			}
-			
+
 		}
 		if (collided)
 			e->kill();
-		else
-			static_cast<Bullet*>(e)->update(dt);
-		
+
 	}
 
 	for (Entity * e : getEntitiesOfType(Entity::Type::Bullet))
 	{
-		bool collided = false;
+
 		for (Entity * zombie : getEntitiesOfType(Entity::Type::Zombie))
 		{
 
 			if (zombie->getAABB().intersects(e->getAABB()))
 			{
-				collided = true;
+				static_cast<Zombie*>(zombie)->takeDamage(Bullet::Damage);
 				break;
+				
 			}
 
 		}
-		if (collided)
-		{
-			e->kill();
-		}
 
-		else
-			static_cast<Bullet*>(e)->update(dt);
 	}
 }
 

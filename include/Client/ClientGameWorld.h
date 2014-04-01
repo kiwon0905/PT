@@ -12,13 +12,14 @@ namespace sf
 	class Packet;
 }
 class Application;
+class Player;
 //Client
 class GameWorld
 {
 	friend class PlayingState;
 	friend class Game;
 public:
-	GameWorld();
+	GameWorld(Player * p);
 	~GameWorld();
 
 	template <class T>
@@ -45,6 +46,7 @@ private:
 	EntityManager mEntityMgr;
 	std::vector<std::vector<Entity *>> mEntitiesByType;
 	Entity::ID mPlayerEntity;
+	Player * mPlayer;
 	GameMap mGameMap;
 };
 

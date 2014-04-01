@@ -5,7 +5,7 @@
 #include "Client/ClientGame.h"
 
 
-Game::Game() :mState(State::Waiting)
+Game::Game() :mState(State::Waiting), mGameWorld(&mPlayer)
 {
 }
 

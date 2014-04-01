@@ -5,7 +5,7 @@
 #include "Client/Application.h"
 #include "Shared/NetProtocol.h"
 
-GameWorld::GameWorld() 
+GameWorld::GameWorld(Player * player) : mPlayer(player)
 {
 	mEntitiesByType.resize(static_cast<std::size_t>(Entity::Type::Count));
 }
@@ -217,7 +217,17 @@ void GameWorld::handlePacket(sf::Packet & packet)
 		{
 			Entity::ID id;
 			packet >> id;
-			getEntity(id)->kill();
+
+
+			if (id == mPlayerEntity)
+			{
+				std::cout << "i'm dead\n";
+				mPlayer->setEntity(nullptr);
+				getEntity(id)->kill();
+				mEntityMgr.destroy(id);
+			}
+			else
+				getEntity(id)->kill();
 		}
 
 	}

@@ -2,7 +2,7 @@
 
 const sf::Int32 Zombie::MaxHealth = 100;
 
-Zombie::Zombie(Entity::ID id) : DynamicEntity(id)
+Zombie::Zombie(Entity::ID id) : DynamicEntity(id), mHealth(MaxHealth)
 {
 	setType(Entity::Type::Zombie);
 	setSize({ 50.f, 50.f });
