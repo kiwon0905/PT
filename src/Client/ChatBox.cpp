@@ -49,6 +49,13 @@ ChatBox::ChatBox(const sf::Vector2f & windowSize, const sf::Vector2f & entrySize
 ChatBox::~ChatBox()
 {
 }
+void ChatBox::send()
+{
+	sf::Packet packet;
+	packet << Cl::Chat << mEntry->GetText().toAnsiString();
+	mSocket->send(packet);
+	mEntry->SetText("");
+}
 void ChatBox::setVisible(bool visible)
 {
 	mWindow->Show(visible);

@@ -20,7 +20,7 @@ public:
 	void setPosition(const sf::Vector2f & v);
 	void setBufferLimit(std::size_t i);
 	void push(const std::string & s);
-
+	void send();
 	void add(sfg::Desktop & desktop);
 	void remove(sfg::Desktop & desktop);
 

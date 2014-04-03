@@ -65,20 +65,23 @@ void Application::run()
 	sf::Clock clock;
 	sf::Time elapsed = sf::Time::Zero;
 
-	sf::Http http("http://www.thestudioresource.com/");
-	sf::Http::Request req("/images/larrysm.jpg");
-	sf::Http::Response image_res = http.sendRequest(req);
 
-	const std::string& body = image_res.getBody();
-	
 	sf::Texture trojanLarry;
-	trojanLarry.loadFromMemory(body.data(), body.length());
+	
+	auto downloadLarry = [&trojanLarry]()
+	{ 
+		sf::Http http("http://www.thestudioresource.com/");
+		sf::Http::Request req("/images/larrysm.jpg");
+		sf::Http::Response image_res = http.sendRequest(req);
 
-	sf::Sprite larrySprite;
-	larrySprite.setTexture(trojanLarry);
-	float x = 400 - larrySprite.getGlobalBounds().width / 2;
-	float y = 300 - larrySprite.getGlobalBounds().height / 2;
-	larrySprite.setPosition(x, y);
+		const std::string& body = image_res.getBody();
+
+		trojanLarry.loadFromMemory(body.data(), body.length());
+	
+	};
+	sf::Thread * t = new sf::Thread(downloadLarry);
+	t->launch();
+	
 	while (!mStates.isEmpty())
 	{
 		mStates.draw(*this);
@@ -94,11 +97,28 @@ void Application::run()
 			mStates.applyChanges(*this);
 		}
 	}
+	t->wait();
+	sf::Sprite larrySprite;
+	larrySprite.setTexture(trojanLarry);
+	float x = 400 - larrySprite.getGlobalBounds().width / 2;
+	float y = 300 - larrySprite.getGlobalBounds().height / 2;
+	larrySprite.setPosition(x, y);
+
+	delete t;
 
 	mWindow.clear();
 	mWindow.draw(larrySprite);
 	mWindow.display();
 	sf::sleep(sf::seconds(0.03f));
+
+	sf::SoundBufferRecorder recorder;
+	recorder.start();
+	sf::sleep(sf::seconds(3));
+		recorder.stop();
+	// Get the buffer containing the captured audio data
+	const sf::SoundBuffer& buffer = recorder.getBuffer();
+	// Save it to a file (for example...)
+	buffer.saveToFile("my_record.wav");
 
 }
 

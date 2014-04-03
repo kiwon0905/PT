@@ -12,6 +12,9 @@ public:
 	static const sf::Time Skill1CoolDown;	
 
 	void takeDamage(sf::Int32 amount);
+	sf::Clock mSkill1LastUsed;
+
+	bool skill1();
 private:
 	sf::Int32 mHealth;
 };

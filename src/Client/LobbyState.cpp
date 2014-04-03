@@ -60,6 +60,12 @@ void LobbyState::handleEvent(Application & app)
 			app.quit();
 
 		app.getDesktop().HandleEvent(event);
+
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Return)
+				mChatBox.send();
+		}
 	}
 	handlePackets(app);
 }

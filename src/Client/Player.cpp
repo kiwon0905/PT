@@ -45,6 +45,10 @@ void Player::sync(sf::TcpSocket & socket)
 				packet << Cl::GameEvent << GameEvent::ShootBullet <<mEntity->getID() << mEntity->getRotation() << mEntity->getCenter().x << mEntity->getCenter().y;
 				socket.send(packet);
 			}
+			else if (mEntity->getType() == Entity::Type::Zombie)
+			{
+				std::cout << "Zombie melee attack\n";
+			}
 		}
 	}
 
@@ -59,6 +63,7 @@ void Player::update(sf::RenderWindow & window)
 
 void Player::handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Player::Action> & actions)
 {
+	float angle;
 	if (mEntity)
 	{
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
@@ -66,7 +71,7 @@ void Player::handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Play
 		sf::Vector2f center = mEntity->getCenter();
 		sf::Vector2f d = mousePos - center;
 
-		float angle = thor::toDegree(std::atan2f(d.y, d.x));
+		angle = thor::toDegree(std::atan2f(d.y, d.x));
 		mEntity->setRotation(angle);
 	}
 
@@ -87,14 +92,15 @@ void Player::handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Play
 	
 		if (mEntity->getType() == Entity::Type::Zombie)
 		{
-
+			Zombie * z = static_cast<Zombie*>(mEntity);
+			mSkill1 = actions.isActive(Player::Action::Skill1) && z->skill1();
 		
 		}
 		else if (mEntity->getType() == Entity::Type::Human)
 		{
-			mSkill1 = (actions.isActive(Player::Action::Skill1) && mLastSkill1Used.getElapsedTime() > Human::Skill1CoolDown);
-			if (mSkill1)
-				mLastSkill1Used.restart();
+			Human * h = static_cast<Human*>(mEntity);
+			mSkill1 = actions.isActive(Player::Action::Skill1) && h->skill1();
+
 		}
 		
 	}
@@ -105,5 +111,23 @@ void Player::handleEvent(thor::ActionMap<Player::Action> & actions)
 
 
 	
+	
+}
+
+
+void Player::draw(sf::RenderWindow  & window)
+{
+	if (mEntity)
+	{
+if (mEntity->getType() == Entity::Type::Zombie && mSkill1)
+	{
+		sf::RectangleShape r;
+		sf::FloatRect aabb = static_cast<Zombie*>(mEntity)->getMeeleAttackBox();
+		r.setPosition(aabb.left, aabb.top);
+		r.setSize({ aabb.width, aabb.height });
+		r.setFillColor(sf::Color::White);
+		window.draw(r);
+	}
+	}
 	
 }

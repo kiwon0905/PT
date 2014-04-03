@@ -22,3 +22,14 @@ void Human::takeDamage(sf::Int32 amount)
 	if (mHealth < 0)
 		kill();
 }
+
+bool Human::skill1()
+{
+	if (mSkill1LastUsed.getElapsedTime() >Skill1CoolDown)
+	{
+		mSkill1LastUsed.restart();
+		return true;
+	}
+	return false;
+
+}

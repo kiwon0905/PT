@@ -138,7 +138,11 @@ void Game::step(sf::RenderWindow & window, sf::TcpSocket & socket, float dt)
 void Game::draw(Textures & textures, sf::RenderWindow & window)
 {
 	if (mState == State::Playing)
-		mGameWorld.draw(textures, window);
+	{
+	mGameWorld.draw(textures, window);
+	mPlayer.draw(window);
+	}
+	
 }
 
 void Game::start()

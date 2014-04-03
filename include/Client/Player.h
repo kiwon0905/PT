@@ -27,7 +27,7 @@ public:
 		Skill1
 	};
 
-	sf::Clock mLastSkill1Used;
+
 	bool mSkill1;
 
 	void setEntity(DynamicEntity * e);
@@ -37,6 +37,9 @@ public:
 	void handleRealtimeEvent(sf::RenderWindow & window, thor::ActionMap<Player::Action> & actions);
 	void handleEvent(thor::ActionMap<Player::Action> & actions);
 
+
+	void draw(sf::RenderWindow  & window);
+	
 private:
 	DynamicEntity * mEntity;
 };
