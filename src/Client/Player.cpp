@@ -117,17 +117,17 @@ void Player::handleEvent(thor::ActionMap<Player::Action> & actions)
 
 void Player::draw(sf::RenderWindow  & window)
 {
-	if (mEntity)
+	/*if (mEntity)
 	{
-if (mEntity->getType() == Entity::Type::Zombie && mSkill1)
-	{
-		sf::RectangleShape r;
-		sf::FloatRect aabb = static_cast<Zombie*>(mEntity)->getMeeleAttackBox();
-		r.setPosition(aabb.left, aabb.top);
-		r.setSize({ aabb.width, aabb.height });
-		r.setFillColor(sf::Color::White);
-		window.draw(r);
-	}
-	}
+		if (mEntity->getType() == Entity::Type::Zombie && static_cast<Zombie*>(mEntity)->isSkill1Active())
+		{
+			sf::RectangleShape r;
+			sf::FloatRect aabb = static_cast<Zombie*>(mEntity)->getMeeleAttackBox();
+			r.setPosition(aabb.left, aabb.top);
+			r.setSize({ aabb.width, aabb.height });
+			r.setFillColor(sf::Color::White);
+			window.draw(r);
+		}
+	}*/
 	
 }

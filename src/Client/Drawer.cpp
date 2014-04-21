@@ -25,37 +25,48 @@ void Drawer::drawWall(Textures & textures, sf::RenderWindow & window, const Wall
 
 void Drawer::drawZombie(Textures & textures, sf::RenderWindow & window, const Zombie & z)
 {
-	sf::RectangleShape shape;
-	shape.setOrigin(z.getSize() / 2.f);
-	shape.setFillColor(sf::Color::Red);
-	shape.setSize(z.getSize());
+	std::shared_ptr<sf::Texture> human = textures.get("assets/zombie.png");
+	sf::Sprite sprite;
+	sprite.setTexture(*human);
+	sf::Vector2f origin = z.getSize() / 2.f;
+	origin.y += 10;
+	sprite.setOrigin(origin);
+	sprite.setPosition(z.getPosition() + z.getSize() / 2.f);
+	sprite.setRotation(z.getRotation() + 90);
+	window.draw(sprite);
 
-	shape.setPosition(z.getPosition() + z.getSize()/2.f);
-	shape.setRotation(z.getRotation());
 
-	window.draw(shape);
+	if (z.isSkill1Active())
+	{
+		std::shared_ptr<sf::Texture> blood = textures.get("assets/attack blood.png");
+		sf::Sprite attackblood;
+		attackblood.setTexture(*blood);	sf::FloatRect aabb = z.getMeeleAttackBox();
+	
+		attackblood.setOrigin(aabb.width / 2.f, 100);
+		attackblood.setPosition(z.getCenter());
+		attackblood.setRotation(z.getRotation() + 90);
 
-	sf::RectangleShape s;
-	s.setPosition(z.getPosition());
-	s.setSize(z.getSize());
-	s.setFillColor(sf::Color::Transparent);
-	s.setOutlineColor(sf::Color::Yellow);
-	s.setOutlineThickness(5.f);
-	window.draw(s);
+		window.draw(attackblood);
+	}
 
+
+	
 
 }
 void Drawer::drawHuman(Textures & textures, sf::RenderWindow & window, const Human & h)
 {
-	sf::RectangleShape shape;
-	shape.setOrigin(h.getSize() / 2.f);
-	shape.setFillColor(sf::Color::Black);
-	shape.setSize(h.getSize());
+	std::shared_ptr<sf::Texture> human = textures.get("assets/player_human.png");
+	sf::Sprite sprite;
+	sprite.setTexture(*human);
 
+	
 
-	shape.setPosition(h.getPosition() + h.getSize()/2.f);
-	shape.setRotation(h.getRotation());
-	window.draw(shape);
+	sf::Vector2f origin = h.getSize() / 2.f;
+	origin.y += 10;
+	sprite.setOrigin(origin);
+	sprite.setPosition(h.getPosition() + h.getSize() / 2.f);
+	sprite.setRotation(h.getRotation() + 90);
+	window.draw(sprite);
 }
 void Drawer::drawPickUp(Textures & textures, sf::RenderWindow & window, const PickUp & p)
 {

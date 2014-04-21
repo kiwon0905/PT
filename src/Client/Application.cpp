@@ -111,14 +111,6 @@ void Application::run()
 	mWindow.display();
 	sf::sleep(sf::seconds(0.03f));
 
-	sf::SoundBufferRecorder recorder;
-	recorder.start();
-	sf::sleep(sf::seconds(3));
-		recorder.stop();
-	// Get the buffer containing the captured audio data
-	const sf::SoundBuffer& buffer = recorder.getBuffer();
-	// Save it to a file (for example...)
-	buffer.saveToFile("my_record.wav");
 
 }
 

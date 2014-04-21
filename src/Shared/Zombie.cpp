@@ -2,8 +2,8 @@
 #include <Thor/Vectors.hpp>
 
 const sf::Int32 Zombie::MaxHealth = 100;
-const sf::Time Zombie::Skill1CoolDown = sf::seconds(0.1f);
-
+const sf::Time Zombie::Skill1CoolDown = sf::seconds(1.25f);
+const sf::Time Zombie::Skill1Duration = sf::seconds(.5f);
 Zombie::Zombie(Entity::ID id) : DynamicEntity(id), mHealth(MaxHealth)
 {
 	setType(Entity::Type::Zombie);
@@ -25,7 +25,7 @@ void Zombie::takeDamage(sf::Int32 amount)
 		kill();
 }
 
-sf::FloatRect Zombie::getMeeleAttackBox()
+sf::FloatRect Zombie::getMeeleAttackBox() const
 {
 	float angle = getRotation();
 	
@@ -42,5 +42,10 @@ bool Zombie::skill1()
 		return true;
 	}
 	return false;
+
+}
+bool Zombie::isSkill1Active() const
+{
+	return	mSkill1LastUsed.getElapsedTime() < Skill1Duration;
 
 }
