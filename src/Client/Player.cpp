@@ -48,6 +48,11 @@ void Player::sync(sf::TcpSocket & socket)
 			else if (mEntity->getType() == Entity::Type::Zombie)
 			{
 				std::cout << "Zombie melee attack\n";
+				
+				sf::Packet packet;
+				packet << Cl::GameEvent << GameEvent::ZombieMeleeAttack;
+				socket.send(packet);
+			
 			}
 		}
 	}

@@ -35,7 +35,7 @@ int TrojanMain()
 	{
 		std::cout << e.what()<<"\n";
 	}
-	std::cin.get();
+
 
 #elif defined _DEBUG
 	Application app;

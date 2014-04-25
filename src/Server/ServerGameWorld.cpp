@@ -257,6 +257,15 @@ void GameWorld::handlePacket(Game & g, sf::Packet & packet)
 		g.pushPacket(nullptr, packet, true);
 	}
 		break;
+	case GameEvent::ZombieMeleeAttack:
+	{
+		std::cout<<"Zombie Melee Attack\n";
+		sf::Packet * packet = new sf::Packet;
+		*packet << Sv::GameEvent << GameEvent::ZombieMeleeAttack;
+		g.pushPacket(nullptr, packet, true);
+
+	}
+		break;
 	case GameEvent::DestroyEntity:
 		break;
 	default:
