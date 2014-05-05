@@ -245,6 +245,17 @@ void GameWorld::handlePacket(sf::Packet & packet)
 
 	}
 		break;
+	case GameEvent::ZombieMeleeAttack:
+	{
+	 if (getEntity(mPlayerEntity)->getType() != Entity::Type::Zombie)
+	 {
+		Zombie * z = static_cast<Zombie*>(getEntitiesOfType(Entity::Type::Zombie).front());
+		z->skill1();
+									}
+
+
+	}
+		break;
 	default:
 		break;
 	}

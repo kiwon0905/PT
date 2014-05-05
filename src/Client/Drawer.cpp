@@ -42,10 +42,15 @@ void Drawer::drawZombie(Textures & textures, sf::RenderWindow & window, const Zo
 		sf::Sprite attackblood;
 		attackblood.setTexture(*blood);	sf::FloatRect aabb = z.getMeeleAttackBox();
 	
-		attackblood.setOrigin(aabb.width / 2.f, 100);
+		sf::RectangleShape shape;
+		shape.setSize({ aabb.width, aabb.height });
+		shape.setPosition({ aabb.left, aabb.top });
+
+		attackblood.setOrigin(aabb.width / 2.f, 75);
 		attackblood.setPosition(z.getCenter());
 		attackblood.setRotation(z.getRotation() + 90);
 
+		window.draw(shape);
 		window.draw(attackblood);
 	}
 
