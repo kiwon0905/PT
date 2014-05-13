@@ -5,9 +5,13 @@
 #include "Client/Application.h"
 #include "Shared/NetProtocol.h"
 
+
 GameWorld::GameWorld(Player * player) : mPlayer(player)
 {
 	mEntitiesByType.resize(static_cast<std::size_t>(Entity::Type::Count));
+	circle.setFillColor(sf::Color(0,0,0,0));
+	circle.setRadius(100);
+	
 }
 
 
@@ -111,8 +115,14 @@ void GameWorld::step(float dt)
 void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 {
 	sf::Texture & texture = *textures.get("assets/background.png");
+	sf::Texture & light = *textures.get("assets/flash.png");
 	texture.setRepeated(true);
 	texture.setSmooth(true);
+	overlay.create(800, 600);
+	sf::Sprite spr;
+	spr.setTexture(light);
+
+
 
 	sf::Sprite background;
 	background.setTexture(texture);
@@ -139,10 +149,27 @@ void GameWorld::draw(Textures & textures, sf::RenderWindow & window)
 		sf::View view = window.getView();
 		view.setCenter(player->getCenter());
 		window.setView(view);
-		if (player->getType() == Entity::Type::Human)
+
+		if (player->getType() == Entity::Type::Human){
+			
 			mDrawer.drawHuman(textures, window, static_cast<Human &>(*player));
+		}
 		else if (player->getType() == Entity::Type::Zombie)
 			mDrawer.drawZombie(textures, window, static_cast<Zombie &>(*player));
+		//sf::Vector2f rot = static_cast<Human*>(player)->getPosition();
+		float rot = static_cast<Human*>(player)->getRotation();
+		spr.setOrigin(500, 480);
+		spr.setPosition(400,300);
+		spr.setRotation((rot+45)*-1);
+		circle.setOrigin(100, 100);
+		circle.setPosition(400,300);
+		overlay.clear(sf::Color(0,0,0,255));
+		overlay.draw(spr, sf::BlendNone);
+		//overlay.draw(circle, sf::BlendNone);
+		sf::Sprite sprite;
+		sprite.setTexture(overlay.getTexture());
+		sprite.setPosition(window.mapPixelToCoords({ 0, 0 }));
+		window.draw(sprite);
 	}
 
 }

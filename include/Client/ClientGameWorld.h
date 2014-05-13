@@ -41,7 +41,11 @@ private:
 	std::vector<Entity * > & getEntitiesOfType(Entity::Type t);
 	std::vector<std::unique_ptr<GameCommand>> mCommands;
 	void removeDeadEntities();
-	
+	sf::RenderTexture overlay;
+	sf::RenderTexture tritex;
+	sf::CircleShape circle;
+	sf::ConvexShape tri;
+	sf::Sprite trispr;
 	Drawer mDrawer;
 	EntityManager mEntityMgr;
 	std::vector<std::vector<Entity *>> mEntitiesByType;
