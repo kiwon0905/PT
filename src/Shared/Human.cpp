@@ -3,7 +3,7 @@
 const sf::Int32 Human::MaxHealth = 100;
 const sf::Time Human::Skill1CoolDown = sf::seconds(0.2f);
 
-Human::Human(Entity::ID id) : DynamicEntity(id)
+Human::Human(Entity::ID id) : DynamicEntity(id), mHealth(MaxHealth)
 {
 	setType(Entity::Type::Human);
 	setSize({ 50.f, 50.f });
@@ -19,7 +19,7 @@ Human::~Human()
 void Human::takeDamage(sf::Int32 amount)
 {
 	mHealth -= amount;
-	if (mHealth < 0)
+	if (mHealth <= 0)
 		kill();
 }
 

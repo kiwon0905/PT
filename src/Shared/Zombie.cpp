@@ -2,6 +2,7 @@
 #include <Thor/Vectors.hpp>
 
 const sf::Int32 Zombie::MaxHealth = 100;
+const sf::Int32 Zombie::Damage = 20;
 const sf::Time Zombie::Skill1CoolDown = sf::seconds(1.25f);
 const sf::Time Zombie::Skill1Duration = sf::seconds(.5f);
 Zombie::Zombie(Entity::ID id) : DynamicEntity(id), mHealth(MaxHealth)

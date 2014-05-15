@@ -10,7 +10,7 @@
 #include <cmath>
 #include <iostream>
 
-Player::Player() 
+Player::Player() :mSkill1(false)
 {
 }
 
@@ -51,6 +51,14 @@ void Player::sync(sf::TcpSocket & socket)
 				
 				sf::Packet packet;
 				packet << Cl::GameEvent << GameEvent::ZombieMeleeAttack;
+
+				Zombie * z = static_cast<Zombie*>(mEntity);
+				sf::FloatRect rect = z->getMeeleAttackBox();
+
+				packet << rect.top << rect.left << rect.width << rect.height;
+
+				std::cout << rect.top << ", " << rect.left << ", " << rect.width << ". " << rect.height << "\n";
+
 				socket.send(packet);
 			
 			}

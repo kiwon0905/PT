@@ -8,8 +8,10 @@ class Zombie : public DynamicEntity
 {
 public:
 	static const sf::Int32 MaxHealth;
+	static const sf::Int32 Damage;
 	static const sf::Time Skill1CoolDown;
 	static const sf::Time Skill1Duration;
+
 
 	Zombie(Entity::ID id);
 	~Zombie();

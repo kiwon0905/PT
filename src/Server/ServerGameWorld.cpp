@@ -260,9 +260,29 @@ void GameWorld::handlePacket(Game & g, sf::Packet & packet)
 	case GameEvent::ZombieMeleeAttack:
 	{
 		std::cout<<"Zombie Melee Attack\n";
-		sf::Packet * packet = new sf::Packet;
-		*packet << Sv::GameEvent << GameEvent::ZombieMeleeAttack;
-		g.pushPacket(nullptr, packet, true);
+
+
+		float top, left, width, height;
+		packet >> top >> left >> width >> height;
+		
+		sf::FloatRect meleeAttackBox;
+		
+		meleeAttackBox.top = top;
+		meleeAttackBox.left = left;
+		meleeAttackBox.height = height;
+		meleeAttackBox.width = width;
+		std::cout << top << ", " << left << ", " << width << ". " << height << "\n";
+		
+		
+		for (Entity * e : getEntitiesOfType(Entity::Type::Human))
+		{
+			if (e->getAABB().intersects(meleeAttackBox))
+			{
+				Human * h = static_cast<Human*>(e);
+				h->takeDamage(Zombie::Damage);
+				std::cout << "HUman health: " << h->getHealth() << "\n";
+			}
+		}
 
 	}
 		break;

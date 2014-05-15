@@ -118,6 +118,7 @@ void Game::step(Server & s)
 			
 			initializePlayers();
 			mState = Game::State::Playing;
+
 		}
 
 		break;
